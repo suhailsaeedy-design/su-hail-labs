@@ -42,8 +42,8 @@
   const heroCount = $('#projectCountHero'); if (heroCount) heroCount.textContent = String(data.projects.length).padStart(2,'0');
   const aboutPoints = $('#aboutPoints');
   if (aboutPoints) aboutPoints.innerHTML = data.profile.aboutPoints.map(p => `<div class="about-point"><i>✓</i><span>${esc(p)}</span></div>`).join('');
-  const stackTags = $('#stackTags');
-  if (stackTags) stackTags.innerHTML = data.profile.stack.map(t => `<span class="stack-tag">${esc(t)}</span>`).join('');
+  const focusTags = $('#focusTags');
+  if (focusTags) focusTags.innerHTML = (data.profile.focusAreas || []).map(t => `<span class="stack-tag">${esc(t)}</span>`).join('');
 
   const capabilityGrid = $('#capabilityGrid');
   if (capabilityGrid) capabilityGrid.innerHTML = data.capabilities.map(c => `<article class="capability-card reveal"><div class="capability-icon">${esc(c.icon)}</div><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></article>`).join('');
@@ -56,15 +56,25 @@
   const search = $('#projectSearch');
   const empty = $('#emptyState');
   let activeCategory = 'All';
-  const categories = ['All','SOFTWARE','WEB','DATABASE','AI','3D','ADMIN','TOOLS'];
-  if (filters) filters.innerHTML = categories.map(c => `<button type="button" class="filter-button${c === 'All' ? ' active' : ''}" data-filter="${esc(c)}">${esc(c)}</button>`).join('');
+  const categories = [
+    {key:'All',label:'All'},
+    {key:'WEB',label:'Websites'},
+    {key:'SOFTWARE',label:'Software'},
+    {key:'DATABASE',label:'Databases'},
+    {key:'AI',label:'AI'},
+    {key:'BUSINESS',label:'Business Systems'},
+    {key:'ADMIN',label:'Admin'},
+    {key:'TOOLS',label:'Tools'},
+    {key:'3D',label:'3D'}
+  ];
+  if (filters) filters.innerHTML = categories.map(c => `<button type="button" class="filter-button${c.key === 'All' ? ' active' : ''}" data-filter="${esc(c.key)}">${esc(c.label)}</button>`).join('');
 
   function renderProjects(){
     if (!grid) return;
     const q = (search?.value || '').trim().toLowerCase();
     const items = data.projects.filter(p => {
-      const cat = activeCategory === 'All' || p.category === activeCategory;
-      const hay = [p.title,p.categoryLabel,p.summary,...p.tech].join(' ').toLowerCase();
+      const cat = activeCategory === 'All' || p.category === activeCategory || (p.focusAreas || []).includes(activeCategory);
+      const hay = [p.title,p.categoryLabel,p.summary,...(p.focusAreas || [])].join(' ').toLowerCase();
       return cat && (!q || hay.includes(q));
     });
     grid.innerHTML = items.map(p => `
@@ -73,7 +83,7 @@
         <div class="project-body">
           <div class="project-meta"><span>PROJECT ${esc(p.id)}</span><span>${esc(p.status)}</span></div>
           <h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p>
-          <div class="tag-row">${p.tech.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+          <div class="tag-row">${(p.focusAreas || [p.category]).slice(0,3).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
           <div class="card-actions">
             ${p.live ? `<a class="button button-primary" href="${esc(p.live)}"${/^https?:\/\//.test(p.live)?' target="_blank" rel="noopener"':''}>${esc(p.liveLabel || 'Open live demo')} ↗</a>` : ''}
             ${p.download ? `<a class="button button-secondary" href="${esc(p.download)}"${/^https?:\/\//.test(p.download)?' target="_blank" rel="noopener"':''}>Download ↓</a>` : ''}
@@ -125,12 +135,12 @@
     const idMatch = q.match(/(?:project\s*#?\s*|#)(\d{1,3})/i);
     if (idMatch) {
       const p=data.projects.find(x=>x.id===idMatch[1].padStart(3,'0'));
-      if(p) return `Project ${p.id}: ${p.title}\n${p.summary}\nTechnologies: ${p.tech.join(', ')}.`;
+      if(p) return `Project ${p.id}: ${p.title}\n${p.summary}\nFocus: ${(p.focusAreas || [p.category]).join(', ')}.`;
     }
     if (/3d|network|topology/.test(q)) { const x=data.projects.find(p=>p.category==='3D'); return x?`${x.title}: ${x.summary}`:'No 3D project is published yet.'; }
     if (/medical|dictionary|anatomy|pwa/.test(q)) { const x=data.projects.find(p=>/medical dictionary/i.test(p.title)); return x?`${x.title}: ${x.summary}`:'The medical dictionary project is not listed yet.'; }
     if (/download|source|code/.test(q)) return `Projects with downloads: ${data.projects.filter(p=>p.download).map(p=>`Project ${p.id} — ${p.title}`).join('; ')}.`;
-    if (/what.*build|skills|service|special|capabil|technolog/.test(q)) return `${data.profile.name} focuses on web applications, software systems, database systems, AI-ready assistants, admin/analytics tools and interactive 3D web experiences. Stack: ${data.profile.stack.join(', ')}.`;
+    if (/what.*build|skills|service|special|capabil|technolog/.test(q)) return `${data.profile.name} focuses on websites, software, databases, AI integration, business systems, admin/analytics, automation tools and interactive 3D experiences.`;
     if (/freelanc|hire|work with|client/.test(q)) return 'Open “Work with me” from the navigation for the client project process and project brief.';
     if (/github/.test(q)) return 'The developer GitHub account is intentionally not linked from the public portfolio. Use Suhail Labs project pages and downloads instead.';
     if (/project|portfolio|latest/.test(q)) return `Suhail Labs currently publishes ${data.projects.length} projects: ${data.projects.map(p=>`${p.id} ${p.title}`).join('; ')}.`;
