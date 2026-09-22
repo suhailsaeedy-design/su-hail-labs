@@ -4,7 +4,7 @@
 
 ## 1) Repository
 د Suhail Labs لپاره له نورو پروژو جلا Public repository:
-`su-hail-labs`
+`suhail-labs`
 
 ## 2) GitHub Pages
 Repository → Settings → Pages
