@@ -93,10 +93,12 @@
   search?.addEventListener('input', renderProjects);
 
   const profilesGrid = $('#profilesGrid');
-  if (profilesGrid) profilesGrid.innerHTML = data.profile.profiles.map(p => {
-    const active = /^https?:\/\//.test(p.url || '');
-    return `<article class="profile-card"><strong>${esc(p.name)}</strong><small>${esc(p.group)} • ${esc(p.handle)}</small><p>${esc(p.note)}</p>${active ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">Open ↗</a>` : `<span class="small-note">Link pending</span>`}</article>`;
-  }).join('');
+  if (profilesGrid) {
+    const activeProfiles = data.profile.profiles.filter(p => /^https?:\/\//.test(p.url || ''));
+    profilesGrid.innerHTML = activeProfiles.length
+      ? activeProfiles.map(p => `<article class="profile-card"><strong>${esc(p.name)}</strong><small>${esc(p.group)} • ${esc(p.handle)}</small><p>${esc(p.note)}</p><a href="${esc(p.url)}" target="_blank" rel="noopener">Open ↗</a></article>`).join('')
+      : '<article class="profile-card"><strong>Official profiles coming soon</strong><p>Verified public links will appear here after they are configured.</p></article>';
+  }
 
   const contact = $('#contactActions');
   if (contact) {
