@@ -9,3 +9,20 @@
   .project-card .card-actions .button:first-child{grid-column:auto}
   .project-card .card-actions .button{min-height:46px;font-size:13px}
 }
+/* Mobile project filters: one horizontal line, swipe/scroll instead of wrapping. */
+@media(max-width:900px){
+  .project-tools{overflow:visible}
+  .filters{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    justify-content:flex-start;
+    width:100%;
+    padding:2px 0 6px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .filters::-webkit-scrollbar{display:none}
+  .filter-button{flex:0 0 auto;white-space:nowrap}
+}
