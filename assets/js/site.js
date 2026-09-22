@@ -76,6 +76,7 @@
           <div class="tag-row">${p.tech.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
           <div class="card-actions">
             ${p.live ? `<a class="button button-primary" href="${esc(p.live)}"${/^https?:\/\//.test(p.live)?' target="_blank" rel="noopener"':''}>${esc(p.liveLabel || 'Open live demo')} ↗</a>` : ''}
+            ${p.download ? `<a class="button button-secondary" href="${esc(p.download)}"${/^https?:\/\//.test(p.download)?' target="_blank" rel="noopener"':''}>Download ↓</a>` : ''}
             <a class="button button-secondary" href="${esc(p.detailsUrl)}">Details</a>
           </div>
         </div>
