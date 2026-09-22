@@ -56,7 +56,7 @@
   const search = $('#projectSearch');
   const empty = $('#emptyState');
   let activeCategory = 'All';
-  const categories = ['All', ...new Set(data.projects.map(p => p.category))];
+  const categories = ['All','SOFTWARE','WEB','DATABASE','AI','3D','ADMIN','TOOLS'];
   if (filters) filters.innerHTML = categories.map(c => `<button type="button" class="filter-button${c === 'All' ? ' active' : ''}" data-filter="${esc(c)}">${esc(c)}</button>`).join('');
 
   function renderProjects(){
@@ -132,7 +132,7 @@
     if (/download|source|code/.test(q)) return `Projects with downloads: ${data.projects.filter(p=>p.download).map(p=>`Project ${p.id} — ${p.title}`).join('; ')}.`;
     if (/what.*build|skills|service|special|capabil|technolog/.test(q)) return `${data.profile.name} focuses on web applications, software systems, database systems, AI-ready assistants, admin/analytics tools and interactive 3D web experiences. Stack: ${data.profile.stack.join(', ')}.`;
     if (/freelanc|hire|work with|client/.test(q)) return 'Open “Work with me” from the navigation for the client project process and project brief.';
-    if (/github/.test(q)) return 'GitHub: @suhailsaeedy-design. Open the GitHub card in Profiles or Official Links.';
+    if (/github/.test(q)) return 'The developer GitHub account is intentionally not linked from the public portfolio. Use Suhail Labs project pages and downloads instead.';
     if (/project|portfolio|latest/.test(q)) return `Suhail Labs currently publishes ${data.projects.length} projects: ${data.projects.map(p=>`${p.id} ${p.title}`).join('; ')}.`;
     if (/who|about|suhail/.test(q)) return `${data.profile.name} — ${data.profile.title}. ${data.profile.bio}`;
     return 'Ask me about Suhail’s projects, skills, downloads, GitHub profile or client work.';
