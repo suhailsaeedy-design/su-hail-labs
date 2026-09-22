@@ -26,9 +26,9 @@ window.SUHAIL_LABS_DATA = {
       {
         "name": "GitHub",
         "group": "Developer",
-        "handle": "Private / not linked publicly",
-        "url": "",
-        "note": "Developer account is intentionally not linked from the public portfolio."
+        "handle": "@suhailsaeedy-design",
+        "url": "https://github.com/suhailsaeedy-design",
+        "note": "Public repositories, project history and selected source code."
       },
       {
         "name": "LinkedIn",
@@ -227,10 +227,10 @@ window.SUHAIL_LABS_DATA = {
       "description": "Suhail Medical Dictionary is a full medical learning platform designed for fast lookup and structured study. It brings together a multilingual dictionary, clinical reference content, interactive anatomy, offline access, study assistance, selected-term workflows, accessibility controls and a separate owner maintenance area. The public portfolio presents the product experience without exposing private account or repository details.",
       "status": "Portfolio showcase",
       "featured": true,
-      "live": "projects/003-medical-dictionary/index.html",
-      "liveLabel": "View project overview",
+      "live": "https://suhailsaeedy-design.github.io/suhail-medical-dictionary/",
+      "liveLabel": "Open live app",
       "download": "",
-      "source": "",
+      "source": "https://github.com/suhailsaeedy-design/suhail-medical-dictionary",
       "detailsUrl": "project.html?id=003",
       "highlights": [
         "Multilingual dictionary and clinical reference workspace",
