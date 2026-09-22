@@ -26,3 +26,12 @@
   .filters::-webkit-scrollbar{display:none}
   .filter-button{flex:0 0 auto;white-space:nowrap}
 }
+
+.capability-window{padding-bottom:18px}
+.capability-preview{display:flex;flex-wrap:wrap;gap:9px;padding:18px 20px}
+.capability-preview span,.focus-tags span{display:inline-flex;align-items:center;min-height:34px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--card2);font-size:11px;font-weight:800;color:var(--text)}
+.focus-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+@media(max-width:620px){
+  .capability-preview{padding:14px}
+  .capability-preview span{font-size:10px}
+}
