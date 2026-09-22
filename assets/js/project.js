@@ -27,7 +27,7 @@
       <span class="section-kicker">${esc(p.categoryLabel)}</span>
       <h1>${esc(p.title)}</h1>
       <p>${esc(p.description)}</p>
-      <div class="tag-row">${p.tech.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <div class="tag-row">${(p.focusAreas || [p.category]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
       <div class="project-actions">
         ${p.live ? `<a class="button button-primary" href="${esc(p.live)}"${/^https?:\/\//.test(p.live)?' target="_blank" rel="noopener"':''}>${esc(p.liveLabel || 'Open live project')} ↗</a>` : ''}
         ${p.download ? `<a class="button button-secondary" href="${esc(p.download)}"${/^https?:\/\//.test(p.download)?' target="_blank" rel="noopener"':''}>Download source ↓</a>` : ''}
@@ -41,7 +41,7 @@
       <span class="section-kicker">PROJECT ${esc(p.id)}</span>
       <h2>${esc(p.status)}</h2>
       <p>${esc(p.summary)}</p>
-      <div class="tag-row">${p.tech.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <div class="tag-row">${(p.focusAreas || [p.category]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
     </aside>
   </div>`;
   const y=$('#year'); if(y) y.textContent = new Date().getFullYear();
