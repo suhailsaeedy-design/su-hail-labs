@@ -31,9 +31,9 @@ window.SUHAIL_LABS_DATA = {
       {
         "name": "GitHub",
         "group": "Developer",
-        "handle": "@suhailsaeedy-design",
-        "url": "https://github.com/suhailsaeedy-design",
-        "note": "Source code, repositories and project history."
+        "handle": "Private / not linked publicly",
+        "url": "",
+        "note": "Developer account is intentionally not linked from the public portfolio."
       },
       {
         "name": "LinkedIn",
@@ -229,13 +229,13 @@ window.SUHAIL_LABS_DATA = {
       "categoryLabel": "Web App / PWA / AI Study",
       "summary": "A multilingual medical dictionary and offline-first study platform with anatomy, clinical reference tools, local AI-study workflows and optional cloud features.",
       "description": "Suhail Medical Dictionary is a larger real-world web application project. Its public repository documents a multilingual dictionary, offline/PWA support, interactive anatomy, local study tools, selected-term workflows, accessibility work, optional cloud sync and a separate owner/admin maintenance route.",
-      "status": "Public repository",
+      "status": "Portfolio showcase",
       "featured": true,
       "tech": ["HTML","CSS","JavaScript","PWA","Supabase (optional)"],
-      "live": "https://github.com/suhailsaeedy-design/suhail-medical-dictionary",
-      "liveLabel": "View repository",
-      "download": "https://github.com/suhailsaeedy-design/suhail-medical-dictionary/archive/refs/heads/main.zip",
-      "source": "https://github.com/suhailsaeedy-design/suhail-medical-dictionary",
+      "live": "",
+      "liveLabel": "Open project",
+      "download": "",
+      "source": "",
       "detailsUrl": "project.html?id=003",
       "highlights": [
         "Multilingual dictionary and clinical reference workspace",
