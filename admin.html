@@ -16,7 +16,7 @@
       <a class="brand" href="index.html" aria-label="Suhail Labs public site"><span class="brand-mark">SL</span><span class="brand-copy"><strong>Suhail Labs</strong><small>Creator Studio</small></span></a>
       <div class="login-badge">LOCAL CREATOR ACCESS</div>
       <h1 id="loginTitle">Unlock Creator Studio</h1>
-      <p id="loginText">This local passcode protects your browser workspace from casual access. It is not a replacement for server-side authentication.</p>
+      <p id="loginText">This passcode locks only this browser's local Creator Studio workspace. It does not control your GitHub account or provide server-side authentication.</p>
       <form id="loginForm" class="stack-form">
         <label>Passcode<input id="passcodeInput" type="password" minlength="6" autocomplete="current-password" required placeholder="Minimum 6 characters" /></label>
         <label id="confirmPasscodeWrap" hidden>Confirm passcode<input id="confirmPasscodeInput" type="password" minlength="6" autocomplete="new-password" placeholder="Repeat passcode" /></label>
@@ -80,7 +80,7 @@
               <label class="span-2">Professional bio<textarea name="bio" rows="6" required></textarea></label>
             </div>
             <div class="form-section"><div><h3>About points</h3><p>One concise statement per line.</p></div><textarea name="aboutPoints" rows="5"></textarea></div>
-            <div class="form-section"><div><h3>Technology stack</h3><p>Comma-separated technologies shown on the public site.</p></div><textarea name="stack" rows="4"></textarea></div>
+            <div class="form-section"><div><h3>Professional focus areas</h3><p>Public capability areas such as Websites, Software, Databases, AI Integration and Business Systems.</p></div><textarea name="stack" rows="4"></textarea></div>
             <div class="form-actions"><button class="button button-primary" type="submit">Save profile</button><button class="button button-secondary" type="button" id="previewProfile">Preview public site ↗</button></div>
           </form>
         </section>
@@ -122,7 +122,7 @@
         <section class="studio-view" data-view-panel="settings">
           <div class="studio-heading"><div><span class="section-kicker">STUDIO SETTINGS</span><h1>Settings</h1><p>Manage local workspace security and draft data.</p></div></div>
           <div class="studio-grid two-col">
-            <article class="studio-card"><div class="card-head"><div><h2>Change local passcode</h2><p>Updates the browser-only lock for Creator Studio.</p></div></div><form id="passcodeForm" class="stack-form"><label>Current passcode<input name="current" type="password" required /></label><label>New passcode<input name="next" type="password" minlength="6" required /></label><label>Confirm new passcode<input name="confirm" type="password" minlength="6" required /></label><button class="button button-primary" type="submit">Update passcode</button><p class="form-message" id="passcodeMessage"></p></form></article>
+            <article class="studio-card"><div class="card-head"><div><h2>Change local passcode</h2><p>Updates the browser-only lock for Creator Studio. If it is forgotten, recovery requires clearing this site's browser data, which also removes local-only drafts.</p></div></div><form id="passcodeForm" class="stack-form"><label>Current passcode<input name="current" type="password" required /></label><label>New passcode<input name="next" type="password" minlength="6" required /></label><label>Confirm new passcode<input name="confirm" type="password" minlength="6" required /></label><button class="button button-primary" type="submit">Update passcode</button><p class="form-message" id="passcodeMessage"></p></form></article>
             <article class="studio-card danger-card"><div><h2>Reset local draft</h2><p>Deletes browser-only edits and restores the bundled public data on the next load. This does not delete GitHub files.</p></div><button class="button button-secondary" id="resetDraft" type="button">Reset local draft</button></article>
           </div>
         </section>
