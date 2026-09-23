@@ -9,7 +9,7 @@
   const esc = (v='') => String(v).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
 
   const savedTheme = localStorage.getItem('suhailLabsTheme');
-  document.documentElement.dataset.theme = savedTheme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.dataset.theme = savedTheme || 'light';
   const themeToggle = $('#themeToggle');
   const sync = () => { if(themeToggle) themeToggle.textContent = document.documentElement.dataset.theme === 'dark' ? '☼' : '◐'; };
   sync(); themeToggle?.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('suhailLabsTheme',next);sync();});
