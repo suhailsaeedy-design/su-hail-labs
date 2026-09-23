@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f8fc">
+<meta name="description" content="Smart Inventory & Barcode Stock Manager — a privacy-first browser inventory tool with low-stock alerts, optional camera barcode scanning, reports and local backups.">
+<title>Smart Inventory & Barcode Stock Manager — Suhail Labs</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg">
+<style>
+:root{
+  --bg:#f5f8fc;--surface:#fff;--surface2:#eef4f9;--text:#142033;--muted:#65758a;--line:#d8e4ee;
+  --brand:#159fd8;--brand2:#7488ff;--ok:#159c69;--warn:#c88410;--danger:#d64c59;
+  --shadow:0 16px 46px rgba(36,62,88,.12);--r:18px
+}
+html[data-theme="dark"]{
+  --bg:#07111f;--surface:#0d1d30;--surface2:#13253a;--text:#f5f8ff;--muted:#9cafc4;--line:#263c52;
+  --brand:#6fe7ff;--brand2:#8a8dff;--ok:#5ee6a8;--warn:#ffd166;--danger:#ff7b86;--shadow:0 20px 60px rgba(0,0,0,.3)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,input,select,textarea{font:inherit}a{color:inherit;text-decoration:none}button,a{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 38%,transparent);outline-offset:2px}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:9px;padding:12px clamp(12px,3vw,26px);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px)}
+.brand{font-weight:950;margin-right:auto}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.btn{min-height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);padding:0 13px;font-weight:850;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#06111e}.btn.ghost{background:var(--surface2)}.btn.danger{color:var(--danger)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.shell{width:min(1320px,calc(100% - 28px));margin:auto;padding:28px 0 52px}.hero{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:end}.eyebrow{display:inline-flex;align-items:center;gap:7px;color:var(--brand);font-size:11px;font-weight:950;letter-spacing:.08em}.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+h1{font-size:clamp(34px,5vw,58px);line-height:1.02;margin:8px 0}.hero p{color:var(--muted);max-width:780px;margin:0}.hero-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.workspace-note{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 4px;padding:11px 13px;border:1px solid var(--line);border-radius:14px;background:var(--surface2);color:var(--muted);font-size:12px}.workspace-note strong{color:var(--text)}.sample-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--warn) 12%,transparent);color:var(--warn);font-weight:900}.sample-pill i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:18px 0}.metric{padding:16px;border:1px solid var(--line);background:var(--surface);border-radius:16px;box-shadow:var(--shadow)}.metric span{font-size:10px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.06em}.metric strong{display:block;font-size:clamp(24px,3vw,34px);margin-top:7px}.metric.alert strong{color:var(--danger)}.metric.warn strong{color:var(--warn)}
+.layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);gap:14px;align-items:start}.panel{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow)}.inventory-panel{padding:16px}.side{display:grid;gap:14px}.side .panel{padding:16px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.panel-head h2,.side h2{font-size:19px;margin:0}.panel-head p,.side p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.toolbar{display:grid;grid-template-columns:minmax(180px,1fr) auto auto auto;gap:8px;margin-bottom:13px}.control{min-height:42px;border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:11px;padding:0 11px;min-width:0}.search-wrap{position:relative}.search-wrap input{width:100%;padding-left:34px}.search-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.inventory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.empty{grid-column:1/-1;border:1px dashed var(--line);border-radius:15px;padding:32px;text-align:center;color:var(--muted)}
+.item{border:1px solid var(--line);background:var(--surface2);border-radius:15px;padding:14px;display:grid;gap:12px;position:relative;transition:transform .16s,border-color .16s}.item:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 35%,var(--line))}.item.flash{animation:flash 1.4s ease}@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 5px color-mix(in srgb,var(--brand) 22%,transparent)}}
+.item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.item h3{margin:0;font-size:16px}.code{color:var(--muted);font-size:10px;margin-top:3px;word-break:break-all}.status{flex:0 0 auto;font-size:9px;font-weight:950;padding:5px 7px;border-radius:999px}.status.ok{background:color-mix(in srgb,var(--ok) 11%,transparent);color:var(--ok)}.status.low{background:color-mix(in srgb,var(--warn) 12%,transparent);color:var(--warn)}.status.out,.status.expired{background:color-mix(in srgb,var(--danger) 11%,transparent);color:var(--danger)}
+.item-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.item-meta div{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px;min-width:0}.item-meta span{display:block;color:var(--muted);font-size:9px}.item-meta b{display:block;font-size:12px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-actions{display:grid;grid-template-columns:auto auto 1fr auto auto;gap:6px;align-items:center}.qtybtn{width:36px;padding:0}.qtyread{text-align:center;font-weight:950}.item-actions .btn{min-height:38px;padding-inline:10px;font-size:11px}.delete{color:var(--danger)}
+.insight-list{display:grid;gap:8px}.insight-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.insight-row:last-child{border-bottom:0}.insight-row small{display:block;color:var(--muted)}.bar{height:7px;background:var(--surface2);border-radius:999px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:999px}
+.activity{display:grid;gap:8px;max-height:320px;overflow:auto}.activity-row{padding:9px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);font-size:11px}.activity-row small{display:block;color:var(--muted);margin-top:3px}
+.report{white-space:pre-wrap;max-height:260px;overflow:auto;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace}.report-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.report-actions .btn{flex:1}
+dialog{border:0;padding:0;background:transparent;color:var(--text);width:min(680px,calc(100% - 24px));max-height:90vh}dialog::backdrop{background:rgba(2,10,20,.58);backdrop-filter:blur(4px)}.dialog{border:1px solid var(--line);background:var(--surface);border-radius:20px;box-shadow:0 30px 100px rgba(0,0,0,.35);overflow:auto;max-height:90vh}.dialog-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid var(--line);background:var(--surface)}.dialog-head h2{margin:0}.dialog-body{padding:16px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:grid;gap:5px;color:var(--muted);font-size:11px}.field.span2{grid-column:1/-1}.field input,.field select{min-height:44px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);padding:0 11px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.scanner-box{position:relative;aspect-ratio:16/10;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#07111f;display:grid;place-items:center}.scanner-box video{width:100%;height:100%;object-fit:cover}.scan-line{position:absolute;left:10%;right:10%;top:50%;height:2px;background:var(--brand);box-shadow:0 0 18px var(--brand);animation:scan 2s ease-in-out infinite}@keyframes scan{0%,100%{transform:translateY(-80px)}50%{transform:translateY(80px)}}.scanner-message{padding:11px 0;color:var(--muted);font-size:12px}.manual-scan{display:grid;grid-template-columns:1fr auto;gap:8px}.manual-scan input{min-height:44px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);padding:0 11px}
+.toast{position:fixed;left:50%;bottom:22px;z-index:100;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 14px;border-radius:999px;font-weight:850;font-size:12px;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1050px){.metrics{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.side .panel:last-child{grid-column:1/-1}}
+@media(max-width:760px){.shell{width:min(100% - 18px,760px);padding-top:18px}.topbar{padding:10px}.topbar .portfolio{display:none}.hero{grid-template-columns:1fr}.hero-actions{justify-content:flex-start}.metrics{grid-template-columns:repeat(2,1fr)}.toolbar{grid-template-columns:1fr 1fr}.search-wrap{grid-column:1/-1}.inventory-grid{grid-template-columns:1fr}.side{grid-template-columns:1fr}.side .panel:last-child{grid-column:auto}.item-meta{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.hero-actions{display:grid;grid-template-columns:1fr 1fr}.hero-actions .primary{grid-column:1/-1}.toolbar{grid-template-columns:1fr}.search-wrap{grid-column:auto}.metrics{gap:7px}.metric{padding:13px}.form-grid{grid-template-columns:1fr}.field.span2{grid-column:auto}.item-actions{grid-template-columns:auto auto 1fr}.item-actions .edit,.item-actions .delete{grid-row:2}.item-actions .edit{grid-column:1/3}.item-actions .delete{grid-column:3}.dialog-actions{display:grid;grid-template-columns:1fr 1fr}.dialog-actions .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.scan-line{animation:none}.item.flash{animation:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Suhail Labs • Smart Inventory<small>Local-first stock control & barcode workflow</small></div>
+  <button class="btn" id="themeToggle" type="button" aria-label="Switch theme">☾</button>
+  <a class="btn ghost portfolio" href="../../index.html">Portfolio</a>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow"><i></i> PROJECT 005 • BUSINESS SOFTWARE</span>
+      <h1>Smart Inventory & Barcode Stock Manager</h1>
+      <p>Track stock, detect low inventory, scan supported barcodes with a device camera, keep a local activity history, and export reports or backups without sending inventory data to a server.</p>
+    </div>
+    <div class="hero-actions">
+      <button class="btn primary" id="addItem" type="button">+ Add item</button>
+      <button class="btn" id="scanItem" type="button">▣ Scan code</button>
+      <button class="btn ghost" id="exportMenu" type="button">Export CSV</button>
+    </div>
+  </section>
+
+  <div class="workspace-note">
+    <span class="sample-pill" id="modePill"><i></i><span id="modeText">Sample data</span></span>
+    <span id="modeNote"><strong>Demo workspace:</strong> the starter items are sample records stored only in this browser.</span>
+    <button class="btn ghost" id="startFresh" type="button">Start fresh</button>
+  </div>
+
+  <section class="metrics" aria-label="Inventory summary">
+    <article class="metric"><span>Products</span><strong id="mProducts">0</strong></article>
+    <article class="metric"><span>Total units</span><strong id="mUnits">0</strong></article>
+    <article class="metric warn"><span>Low stock</span><strong id="mLow">0</strong></article>
+    <article class="metric alert"><span>Out of stock</span><strong id="mOut">0</strong></article>
+    <article class="metric"><span>Inventory value</span><strong id="mValue">—</strong></article>
+  </section>
+
+  <section class="layout">
+    <article class="panel inventory-panel">
+      <div class="panel-head"><div><h2>Inventory</h2><p id="countText">0 items</p></div><button class="btn ghost" id="loadDemo" type="button">Load demo data</button></div>
+      <div class="toolbar">
+        <label class="search-wrap"><span>⌕</span><input class="control" id="search" type="search" placeholder="Search name, code or category…" autocomplete="off" aria-label="Search inventory"></label>
+        <select class="control" id="statusFilter" aria-label="Filter by stock status"><option value="all">All stock</option><option value="low">Low stock</option><option value="out">Out of stock</option><option value="expiring">Expiring soon</option></select>
+        <select class="control" id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select>
+        <select class="control" id="currency" aria-label="Currency"><option>USD</option><option>AFN</option><option>EUR</option><option>GBP</option><option>PKR</option><option>CNY</option><option>INR</option><option>TRY</option><option>AED</option></select>
+      </div>
+      <div class="inventory-grid" id="inventoryGrid" aria-live="polite"></div>
+    </article>
+
+    <aside class="side">
+      <section class="panel">
+        <div class="panel-head"><div><h2>Stock insights</h2><p>Category distribution and attention items</p></div></div>
+        <div class="insight-list" id="insights"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><div><h2>Activity</h2><p>Latest changes on this device</p></div><button class="btn ghost" id="clearActivity" type="button">Clear</button></div>
+        <div class="activity" id="activity"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><div><h2>Summary report</h2><p>Calculated from the current local inventory</p></div></div>
+        <div class="report" id="report"></div>
+        <div class="report-actions"><button class="btn" id="copyReport" type="button">Copy</button><button class="btn" id="downloadReport" type="button">Download</button><button class="btn" id="backupJson" type="button">Backup</button><label class="btn" for="restoreJson">Restore<input id="restoreJson" type="file" accept="application/json,.json" hidden></label></div>
+      </section>
+    </aside>
+  </section>
+</main>
+
+<dialog id="itemDialog">
+  <form method="dialog" class="dialog" id="itemForm">
+    <div class="dialog-head"><h2 id="itemDialogTitle">Add inventory item</h2><button class="btn ghost" value="cancel" aria-label="Close item editor">×</button></div>
+    <div class="dialog-body">
+      <input type="hidden" name="id">
+      <div class="form-grid">
+        <label class="field span2">Item name<input name="name" required maxlength="80" autocomplete="off"></label>
+        <label class="field">Barcode / SKU<input name="code" required maxlength="80" autocomplete="off"></label>
+        <label class="field">Category<input name="category" required maxlength="50" autocomplete="off" placeholder="Accessories"></label>
+        <label class="field">Quantity<input name="qty" type="number" min="0" step="1" required value="0"></label>
+        <label class="field">Low-stock threshold<input name="min" type="number" min="0" step="1" required value="5"></label>
+        <label class="field">Unit cost<input name="cost" type="number" min="0" step="0.01" required value="0"></label>
+        <label class="field">Expiry date <span>(optional)</span><input name="expiry" type="date"></label>
+      </div>
+      <p id="itemMessage" style="min-height:18px;color:var(--danger);font-size:12px;margin:10px 0 0"></p>
+      <div class="dialog-actions"><button class="btn ghost" value="cancel">Cancel</button><button class="btn primary" id="saveItem" value="default">Save item</button></div>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="scannerDialog">
+  <div class="dialog">
+    <div class="dialog-head"><h2>Barcode / QR scanner</h2><button class="btn ghost" id="closeScanner" type="button" aria-label="Close scanner">×</button></div>
+    <div class="dialog-body">
+      <div class="scanner-box"><video id="scanVideo" playsinline muted></video><div class="scan-line" aria-hidden="true"></div></div>
+      <div class="scanner-message" id="scannerMessage">Checking camera and barcode support…</div>
+      <div class="manual-scan"><input id="manualCode" autocomplete="off" placeholder="Or type / paste a barcode or SKU" aria-label="Barcode or SKU"><button class="btn primary" id="useManualCode" type="button">Use code</button></div>
+      <p style="color:var(--muted);font-size:11px;margin-bottom:0">Camera scanning works only when the browser exposes the BarcodeDetector API and camera permission is granted. Manual code entry always remains available. Inventory data stays in this browser.</p>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+const STORE='suhailInventoryV1', LOG='suhailInventoryLogV1', MODE='suhailInventoryModeV1', CUR='suhailInventoryCurrencyV1';
+const demoItems=[
+  {id:'p1',name:'Wireless Mouse',code:'SL-1001',category:'Accessories',qty:18,min:5,cost:16.50,expiry:''},
+  {id:'p2',name:'USB-C Hub',code:'SL-1002',category:'Accessories',qty:4,min:6,cost:24.00,expiry:''},
+  {id:'p3',name:'Laptop Stand',code:'SL-1003',category:'Office',qty:0,min:4,cost:19.75,expiry:''},
+  {id:'p4',name:'Webcam 1080p',code:'SL-1004',category:'Electronics',qty:9,min:3,cost:32.50,expiry:''},
+  {id:'p5',name:'Thermal Labels',code:'SL-1005',category:'Supplies',qty:27,min:10,cost:5.25,expiry:''},
+  {id:'p6',name:'Battery Pack',code:'SL-1006',category:'Electronics',qty:3,min:5,cost:21.90,expiry:''}
+];
+let items=[],activity=[],mode='sample',stream=null,scanTimer=null,lastScanned='';
+const clone=v=>JSON.parse(JSON.stringify(v));
+const today=()=>new Date().toISOString().slice(0,10);
+const uid=()=>crypto.randomUUID?crypto.randomUUID():'i-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+const esc=(v='')=>String(v).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+const number=n=>new Intl.NumberFormat(undefined,{maximumFractionDigits:0}).format(Number(n)||0);
+function money(n){const code=$('#currency').value||'USD';try{return new Intl.NumberFormat(undefined,{style:'currency',currency:code,maximumFractionDigits:2}).format(Number(n)||0)}catch{return code+' '+Number(n||0).toFixed(2)}}
+function toast(text){const el=$('#toast');el.textContent=text;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1700)}
+function save(){localStorage.setItem(STORE,JSON.stringify(items));localStorage.setItem(LOG,JSON.stringify(activity.slice(0,60)));localStorage.setItem(MODE,mode);render()}
+function log(text){activity.unshift({time:new Date().toISOString(),text});activity=activity.slice(0,60)}
+function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('inventoryTheme',theme);$('#themeToggle').textContent=theme==='dark'?'☀':'☾';document.querySelector('meta[name="theme-color"]').setAttribute('content',theme==='dark'?'#07111f':'#f5f8fc')}
+setTheme(localStorage.getItem('inventoryTheme')||'light');$('#themeToggle').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+
+function load(){
+  try{const saved=JSON.parse(localStorage.getItem(STORE)||'null');items=Array.isArray(saved)?saved:clone(demoItems)}catch{items=clone(demoItems)}
+  try{const saved=JSON.parse(localStorage.getItem(LOG)||'[]');activity=Array.isArray(saved)?saved:[]}catch{activity=[]}
+  mode=localStorage.getItem(MODE)||(localStorage.getItem(STORE)?'personal':'sample');
+  $('#currency').value=localStorage.getItem(CUR)||'USD';
+  render();
+}
+function expiryState(item){
+  if(!item.expiry)return '';
+  const d=new Date(item.expiry+'T00:00:00'),now=new Date(today()+'T00:00:00'),days=Math.ceil((d-now)/86400000);
+  if(days<0)return 'expired';
+  if(days<=30)return 'expiring';
+  return '';
+}
+function stockState(item){
+  if(Number(item.qty)<=0)return {key:'out',label:'OUT OF STOCK'};
+  if(Number(item.qty)<=Number(item.min))return {key:'low',label:'LOW STOCK'};
+  return {key:'ok',label:'IN STOCK'};
+}
+function filtered(){
+  const q=$('#search').value.trim().toLowerCase(),status=$('#statusFilter').value,cat=$('#categoryFilter').value;
+  return items.filter(item=>{
+    const stock=stockState(item).key,ex=expiryState(item);
+    const statusOk=status==='all'||status===stock||(status==='expiring'&&(ex==='expiring'||ex==='expired'));
+    const catOk=cat==='all'||item.category===cat;
+    const hay=[item.name,item.code,item.category].join(' ').toLowerCase();
+    return statusOk&&catOk&&(!q||hay.includes(q));
+  });
+}
+function renderMetrics(){
+  const units=items.reduce((s,i)=>s+Number(i.qty||0),0),low=items.filter(i=>stockState(i).key==='low').length,out=items.filter(i=>stockState(i).key==='out').length,value=items.reduce((s,i)=>s+Number(i.qty||0)*Number(i.cost||0),0);
+  $('#mProducts').textContent=number(items.length);$('#mUnits').textContent=number(units);$('#mLow').textContent=number(low);$('#mOut').textContent=number(out);$('#mValue').textContent=money(value);
+}
+function renderCategories(){
+  const current=$('#categoryFilter').value||'all',cats=[...new Set(items.map(i=>i.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  $('#categoryFilter').innerHTML='<option value="all">All categories</option>'+cats.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');
+  $('#categoryFilter').value=cats.includes(current)?current:'all';
+}
+function itemCard(item){
+  const stock=stockState(item),ex=expiryState(item),expiry=item.expiry?(ex==='expired'?'Expired '+item.expiry:ex==='expiring'?'Soon '+item.expiry:item.expiry):'—';
+  return '<article class="item" data-id="'+esc(item.id)+'">'+
+    '<div class="item-top"><div><h3>'+esc(item.name)+'</h3><div class="code">'+esc(item.code)+' • '+esc(item.category)+'</div></div><span class="status '+stock.key+'">'+stock.label+'</span></div>'+
+    '<div class="item-meta"><div><span>Quantity</span><b>'+number(item.qty)+'</b></div><div><span>Minimum</span><b>'+number(item.min)+'</b></div><div><span>Unit cost</span><b>'+esc(money(item.cost))+'</b></div><div><span>Expiry</span><b>'+esc(expiry)+'</b></div></div>'+
+    '<div class="item-actions"><button class="btn qtybtn" type="button" data-delta="-1" aria-label="Decrease '+esc(item.name)+' quantity">−</button><button class="btn qtybtn" type="button" data-delta="1" aria-label="Increase '+esc(item.name)+' quantity">+</button><span class="qtyread">'+number(item.qty)+' units</span><button class="btn edit" type="button" data-edit>Edit</button><button class="btn delete" type="button" data-delete>Delete</button></div>'+
+  '</article>';
+}
+function renderInventory(){
+  const list=filtered();$('#countText').textContent=list.length+' of '+items.length+' product'+(items.length===1?'':'s');
+  $('#inventoryGrid').innerHTML=list.length?list.map(itemCard).join(''):'<div class="empty"><strong>No matching inventory items.</strong><br><span>Change the filters or add a new product.</span></div>';
+}
+function renderInsights(){
+  if(!items.length){$('#insights').innerHTML='<span style="color:var(--muted);font-size:12px">Add items to generate stock insights.</span>';return}
+  const by={};items.forEach(i=>by[i.category]=(by[i.category]||0)+Number(i.qty||0));const max=Math.max(1,...Object.values(by));
+  const low=items.filter(i=>['low','out'].includes(stockState(i).key)).length,exp=items.filter(i=>['expiring','expired'].includes(expiryState(i))).length;
+  $('#insights').innerHTML=
+    '<div class="insight-row"><div><b>Needs stock attention</b><small>Low or out-of-stock products</small></div><strong>'+low+'</strong></div>'+
+    '<div class="insight-row"><div><b>Expiry attention</b><small>Expired or within 30 days</small></div><strong>'+exp+'</strong></div>'+
+    Object.entries(by).sort((a,b)=>b[1]-a[1]).map(([cat,qty])=>'<div class="insight-row"><div><b>'+esc(cat)+'</b><small>'+number(qty)+' units<div class="bar"><i style="width:'+Math.max(5,qty/max*100)+'%"></i></div></small></div><strong>'+number(qty)+'</strong></div>').join('');
+}
+function renderActivity(){
+  $('#activity').innerHTML=activity.length?activity.slice(0,16).map(a=>'<div class="activity-row">'+esc(a.text)+'<small>'+new Date(a.time).toLocaleString()+'</small></div>').join(''):'<span style="color:var(--muted);font-size:12px">No activity recorded yet.</span>';
+}
+function reportText(){
+  const units=items.reduce((s,i)=>s+Number(i.qty||0),0),value=items.reduce((s,i)=>s+Number(i.qty||0)*Number(i.cost||0),0),low=items.filter(i=>stockState(i).key==='low'),out=items.filter(i=>stockState(i).key==='out'),exp=items.filter(i=>['expiring','expired'].includes(expiryState(i)));
+  const lines=[
+    'SUHAIL LABS — SMART INVENTORY SUMMARY',
+    'Generated: '+new Date().toLocaleString(),'',
+    'Products: '+items.length,
+    'Total units: '+units,
+    'Inventory value: '+money(value),
+    'Low stock: '+low.length,
+    'Out of stock: '+out.length,
+    'Expiry attention: '+exp.length,'',
+    'ATTENTION ITEMS'
+  ];
+  const attention=[...new Map([...out,...low,...exp].map(i=>[i.id,i])).values()];
+  if(!attention.length)lines.push('No current stock or expiry alerts.');
+  else attention.forEach(i=>lines.push('- '+i.name+' ['+i.code+'] • qty '+i.qty+' • '+stockState(i).label+(i.expiry?' • expiry '+i.expiry:'')));
+  lines.push('','Storage note: this demo stores inventory in this browser. Export a JSON backup before clearing browser/site data.');
+  return lines.join('\n');
+}
+function renderMode(){
+  const sample=mode==='sample';$('#modeText').textContent=sample?'Sample data':'Personal workspace';
+  $('#modePill').style.color=sample?'var(--warn)':'var(--ok)';
+  $('#modeNote').innerHTML=sample?'<strong>Demo workspace:</strong> the starter items are sample records stored only in this browser.':'<strong>Local workspace:</strong> changes are stored only in this browser unless you export a backup.';
+  $('#startFresh').hidden=!sample;
+}
+function render(){renderCategories();renderMetrics();renderInventory();renderInsights();renderActivity();$('#report').textContent=reportText();renderMode()}
+
+function openItem(item=null,prefillCode=''){
+  const f=$('#itemForm');f.reset();f.elements.id.value=item?.id||'';f.elements.name.value=item?.name||'';f.elements.code.value=item?.code||prefillCode;f.elements.category.value=item?.category||'';f.elements.qty.value=item?.qty??0;f.elements.min.value=item?.min??5;f.elements.cost.value=item?.cost??0;f.elements.expiry.value=item?.expiry||'';$('#itemMessage').textContent='';$('#itemDialogTitle').textContent=item?'Edit inventory item':'Add inventory item';$('#itemDialog').showModal();setTimeout(()=>f.elements.name.focus(),50)
+}
+$('#addItem').onclick=()=>openItem();
+$('#itemForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.currentTarget,id=f.elements.id.value,code=f.elements.code.value.trim(),name=f.elements.name.value.trim(),category=f.elements.category.value.trim();
+  if(!name||!code||!category)return;
+  const duplicate=items.find(i=>i.code.toLowerCase()===code.toLowerCase()&&i.id!==id);
+  if(duplicate){$('#itemMessage').textContent='That barcode / SKU is already assigned to '+duplicate.name+'.';return}
+  const obj={id:id||uid(),name,code,category,qty:Math.max(0,Math.floor(Number(f.elements.qty.value)||0)),min:Math.max(0,Math.floor(Number(f.elements.min.value)||0)),cost:Math.max(0,Number(f.elements.cost.value)||0),expiry:f.elements.expiry.value||''};
+  const idx=items.findIndex(i=>i.id===id);if(idx>=0){items[idx]=obj;log('Updated '+obj.name+' ('+obj.code+')')}else{items.unshift(obj);log('Added '+obj.name+' ('+obj.code+')')}
+  if(mode==='sample')mode='personal';save();$('#itemDialog').close();toast(idx>=0?'Item updated':'Item added')
+});
+$('#inventoryGrid').addEventListener('click',e=>{
+  const card=e.target.closest('[data-id]');if(!card)return;const item=items.find(i=>i.id===card.dataset.id);if(!item)return;
+  if(e.target.closest('[data-delta]')){const d=Number(e.target.closest('[data-delta]').dataset.delta);item.qty=Math.max(0,Number(item.qty)+d);log((d>0?'Restocked ':'Reduced ')+item.name+' to '+item.qty+' units');if(mode==='sample')mode='personal';save();return}
+  if(e.target.closest('[data-edit]')){openItem(item);return}
+  if(e.target.closest('[data-delete]')&&confirm('Delete '+item.name+' from this local inventory?')){items=items.filter(i=>i.id!==item.id);log('Deleted '+item.name+' ('+item.code+')');if(mode==='sample')mode='personal';save();toast('Item deleted')}
+});
+['search','statusFilter','categoryFilter'].forEach(id=>$('#'+id).addEventListener(id==='search'?'input':'change',renderInventory));
+$('#currency').addEventListener('change',()=>{localStorage.setItem(CUR,$('#currency').value);render()});
+$('#startFresh').onclick=()=>{if(confirm('Clear the sample records and start an empty local workspace?')){items=[];activity=[];mode='personal';log('Started a fresh local inventory workspace');save();toast('Fresh workspace ready')}};
+$('#loadDemo').onclick=()=>{if(items.length&&!confirm('Replace the current local inventory with the sample dataset?'))return;items=clone(demoItems);activity=[];mode='sample';log('Loaded sample inventory data');save();toast('Demo data loaded')};
+$('#clearActivity').onclick=()=>{activity=[];save();toast('Activity cleared')};
+
+function csvCell(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replaceAll('"','""')+'"':s}
+$('#exportMenu').onclick=()=>{const rows=[['Name','Code','Category','Quantity','Minimum','Unit Cost','Expiry'],...items.map(i=>[i.name,i.code,i.category,i.qty,i.min,i.cost,i.expiry])];download('inventory-'+today()+'.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv;charset=utf-8');toast('CSV exported')};
+function download(name,text,type='text/plain;charset=utf-8'){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),500)}
+$('#copyReport').onclick=async()=>{try{await navigator.clipboard.writeText(reportText());toast('Report copied')}catch{toast('Copy is unavailable in this browser')}};
+$('#downloadReport').onclick=()=>download('inventory-summary-'+today()+'.txt',reportText());
+$('#backupJson').onclick=()=>download('inventory-backup-'+today()+'.json',JSON.stringify({version:1,exportedAt:new Date().toISOString(),currency:$('#currency').value,items,activity},null,2),'application/json');
+$('#restoreJson').addEventListener('change',async e=>{
+  const file=e.target.files?.[0];e.target.value='';if(!file)return;
+  try{const data=JSON.parse(await file.text());if(!Array.isArray(data.items))throw new Error('Invalid backup');items=data.items.map(i=>({id:String(i.id||uid()),name:String(i.name||'').slice(0,80),code:String(i.code||'').slice(0,80),category:String(i.category||'General').slice(0,50),qty:Math.max(0,Math.floor(Number(i.qty)||0)),min:Math.max(0,Math.floor(Number(i.min)||0)),cost:Math.max(0,Number(i.cost)||0),expiry:String(i.expiry||'')})).filter(i=>i.name&&i.code);activity=Array.isArray(data.activity)?data.activity.slice(0,60):[];mode='personal';if(data.currency)$('#currency').value=data.currency;localStorage.setItem(CUR,$('#currency').value);log('Restored inventory backup');save();toast('Backup restored')}catch{toast('That file is not a valid inventory backup')}
+});
+
+async function startScanner(){
+  $('#scannerDialog').showModal();$('#manualCode').value='';$('#scannerMessage').textContent='Checking camera and barcode support…';lastScanned='';
+  if(!('BarcodeDetector' in window)||!navigator.mediaDevices?.getUserMedia){$('#scannerMessage').textContent='Automatic camera scanning is not supported by this browser. Use the manual code field below.';return}
+  try{
+    const formats=await BarcodeDetector.getSupportedFormats();const preferred=['qr_code','code_128','code_39','ean_13','ean_8','upc_a','upc_e'];const usable=preferred.filter(x=>formats.includes(x));const detector=new BarcodeDetector(usable.length?{formats:usable}:undefined);
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});$('#scanVideo').srcObject=stream;await $('#scanVideo').play();$('#scannerMessage').textContent='Point the camera at a barcode or QR code.';
+    const detect=async()=>{if(!stream)return;try{const results=await detector.detect($('#scanVideo'));if(results.length&&results[0].rawValue&&results[0].rawValue!==lastScanned){lastScanned=results[0].rawValue;useCode(lastScanned);return}}catch{}scanTimer=setTimeout(detect,260)};detect();
+  }catch(err){$('#scannerMessage').textContent='Camera scanning could not start. You can still type or paste a code below.'}
+}
+function stopScanner(){if(scanTimer)clearTimeout(scanTimer);scanTimer=null;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$('#scanVideo').srcObject=null;if($('#scannerDialog').open)$('#scannerDialog').close()}
+function useCode(raw){
+  const code=String(raw||'').trim();if(!code)return;const item=items.find(i=>i.code.toLowerCase()===code.toLowerCase());stopScanner();
+  if(item){$('#search').value=item.code;$('#statusFilter').value='all';$('#categoryFilter').value='all';renderInventory();setTimeout(()=>{const el=document.querySelector('[data-id="'+CSS.escape(item.id)+'"]');el?.scrollIntoView({behavior:'smooth',block:'center'});el?.classList.add('flash');setTimeout(()=>el?.classList.remove('flash'),1500)},80);toast('Existing item found: '+item.name)}
+  else{openItem(null,code);toast('New code detected — add item details')}
+}
+$('#scanItem').onclick=startScanner;$('#closeScanner').onclick=stopScanner;$('#scannerDialog').addEventListener('cancel',e=>{e.preventDefault();stopScanner()});$('#useManualCode').onclick=()=>useCode($('#manualCode').value);$('#manualCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();useCode(e.currentTarget.value)}});
+
+load();
+</script>
+</body>
+</html>
