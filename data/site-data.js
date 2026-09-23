@@ -181,7 +181,8 @@ window.SUHAIL_LABS_DATA = {
         "Submitted-order item correction and full order cancellation",
         "Kitchen workflow from incoming to completed with cancelled-order tracking",
         "Completed sales total excludes cancelled orders",
-        "Light and Dark themes with Light as the default"
+        "Light and Dark themes with Light as the default",
+        "Keyboard-friendly controls and clearer form labels"
       ],
       "learning": [
         "Understand how a customer interface connects to an operations dashboard",
@@ -202,8 +203,8 @@ window.SUHAIL_LABS_DATA = {
         "3D",
         "TOOLS"
       ],
-      "summary": "A browser-based 3D-style network topology lab with live traffic, device inspection, monitoring states and incident simulation.",
-      "description": "Project 002 turns a simplified network topology into an interactive visual lab. Visitors can orbit the topology, zoom, inspect device roles, follow animated traffic paths and trigger a simulated latency incident to see how monitoring state changes across the interface.",
+      "summary": "A browser-based 3D-style network topology lab with simulated traffic, accessible device inspection and incident-state demonstrations.",
+      "description": "Project 002 turns a simplified network topology into an interactive visual lab. Visitors can orbit and zoom the topology, inspect device roles by pointer or keyboard-friendly controls, follow animated simulated traffic paths and trigger a simulated latency incident. All changing traffic, packet and latency values are explicitly presented as demonstration data rather than real network readings.",
       "status": "Published",
       "featured": true,
       "live": "projects/002-network-lab/index.html",
@@ -218,7 +219,9 @@ window.SUHAIL_LABS_DATA = {
         "Healthy, warning and down status model",
         "Simulated alert and recovery workflow",
         "Responsive interface with zero paid dependencies",
-        "Light and Dark themes with Light as the default"
+        "Light and Dark themes with Light as the default",
+        "Simulation metrics clearly labeled as generated demo data",
+        "Keyboard-accessible topology controls and node selector"
       ],
       "learning": [
         "Understand the role of common network components in a simplified topology",
@@ -255,7 +258,8 @@ window.SUHAIL_LABS_DATA = {
         "Interactive anatomy and cross-linked medical terms",
         "Local study assistant tools with zero-cost mode",
         "Optional Supabase authentication and sync architecture",
-        "Separate owner/admin diagnostics and release verification workflow"
+        "Separate owner/admin diagnostics and release verification workflow",
+        "Light and Dark themes with Light as the default"
       ],
       "learning": [
         "Study how a larger static/PWA application can be organized into phased releases",
@@ -278,7 +282,7 @@ window.SUHAIL_LABS_DATA = {
         "NETWORK"
       ],
       "summary": "A browser-based connectivity diagnostic that measures practical download, upload, latency and jitter and turns them into a clear summary report.",
-      "description": "Project 004 is a simple network-quality diagnostic designed for phones, tablets and computers. It measures practical download speed, upload speed, latency and jitter against an external measurement service, combines the result with browser-visible device and connection information, saves recent tests locally and creates a downloadable summary report. It clearly separates what a browser can measure from private router details that browsers cannot access.",
+      "description": "Project 004 is a browser-based network-quality diagnostic for phones, tablets and computers. It measures download speed, upload speed, latency and jitter against an external measurement service, uses medians to reduce one-off spikes, combines the result with clearly labeled browser-inferred device and connection hints, saves recent tests locally and creates a downloadable summary report.",
       "status": "Published",
       "featured": true,
       "live": "projects/004-network-speed/index.html",
@@ -295,7 +299,9 @@ window.SUHAIL_LABS_DATA = {
         "Copyable and downloadable text report",
         "Light and Dark themes with Light as the default",
         "Missing measurements are reported as unavailable rather than replaced with invented values",
-        "No attempt to expose Wi-Fi passwords, SSIDs or private router settings"
+        "No attempt to expose Wi-Fi passwords, SSIDs or private router settings",
+        "Median-based throughput results reduce one-off measurement spikes",
+        "Timed requests prevent a blocked measurement from hanging indefinitely"
       ],
       "learning": [
         "Understand the difference between throughput, latency and jitter",
@@ -304,7 +310,7 @@ window.SUHAIL_LABS_DATA = {
         "Study a responsive network diagnostic workflow with local history and reporting"
       ],
       "videos": [],
-      "note": "Browser-based diagnostic only. Reported speed, latency and jitter values come from completed browser measurements. Browser-provided connection hints are labeled as estimates; unavailable measurements stay unavailable. Results can still be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
+      "note": "Browser-based diagnostic only. Speed, latency and jitter come from completed measurements; download/upload results use the median of completed samples. Device, OS, browser and connection hints are explicitly labeled as browser inferences or estimates. Unavailable measurements stay unavailable. Results can still be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
     }
   ]
 };
