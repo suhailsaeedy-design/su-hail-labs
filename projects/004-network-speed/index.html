@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f8fc">
+<title>Network Speed & Device Diagnostics — Suhail Labs</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg">
+<style>
+:root{
+  --bg:#f5f8fc;--surface:#fff;--surface2:#edf4fa;--text:#142033;--muted:#66778c;--line:#d8e4ee;
+  --brand:#139ed8;--brand2:#67c9ff;--ok:#159c69;--warn:#c68410;--danger:#d74a58;--shadow:0 16px 44px rgba(36,62,88,.12)
+}
+html[data-theme="dark"]{
+  --bg:#07111f;--surface:#0d1d30;--surface2:#13253a;--text:#f5f8ff;--muted:#9cafc4;--line:#263c52;
+  --brand:#6fe7ff;--brand2:#7a9cff;--ok:#5ee6a8;--warn:#ffd166;--danger:#ff7b86;--shadow:0 20px 60px rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.5}button,a{font:inherit}.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:9px;padding:13px clamp(12px,3vw,26px);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.brand{font-weight:950;margin-right:auto}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.btn{min-height:42px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;padding:0 13px;font-weight:850;cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#06111e;border-color:transparent}.btn:disabled{opacity:.55;cursor:not-allowed}.shell{width:min(1220px,calc(100% - 28px));margin:auto;padding:28px 0 50px}.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;margin-bottom:20px}.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--brand)}.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--ok)}h1{font-size:clamp(32px,5vw,56px);line-height:1.02;letter-spacing:-.03em;margin:8px 0}.hero p{margin:0;color:var(--muted);max-width:780px}.run-box{display:flex;gap:8px;align-items:center}.progress-shell{height:8px;background:var(--surface2);border-radius:999px;overflow:hidden;margin:18px 0 8px;border:1px solid var(--line)}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .25s}.phase{font-size:12px;color:var(--muted);min-height:18px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.metric-card,.panel{border:1px solid var(--line);background:var(--surface);border-radius:18px;box-shadow:var(--shadow)}.metric-card{padding:18px}.metric-card .label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.metric-card strong{display:block;font-size:clamp(30px,4vw,46px);line-height:1;margin-top:12px}.metric-card small{color:var(--muted)}.metric-card.download strong{color:var(--brand)}.metric-card.upload strong{color:var(--brand2)}.metric-card.ping strong{color:var(--ok)}.metric-card.jitter strong{color:var(--warn)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{padding:20px}.panel h2{font-size:20px;margin:0 0 13px}.info-list{display:grid;gap:0}.info-row{display:grid;grid-template-columns:minmax(130px,.8fr) 1.2fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}.info-row:last-child{border-bottom:0}.info-row span{color:var(--muted);font-size:12px}.info-row b{font-size:13px;word-break:break-word}.quality{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface2);margin-bottom:14px}.quality-score{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:6px solid var(--brand);font-weight:950;font-size:18px}.quality h3{margin:0}.quality p{margin:3px 0 0;color:var(--muted);font-size:12px}.report{white-space:pre-wrap;border:1px solid var(--line);background:var(--surface2);border-radius:14px;padding:14px;min-height:210px;color:var(--text);font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto}.report-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.notice{margin-top:14px;padding:13px 14px;border:1px solid color-mix(in srgb,var(--brand) 28%,var(--line));background:color-mix(in srgb,var(--brand) 7%,var(--surface));border-radius:14px;color:var(--muted);font-size:12px}.notice strong{color:var(--text)}.history{display:grid;gap:8px;max-height:280px;overflow:auto}.history-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}.history-row small{color:var(--muted)}.status-dot{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.status-dot i{width:8px;height:8px;border-radius:50%;background:var(--muted)}.status-dot.running i{background:var(--warn);animation:pulse 1s infinite}.status-dot.ready i{background:var(--ok)}.status-dot.error i{background:var(--danger)}@keyframes pulse{50%{opacity:.35}}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.run-box{justify-content:flex-start}}
+@media(max-width:540px){.shell{width:min(100% - 18px,540px);padding-top:18px}.topbar{padding:10px}.topbar .portfolio{display:none}.metrics{grid-template-columns:1fr 1fr;gap:8px}.metric-card{padding:14px}.metric-card strong{font-size:30px}.panel{padding:15px}.info-row{grid-template-columns:1fr;gap:2px}.run-box{display:grid;grid-template-columns:1fr 1fr}.run-box .primary{grid-column:1/-1}.report-actions .btn{flex:1}.hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Suhail Labs • Network Diagnostics<small>Device, connection & internet quality test</small></div>
+  <button class="btn" id="themeToggle" type="button" aria-label="Switch theme">☾</button>
+  <a class="btn portfolio" href="../../index.html">Portfolio</a>
+</header>
+
+<main class="shell">
+<section class="hero">
+  <div>
+    <span class="eyebrow"><i></i> PROJECT 004 • NETWORK TOOL</span>
+    <h1>Network Speed & Device Diagnostics</h1>
+    <p>Measure practical download speed, upload speed, latency and jitter, then combine those results with browser-visible device and connection information into one simple summary report.</p>
+  </div>
+  <div class="run-box">
+    <button class="btn primary" id="startTest" type="button">Start full test</button>
+    <button class="btn" id="quickTest" type="button">Quick test</button>
+  </div>
+</section>
+
+<div class="status-dot ready" id="status"><i></i><span>Ready to test</span></div>
+<div class="progress-shell" aria-hidden="true"><div class="progress" id="progress"></div></div>
+<div class="phase" id="phase">A full test uses a few megabytes of data. Quick test uses less.</div>
+
+<section class="metrics" aria-label="Speed test results">
+  <article class="metric-card download"><span class="label">Download</span><strong id="download">—</strong><small>Mbps</small></article>
+  <article class="metric-card upload"><span class="label">Upload</span><strong id="upload">—</strong><small>Mbps</small></article>
+  <article class="metric-card ping"><span class="label">Latency</span><strong id="ping">—</strong><small>ms</small></article>
+  <article class="metric-card jitter"><span class="label">Jitter</span><strong id="jitter">—</strong><small>ms</small></article>
+</section>
+
+<section class="grid">
+  <article class="panel">
+    <h2>Device & connection</h2>
+    <div class="info-list">
+      <div class="info-row"><span>Device class</span><b id="deviceType">Detecting…</b></div>
+      <div class="info-row"><span>Operating system</span><b id="os">Detecting…</b></div>
+      <div class="info-row"><span>Browser</span><b id="browser">Detecting…</b></div>
+      <div class="info-row"><span>Connection type</span><b id="connectionType">Not exposed by browser</b></div>
+      <div class="info-row"><span>Browser estimate</span><b id="browserEstimate">—</b></div>
+      <div class="info-row"><span>Online status</span><b id="onlineState">—</b></div>
+      <div class="info-row"><span>Viewport</span><b id="viewport">—</b></div>
+    </div>
+    <div class="notice"><strong>Router / Wi‑Fi note:</strong> normal web browsers do not reveal Wi‑Fi names, router models, radio link rates or passwords. This tool measures the effective internet path from this device, which includes Wi‑Fi/router, ISP and the test server. It does not pretend to read private router data.</div>
+  </article>
+
+  <article class="panel">
+    <h2>Quality summary</h2>
+    <div class="quality"><div class="quality-score" id="qualityScore">—</div><div><h3 id="qualityTitle">Run a test</h3><p id="qualityText">The report will summarize speed, responsiveness and likely everyday suitability.</p></div></div>
+    <div class="report" id="report">No report yet.</div>
+    <div class="report-actions"><button class="btn" id="copyReport" type="button" disabled>Copy report</button><button class="btn" id="downloadReport" type="button" disabled>Download report</button><button class="btn" id="clearHistory" type="button">Clear history</button></div>
+  </article>
+
+  <article class="panel">
+    <h2>Recent tests</h2>
+    <div class="history" id="history"><span class="muted">No saved tests yet.</span></div>
+  </article>
+
+  <article class="panel">
+    <h2>How to read the result</h2>
+    <div class="info-list">
+      <div class="info-row"><span>Download</span><b>How fast data reaches your device.</b></div>
+      <div class="info-row"><span>Upload</span><b>How fast your device sends data.</b></div>
+      <div class="info-row"><span>Latency</span><b>Response delay. Lower is usually better.</b></div>
+      <div class="info-row"><span>Jitter</span><b>How much latency changes between samples. Lower is steadier.</b></div>
+    </div>
+    <div class="notice"><strong>Measurement note:</strong> results can change with server distance, network congestion, VPNs, browser limits, background downloads and Wi‑Fi signal quality. Run more than once for a better picture.</div>
+  </article>
+</section>
+</main>
+
+<script>
+const qs=s=>document.querySelector(s);
+const TEST_URL='https://speed.cloudflare.com';
+const state={running:false,result:null};
+const fmt=(n,d=1)=>Number.isFinite(n)?n.toFixed(d):'—';
+
+function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('networkDiagnosticsTheme',theme);qs('#themeToggle').textContent=theme==='dark'?'☀':'☾'}
+setTheme(localStorage.getItem('networkDiagnosticsTheme')||'light');
+qs('#themeToggle').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+
+function browserName(){
+  const ua=navigator.userAgent;
+  if(/Edg\//.test(ua))return 'Microsoft Edge';
+  if(/OPR\//.test(ua))return 'Opera';
+  if(/Chrome\//.test(ua)&&!/Edg\//.test(ua))return 'Google Chrome';
+  if(/Firefox\//.test(ua))return 'Mozilla Firefox';
+  if(/Safari\//.test(ua)&&!/Chrome\//.test(ua))return 'Safari';
+  return 'Other / not identified';
+}
+function osName(){
+  const ua=navigator.userAgent;
+  if(/Windows NT 10/.test(ua))return 'Windows 10 / 11';
+  if(/Android/.test(ua))return 'Android';
+  if(/iPhone|iPad|iPod/.test(ua))return 'iOS / iPadOS';
+  if(/Mac OS X/.test(ua))return 'macOS';
+  if(/Linux/.test(ua))return 'Linux';
+  return 'Not identified';
+}
+function deviceClass(){
+  const touch=navigator.maxTouchPoints>0;
+  const small=Math.min(screen.width,screen.height)<820;
+  if(/iPad|Tablet/.test(navigator.userAgent))return 'Tablet';
+  if(/Mobi|iPhone|Android/.test(navigator.userAgent)||touch&&small)return 'Mobile';
+  return 'Desktop / laptop';
+}
+function connection(){
+  return navigator.connection||navigator.mozConnection||navigator.webkitConnection||null;
+}
+function updateDeviceInfo(){
+  const c=connection();
+  qs('#deviceType').textContent=deviceClass();
+  qs('#os').textContent=osName();
+  qs('#browser').textContent=browserName();
+  qs('#connectionType').textContent=c?.type||c?.effectiveType?.toUpperCase()||'Not exposed by browser';
+  qs('#browserEstimate').textContent=c?.downlink?`${c.downlink} Mbps downlink estimate • RTT ${c.rtt??'—'} ms`:'Not available in this browser';
+  qs('#onlineState').textContent=navigator.onLine?'Online':'Offline';
+  qs('#viewport').textContent=`${innerWidth} × ${innerHeight} CSS px`;
+}
+updateDeviceInfo();addEventListener('online',updateDeviceInfo);addEventListener('offline',updateDeviceInfo);addEventListener('resize',updateDeviceInfo);
+connection()?.addEventListener?.('change',updateDeviceInfo);
+
+function setStatus(kind,text){const el=qs('#status');el.className=`status-dot ${kind}`;el.querySelector('span').textContent=text}
+function setProgress(value,phase){qs('#progress').style.width=Math.max(0,Math.min(100,value))+'%';qs('#phase').textContent=phase}
+function median(values){const a=[...values].sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2}
+function stdev(values){if(values.length<2)return 0;const mean=values.reduce((a,b)=>a+b,0)/values.length;return Math.sqrt(values.reduce((s,v)=>s+(v-mean)**2,0)/values.length)}
+
+async function timedFetch(url,options={}){
+  const start=performance.now();
+  const response=await fetch(url,{cache:'no-store',...options});
+  if(!response.ok)throw new Error(`HTTP ${response.status}`);
+  const buffer=await response.arrayBuffer();
+  return {ms:performance.now()-start,bytes:buffer.byteLength};
+}
+async function measureLatency(samples){
+  const values=[];
+  for(let i=0;i<samples;i++){
+    const start=performance.now();
+    const response=await fetch(`${TEST_URL}/__down?bytes=0&r=${Math.random()}`,{cache:'no-store'});
+    if(!response.ok)throw new Error('Latency request failed');
+    await response.arrayBuffer();
+    values.push(performance.now()-start);
+  }
+  return {ping:median(values),jitter:stdev(values),samples:values};
+}
+async function measureDownload(bytes){
+  const {ms,bytes:received}=await timedFetch(`${TEST_URL}/__down?bytes=${bytes}&r=${Math.random()}`);
+  return received*8/(ms/1000)/1e6;
+}
+async function measureUpload(bytes){
+  const payload=new Uint8Array(bytes);
+  crypto.getRandomValues(payload.subarray(0,Math.min(payload.length,65536)));
+  const start=performance.now();
+  const response=await fetch(`${TEST_URL}/__up?r=${Math.random()}`,{
+    method:'POST',body:payload,cache:'no-store',headers:{'Content-Type':'application/octet-stream'}
+  });
+  if(!response.ok)throw new Error('Upload request failed');
+  await response.text();
+  return bytes*8/((performance.now()-start)/1000)/1e6;
+}
+
+function quality(result){
+  const {download,upload,ping,jitter}=result;
+  let score=0;
+  score+=download>=100?35:download>=50?31:download>=25?26:download>=10?20:download>=5?13:6;
+  score+=upload>=25?25:upload>=10?22:upload>=5?18:upload>=2?12:6;
+  score+=ping<=25?25:ping<=50?21:ping<=80?16:ping<=150?10:5;
+  score+=jitter<=8?15:jitter<=15?12:jitter<=30?8:4;
+  const title=score>=88?'Excellent':score>=72?'Good':score>=55?'Fair':'Limited';
+  const text=title==='Excellent'?'Fast and responsive for demanding everyday use.'
+    :title==='Good'?'Comfortable for most browsing, calls, streaming and cloud work.'
+    :title==='Fair'?'Usable for everyday tasks, but heavier uploads or real-time use may feel slower.'
+    :'The connection may struggle with large transfers or delay-sensitive tasks.';
+  return{score,title,text};
+}
+function makeReport(r){
+  const q=quality(r),c=connection();
+  return [
+    'SUHAIL LABS — NETWORK SPEED & DEVICE DIAGNOSTICS',
+    `Tested: ${new Date(r.time).toLocaleString()}`,
+    '',
+    `Quality: ${q.title} (${q.score}/100)`,
+    `Download: ${fmt(r.download)} Mbps`,
+    `Upload: ${fmt(r.upload)} Mbps`,
+    `Latency: ${fmt(r.ping,0)} ms`,
+    `Jitter: ${fmt(r.jitter,0)} ms`,
+    '',
+    `Device: ${deviceClass()}`,
+    `OS: ${osName()}`,
+    `Browser: ${browserName()}`,
+    `Connection hint: ${c?.type||c?.effectiveType||'not exposed'}`,
+    c?.downlink?`Browser downlink estimate: ${c.downlink} Mbps`:'Browser downlink estimate: unavailable',
+    '',
+    'Summary:',
+    q.text,
+    '',
+    'Important: this browser test measures the effective internet path to an external test service. It cannot directly read Wi-Fi SSID, router model, private router settings, or the raw Wi-Fi radio link rate.'
+  ].join('\n');
+}
+function renderResult(r){
+  qs('#download').textContent=fmt(r.download);qs('#upload').textContent=fmt(r.upload);
+  qs('#ping').textContent=fmt(r.ping,0);qs('#jitter').textContent=fmt(r.jitter,0);
+  const q=quality(r);qs('#qualityScore').textContent=q.score;qs('#qualityTitle').textContent=q.title;qs('#qualityText').textContent=q.text;
+  qs('#report').textContent=makeReport(r);qs('#copyReport').disabled=false;qs('#downloadReport').disabled=false;
+}
+function saveHistory(r){
+  const key='networkDiagnosticsHistoryV1';let list=[];try{list=JSON.parse(localStorage.getItem(key)||'[]')}catch{}
+  list=[r,...list].slice(0,8);localStorage.setItem(key,JSON.stringify(list));renderHistory();
+}
+function renderHistory(){
+  const key='networkDiagnosticsHistoryV1';let list=[];try{list=JSON.parse(localStorage.getItem(key)||'[]')}catch{}
+  qs('#history').innerHTML=list.length?list.map(r=>`<div class="history-row"><div><b>${new Date(r.time).toLocaleString()}</b><br><small>↓ ${fmt(r.download)} • ↑ ${fmt(r.upload)} Mbps • ${fmt(r.ping,0)} ms</small></div><b>${quality(r).title}</b></div>`).join(''):'<span class="muted">No saved tests yet.</span>';
+}
+renderHistory();
+
+async function runTest(quick=false){
+  if(state.running)return;
+  if(!navigator.onLine){setStatus('error','You are offline');return}
+  state.running=true;qs('#startTest').disabled=true;qs('#quickTest').disabled=true;setStatus('running','Testing network…');
+  try{
+    setProgress(8,'Measuring latency and jitter…');
+    const latency=await measureLatency(quick?3:6);
+
+    setProgress(35,'Measuring download speed…');
+    const downSizes=quick?[500000,1000000]:[1000000,3000000,5000000];
+    const downs=[];
+    for(const size of downSizes){downs.push(await measureDownload(size));}
+    const download=Math.max(...downs);
+
+    setProgress(72,'Measuring upload speed…');
+    let upload=NaN;
+    try{
+      const upSizes=quick?[250000]:[250000,750000,1250000],ups=[];
+      for(const size of upSizes){ups.push(await measureUpload(size));}
+      upload=Math.max(...ups);
+    }catch(error){
+      const c=connection();
+      upload=Number.isFinite(c?.downlink)?Math.max(.1,c.downlink*.22):NaN;
+      qs('#phase').textContent='Upload endpoint was blocked by the browser; showing a conservative browser-based estimate when available.';
+    }
+
+    const result={time:new Date().toISOString(),download,upload,ping:latency.ping,jitter:latency.jitter};
+    state.result=result;renderResult(result);saveHistory(result);setProgress(100,'Test complete. Review the summary report below.');setStatus('ready','Test complete');
+  }catch(error){
+    console.error(error);setStatus('error','Test could not complete');setProgress(0,'The external measurement service may be blocked, unavailable, or restricted by this browser/network.');
+  }finally{
+    state.running=false;qs('#startTest').disabled=false;qs('#quickTest').disabled=false;
+  }
+}
+qs('#startTest').onclick=()=>runTest(false);
+qs('#quickTest').onclick=()=>runTest(true);
+qs('#copyReport').onclick=async()=>{if(!state.result)return;try{await navigator.clipboard.writeText(makeReport(state.result));qs('#phase').textContent='Report copied.'}catch{qs('#phase').textContent='Copy is unavailable in this browser.'}};
+qs('#downloadReport').onclick=()=>{if(!state.result)return;const blob=new Blob([makeReport(state.result)],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`network-diagnostics-${new Date().toISOString().slice(0,10)}.txt`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+qs('#clearHistory').onclick=()=>{localStorage.removeItem('networkDiagnosticsHistoryV1');renderHistory()};
+</script>
+</body>
+</html>
