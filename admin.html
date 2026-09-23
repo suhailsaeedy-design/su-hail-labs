@@ -4,17 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <meta http-equiv="refresh" content="0; url=https://suhailsaeedy-design.github.io/suhail-medical-dictionary/admin-login.html?panel=suhail-labs">
-  <title>Secure Owner Access — Suhail Labs</title>
-</head>
-<body>
-  <main>
-    <h1>Suhail Labs Owner Access</h1>
-    <p>The full Admin Panel is stored in the private owner workspace and requires a verified owner account.</p>
-    <p><a href="https://suhailsaeedy-design.github.io/suhail-medical-dictionary/admin-login.html?panel=suhail-labs">Open secure owner access</a></p>
-  </main>
+  <title>Suhail Labs — Private Admin</title>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/css/admin.css?v=20260923-labsadmin2">
   <script>
-    location.replace('https://suhailsaeedy-design.github.io/suhail-medical-dictionary/admin-login.html?panel=suhail-labs');
+    window.SMD21_AUTH_CONFIG_URL='/suhail-medical-dictionary/data/auth-config.json';
+    window.SMD21_ADMIN_CONFIG_URL='/suhail-medical-dictionary/data/admin-config.json';
+    window.SMD21_AUTH_CALLBACK_URL='/suhail-medical-dictionary/auth-callback.html';
   </script>
+  <script defer src="/suhail-medical-dictionary/assets/js/auth.js?v=20260923-labsadmin2"></script>
+  <script defer src="/suhail-medical-dictionary/assets/js/cloud-auth.js?v=20260923-labsadmin2"></script>
+  <script defer src="/suhail-medical-dictionary/assets/js/admin-auth.js?v=20260923-labsadmin2"></script>
+  <script defer src="data/site-data.js?v=20260923-labsadmin2"></script>
+  <script defer src="assets/js/admin.js?v=20260923-labsadmin2"></script>
+</head>
+<body class="secure-admin-loader">
+  <main id="secureAdminMount" class="secure-admin-loader-shell">
+    <section class="secure-admin-loader-card">
+      <div class="secure-kicker">PRIVATE ADMIN</div>
+      <h1>Loading Suhail Labs Creator Studio…</h1>
+      <p class="admin-status" id="secureAdminStatus">Checking the verified owner session.</p>
+      <div class="secure-admin-actions"><a href="admin-login.html">Owner sign-in</a><a href="index.html">Public site</a></div>
+    </section>
+  </main>
 </body>
 </html>
