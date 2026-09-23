@@ -65,6 +65,7 @@ for page in [
     "projects/002-network-lab/index.html",
     "projects/003-medical-dictionary/index.html",
     "projects/004-network-speed/index.html",
+    "projects/005-smart-inventory/index.html",
 ]:
     check_html(page,project=True)
 
@@ -97,6 +98,12 @@ for banned in ["downlink*.22","Math.max(...downs)","Math.max(...ups)"]:
     if banned in p4: fail(f"Project 004 contains disallowed measurement shortcut: {banned}")
 for marker in ["const download=median(downs)","upload=median(ups)","fetchWithTimeout","No upload value was invented or estimated"]:
     if marker not in p4: fail(f"Project 004 missing measurement-integrity marker: {marker}")
+
+p5=read("projects/005-smart-inventory/index.html")
+for marker in ["BarcodeDetector","getUserMedia","localStorage","reportText()","restoreJson","Light"]:
+    if marker not in p5: fail(f"Project 005 missing inventory feature marker: {marker}")
+if "sample records" not in p5 or "stored only in this browser" not in p5:
+    fail("Project 005 must clearly label sample/local inventory data")
 
 for path in ["assets/js/site.js","assets/js/project.js","assets/js/admin.js"]:
     r=subprocess.run(["node","--check",str(ROOT/path)],capture_output=True,text=True)
