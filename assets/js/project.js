@@ -8,12 +8,11 @@
     try { data = JSON.parse(localStorage.getItem('suhailLabsDraftDataV2')) || bundled; } catch { data = bundled; }
   } else {
     try {
-      const response = await fetch('https://qdfylefkkkyjwtqqiuye.supabase.co/rest/v1/suhail_labs_public_config?id=eq.site&select=data,revision,updated_at', {
-        headers: { apikey: 'sb_publishable_CQwb8FIM4lLL27T8xZGqCQ_sGT4phu7' },
+      const response = await fetch('https://qdfylefkkkyjwtqqiuye.supabase.co/functions/v1/suhail-labs-public', {
         cache: 'no-store'
       });
-      const rows = await response.json().catch(() => []);
-      if (response.ok && Array.isArray(rows) && rows[0]?.data) data = rows[0].data;
+      const payload = await response.json().catch(() => null);
+      if (response.ok && payload?.data) data = payload.data;
     } catch (error) {
       console.warn('Suhail Labs live project data unavailable; using bundled fallback.', error);
     }
