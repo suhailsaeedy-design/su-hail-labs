@@ -1,6 +1,6 @@
 window.SUHAIL_LABS_DATA = {
   "profile": {
-    "name": "Suhail Saeedi",
+    "name": "Suhail Saeedy",
     "title": "Websites • Software • Databases • AI Integration • Business Systems • Interactive 3D",
     "bio": "I build focused digital products: web applications, software systems, database-driven tools, AI-ready assistants and interactive 3D experiences. Suhail Labs is my public project studio where people can explore working demos, understand the implementation and download selected source projects.",
     "availability": "Available for remote software and web projects",
@@ -125,6 +125,11 @@ window.SUHAIL_LABS_DATA = {
       "icon": "ADM",
       "title": "Admin & Analytics",
       "text": "Clear administrative workspaces for managing content, users, projects, settings and operational data."
+    },
+    {
+      "icon": "NET",
+      "title": "Network & Connectivity Tools",
+      "text": "Simple browser-based diagnostics and visual tools for connection quality, performance and network concepts."
     }
   ],
   "process": [
@@ -156,9 +161,12 @@ window.SUHAIL_LABS_DATA = {
       "title": "Smart Ordering & Kitchen Operations Dashboard",
       "category": "SOFTWARE",
       "categoryLabel": "Software / Business Systems",
-      "focusAreas": ["SOFTWARE","BUSINESS"],
-      "summary": "A responsive ordering experience connected to a live operations board that demonstrates a complete front-end business workflow.",
-      "description": "Project 001 demonstrates how a customer-facing ordering interface can connect to an operational dashboard in one browser application. Users can search items, build an order and send a simulated checkout into a live workflow where staff move orders through incoming, preparing, ready and completed states.",
+      "focusAreas": [
+        "SOFTWARE",
+        "BUSINESS"
+      ],
+      "summary": "A responsive customer ordering experience with an always-accessible order list, item removal, order cancellation and a live kitchen operations workflow.",
+      "description": "Project 001 demonstrates a complete browser-based ordering workflow. Products and the current order stay together, customers can change quantities or remove individual items without hunting through the page, and staff can move submitted orders through incoming, preparing, ready and completed states. Active orders can also be corrected or cancelled before completion.",
       "status": "Published",
       "featured": true,
       "live": "projects/001-smart-ordering/index.html",
@@ -167,12 +175,13 @@ window.SUHAIL_LABS_DATA = {
       "source": "",
       "detailsUrl": "project.html?id=001",
       "highlights": [
-        "Searchable category-based ordering interface",
-        "Interactive cart and quantity controls",
-        "Browser-based demo checkout",
-        "Operations workflow from incoming to completed",
-        "Live order metrics and completed sales total",
-        "Single-file implementation with no paid dependency"
+        "Product browser and current order remain visible together on desktop",
+        "Mobile order dock keeps the current order one tap away without page scrolling",
+        "Quantity controls, single-item removal and clear-order actions",
+        "Submitted-order item correction and full order cancellation",
+        "Kitchen workflow from incoming to completed with cancelled-order tracking",
+        "Completed sales total excludes cancelled orders",
+        "Light and Dark themes with Light as the default"
       ],
       "learning": [
         "Understand how a customer interface connects to an operations dashboard",
@@ -189,7 +198,10 @@ window.SUHAIL_LABS_DATA = {
       "title": "Interactive 3D Network Operations Lab",
       "category": "3D",
       "categoryLabel": "Interactive 3D / Digital Systems",
-      "focusAreas": ["3D","TOOLS"],
+      "focusAreas": [
+        "3D",
+        "TOOLS"
+      ],
       "summary": "A browser-based 3D-style network topology lab with live traffic, device inspection, monitoring states and incident simulation.",
       "description": "Project 002 turns a simplified network topology into an interactive visual lab. Visitors can orbit the topology, zoom, inspect device roles, follow animated traffic paths and trigger a simulated latency incident to see how monitoring state changes across the interface.",
       "status": "Published",
@@ -205,7 +217,8 @@ window.SUHAIL_LABS_DATA = {
         "Interactive device inspector",
         "Healthy, warning and down status model",
         "Simulated alert and recovery workflow",
-        "Responsive interface with zero paid dependencies"
+        "Responsive interface with zero paid dependencies",
+        "Light and Dark themes with Light as the default"
       ],
       "learning": [
         "Understand the role of common network components in a simplified topology",
@@ -222,7 +235,11 @@ window.SUHAIL_LABS_DATA = {
       "title": "Suhail Medical Dictionary",
       "category": "WEB",
       "categoryLabel": "Web Platform / AI Study / Knowledge System",
-      "focusAreas": ["WEB","AI","DATABASE"],
+      "focusAreas": [
+        "WEB",
+        "AI",
+        "DATABASE"
+      ],
       "summary": "A multilingual medical knowledge platform that combines dictionary search, anatomy learning, offline study, AI-assisted learning and user-focused study tools in one clear experience.",
       "description": "Suhail Medical Dictionary is a full medical learning platform designed for fast lookup and structured study. It brings together a multilingual dictionary, clinical reference content, interactive anatomy, offline access, study assistance, selected-term workflows, accessibility controls and a separate owner maintenance area. The public portfolio presents the product experience without exposing private account or repository details.",
       "status": "Portfolio showcase",
@@ -248,6 +265,45 @@ window.SUHAIL_LABS_DATA = {
       ],
       "videos": [],
       "note": "Educational medical reference software. It is not a substitute for professional diagnosis, prescribing or treatment decisions."
+    },
+    {
+      "id": "004",
+      "slug": "004-network-speed",
+      "title": "Network Speed & Device Diagnostics",
+      "category": "TOOLS",
+      "categoryLabel": "Network Tools / Connectivity Diagnostics",
+      "focusAreas": [
+        "TOOLS",
+        "WEB",
+        "NETWORK"
+      ],
+      "summary": "A browser-based connectivity diagnostic that measures practical download, upload, latency and jitter and turns them into a clear summary report.",
+      "description": "Project 004 is a simple network-quality diagnostic designed for phones, tablets and computers. It measures practical download speed, upload speed, latency and jitter against an external measurement service, combines the result with browser-visible device and connection information, saves recent tests locally and creates a downloadable summary report. It clearly separates what a browser can measure from private router details that browsers cannot access.",
+      "status": "Published",
+      "featured": true,
+      "live": "projects/004-network-speed/index.html",
+      "liveLabel": "Open speed test",
+      "download": "downloads/004-network-speed.zip",
+      "source": "",
+      "detailsUrl": "project.html?id=004",
+      "highlights": [
+        "Download and upload throughput measurement",
+        "Latency and jitter sampling",
+        "Device, operating system, browser and connection hints",
+        "Clear quality score and plain-language result summary",
+        "Local recent-test history",
+        "Copyable and downloadable text report",
+        "Light and Dark themes with Light as the default",
+        "No attempt to expose Wi-Fi passwords, SSIDs or private router settings"
+      ],
+      "learning": [
+        "Understand the difference between throughput, latency and jitter",
+        "See how browser-visible connection information differs across devices",
+        "Learn why a web page cannot directly read private router or Wi-Fi settings",
+        "Study a responsive network diagnostic workflow with local history and reporting"
+      ],
+      "videos": [],
+      "note": "Browser-based diagnostic only. Results describe the effective internet path to the test service and can be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
     }
   ]
 };
