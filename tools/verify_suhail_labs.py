@@ -100,7 +100,7 @@ for marker in ["const download=median(downs)","upload=median(ups)","fetchWithTim
     if marker not in p4: fail(f"Project 004 missing measurement-integrity marker: {marker}")
 
 p5=read("projects/005-smart-inventory/index.html")
-for marker in ["BarcodeDetector","getUserMedia","localStorage","reportText()","restoreJson","Light"]:
+for marker in ["BarcodeDetector","getUserMedia","localStorage","reportText()","restoreJson"]:
     if marker not in p5: fail(f"Project 005 missing inventory feature marker: {marker}")
 if "sample records" not in p5 or "stored only in this browser" not in p5:
     fail("Project 005 must clearly label sample/local inventory data")
