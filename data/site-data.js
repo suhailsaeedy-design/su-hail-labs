@@ -191,7 +191,8 @@ window.SUHAIL_LABS_DATA = {
         "Explore responsive UI patterns for customer and staff views"
       ],
       "videos": [],
-      "note": "Portfolio and educational business-software workflow demo. It does not process real payments, authenticate production staff or persist production data."
+      "note": "Portfolio and educational business-software workflow demo. It does not process real payments, authenticate production staff or persist production data.",
+      "enabled": true
     },
     {
       "id": "002",
@@ -230,7 +231,8 @@ window.SUHAIL_LABS_DATA = {
         "Study a lightweight 3D-style projection built with Canvas and vanilla JavaScript"
       ],
       "videos": [],
-      "note": "Educational visualization only. It is not a production network architecture, security configuration or operational monitoring system."
+      "note": "Educational visualization only. It is not a production network architecture, security configuration or operational monitoring system.",
+      "enabled": true
     },
     {
       "id": "003",
@@ -268,7 +270,8 @@ window.SUHAIL_LABS_DATA = {
         "See how public browser code can avoid exposing server secrets or privileged credentials"
       ],
       "videos": [],
-      "note": "Educational medical reference software. It is not a substitute for professional diagnosis, prescribing or treatment decisions."
+      "note": "Educational medical reference software. It is not a substitute for professional diagnosis, prescribing or treatment decisions.",
+      "enabled": true
     },
     {
       "id": "004",
@@ -310,7 +313,8 @@ window.SUHAIL_LABS_DATA = {
         "Study a responsive network diagnostic workflow with local history and reporting"
       ],
       "videos": [],
-      "note": "Browser-based diagnostic only. Speed, latency and jitter come from completed measurements; download/upload results use the median of completed samples. Device, OS, browser and connection hints are explicitly labeled as browser inferences or estimates. Unavailable measurements stay unavailable. Results can still be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
+      "note": "Browser-based diagnostic only. Speed, latency and jitter come from completed measurements; download/upload results use the median of completed samples. Device, OS, browser and connection hints are explicitly labeled as browser inferences or estimates. Unavailable measurements stay unavailable. Results can still be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance.",
+      "enabled": true
     },
     {
       "id": "005",
@@ -350,7 +354,8 @@ window.SUHAIL_LABS_DATA = {
         "Understand how local backup/export workflows can reduce accidental data loss in browser-only apps"
       ],
       "videos": [],
-      "note": "Portfolio and small-workspace inventory demo. Data is stored in this browser, not a production server database. Camera scanning depends on browser support for BarcodeDetector and camera permission; manual barcode/SKU entry is always available."
+      "note": "Portfolio and small-workspace inventory demo. Data is stored in this browser, not a production server database. Camera scanning depends on browser support for BarcodeDetector and camera permission; manual barcode/SKU entry is always available.",
+      "enabled": true
     }
   ]
 };

@@ -2,7 +2,9 @@
   'use strict';
   const bundled = window.SUHAIL_LABS_DATA;
   let data = bundled;
-  if (new URLSearchParams(location.search).get('preview') === 'draft') {
+  const params = new URLSearchParams(location.search);
+  const previewDraft = params.get('preview') === 'draft';
+  if (previewDraft) {
     try { data = JSON.parse(localStorage.getItem('suhailLabsDraftDataV2')) || bundled; } catch { data = bundled; }
   }
   const $ = s => document.querySelector(s);
@@ -14,8 +16,8 @@
   const sync = () => { if(themeToggle) themeToggle.textContent = document.documentElement.dataset.theme === 'dark' ? '☼' : '◐'; };
   sync(); themeToggle?.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('suhailLabsTheme',next);sync();});
 
-  const id = new URLSearchParams(location.search).get('id') || data.projects[0]?.id;
-  const p = data.projects.find(x => x.id === id);
+  const id = params.get('id') || data.projects.find(x => previewDraft || x.enabled !== false)?.id;
+  const p = data.projects.find(x => x.id === id && (previewDraft || x.enabled !== false));
   const mount = $('#projectDetail');
   if (!p) {
     mount.innerHTML = `<div class="error-page" style="min-height:55vh"><div><span class="section-kicker">PROJECT NOT FOUND</span><h1>That project is not published.</h1><a class="button button-primary" href="index.html#projects">Back to projects</a></div></div>`;
@@ -33,8 +35,8 @@
         ${p.download ? `<a class="button button-secondary" href="${esc(p.download)}"${/^https?:\/\//.test(p.download)?' target="_blank" rel="noopener"':''}>Download source ↓</a>` : ''}
         ${p.source && p.source !== p.live ? `<a class="button button-secondary" href="${esc(p.source)}" target="_blank" rel="noopener">Source repository ↗</a>` : ''}
       </div>
-      <h2>Project highlights</h2><ul class="feature-list">${p.highlights.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>
-      <h2>What visitors can learn</h2><ul class="feature-list">${p.learning.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>
+      <h2>Project highlights</h2><ul class="feature-list">${(p.highlights || []).map(v=>`<li>${esc(v)}</li>`).join('')}</ul>
+      <h2>What visitors can learn</h2><ul class="feature-list">${(p.learning || []).map(v=>`<li>${esc(v)}</li>`).join('')}</ul>
       <p class="small-note"><strong>Professional note:</strong> ${esc(p.note)}</p>
     </article>
     <aside class="project-panel">

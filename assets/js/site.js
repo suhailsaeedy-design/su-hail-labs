@@ -10,6 +10,7 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const esc = (v = '') => String(v).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+  const publicProjects = (data.projects || []).filter(p => p.enabled !== false);
 
   const savedTheme = localStorage.getItem('suhailLabsTheme');
   document.documentElement.dataset.theme = savedTheme || 'light';
@@ -34,11 +35,11 @@
   $$('[data-name]').forEach(el => el.textContent = data.profile.name);
   const bio = $('[data-bio]'); if (bio) bio.textContent = data.profile.bio;
   const portrait = $('#profilePortrait');
-  if (portrait && /^https?:\/\//.test(data.profile.avatar || '')) {
+  if (portrait && /^(?:https?:\/\/|data:image\/(?:jpeg|png|webp);base64,)/i.test(data.profile.avatar || '')) {
     portrait.innerHTML = `<img src="${esc(data.profile.avatar)}" alt="${esc(data.profile.name)}" loading="lazy" referrerpolicy="no-referrer" />`;
     portrait.classList.add('has-photo');
   }
-  const heroCount = $('#projectCountHero'); if (heroCount) heroCount.textContent = String(data.projects.length).padStart(2,'0');
+  const heroCount = $('#projectCountHero'); if (heroCount) heroCount.textContent = String(publicProjects.length).padStart(2,'0');
   const aboutPoints = $('#aboutPoints');
   if (aboutPoints) aboutPoints.innerHTML = data.profile.aboutPoints.map(p => `<div class="about-point"><i>✓</i><span>${esc(p)}</span></div>`).join('');
   const focusTags = $('#focusTags');
@@ -71,7 +72,7 @@
   function renderProjects(){
     if (!grid) return;
     const q = (search?.value || '').trim().toLowerCase();
-    const items = data.projects.filter(p => {
+    const items = publicProjects.filter(p => {
       const cat = activeCategory === 'All' || p.category === activeCategory || (p.focusAreas || []).includes(activeCategory);
       const hay = [p.title,p.categoryLabel,p.summary,...(p.focusAreas || [])].join(' ').toLowerCase();
       return cat && (!q || hay.includes(q));
@@ -80,7 +81,7 @@
       <article class="project-card reveal visible">
         <div class="project-cover"><strong>${esc(p.category==='3D'?'3D':p.category==='WEB'?'WEB':p.category==='TOOLS'?'TOOL':p.category==='AI'?'AI':p.category==='DATABASE'?'DB':'APP')}</strong></div>
         <div class="project-body">
-          <div class="project-meta"><span>PROJECT ${esc(p.id)}</span><span>${esc(p.status)}</span></div>
+          <div class="project-meta"><span>PROJECT ${esc(p.id)}${p.featured === true ? ' • FEATURED' : ''}</span><span>${esc(p.status)}</span></div>
           <h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p>
           <div class="tag-row">${(p.focusAreas || [p.category]).slice(0,3).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
           <div class="card-actions">
@@ -133,18 +134,18 @@
     const q = String(raw || '').toLowerCase().trim();
     const idMatch = q.match(/(?:project\s*#?\s*|#)(\d{1,3})/i);
     if (idMatch) {
-      const p=data.projects.find(x=>x.id===idMatch[1].padStart(3,'0'));
+      const p=publicProjects.find(x=>x.id===idMatch[1].padStart(3,'0'));
       if(p) return `Project ${p.id}: ${p.title}\n${p.summary}\nFocus: ${(p.focusAreas || [p.category]).join(', ')}.`;
     }
-    if (/speed|wifi|wi-fi|download|upload|latency|jitter/.test(q)) { const x=data.projects.find(p=>p.id==='004'); return x?`${x.title}: ${x.summary}`:'The network diagnostics project is not published yet.'; }
-    if (/inventory|barcode|stock|sku/.test(q)) { const x=data.projects.find(p=>p.id==='005'); return x?`${x.title}: ${x.summary}`:'The inventory project is not published yet.'; }
-    if (/3d|network|topology/.test(q)) { const x=data.projects.find(p=>p.category==='3D'); return x?`${x.title}: ${x.summary}`:'No 3D project is published yet.'; }
-    if (/medical|dictionary|anatomy|pwa/.test(q)) { const x=data.projects.find(p=>/medical dictionary/i.test(p.title)); return x?`${x.title}: ${x.summary}`:'The medical dictionary project is not listed yet.'; }
-    if (/download|source|code/.test(q)) return `Projects with downloads: ${data.projects.filter(p=>p.download).map(p=>`Project ${p.id} — ${p.title}`).join('; ')}.`;
+    if (/speed|wifi|wi-fi|download|upload|latency|jitter/.test(q)) { const x=publicProjects.find(p=>p.id==='004'); return x?`${x.title}: ${x.summary}`:'The network diagnostics project is not published yet.'; }
+    if (/inventory|barcode|stock|sku/.test(q)) { const x=publicProjects.find(p=>p.id==='005'); return x?`${x.title}: ${x.summary}`:'The inventory project is not published yet.'; }
+    if (/3d|network|topology/.test(q)) { const x=publicProjects.find(p=>p.category==='3D'); return x?`${x.title}: ${x.summary}`:'No 3D project is published yet.'; }
+    if (/medical|dictionary|anatomy|pwa/.test(q)) { const x=publicProjects.find(p=>/medical dictionary/i.test(p.title)); return x?`${x.title}: ${x.summary}`:'The medical dictionary project is not listed yet.'; }
+    if (/download|source|code/.test(q)) return `Projects with downloads: ${publicProjects.filter(p=>p.download).map(p=>`Project ${p.id} — ${p.title}`).join('; ')}.`;
     if (/what.*build|skills|service|special|capabil|technolog/.test(q)) return `${data.profile.name} focuses on websites, software, databases, AI integration, business systems, admin/analytics, automation tools and interactive 3D experiences.`;
     if (/freelanc|hire|work with|client/.test(q)) return 'Open “Work with me” from the navigation for the client project process and project brief.';
     if (/github/.test(q)) return 'The developer GitHub account is intentionally not linked from the public portfolio. Use Suhail Labs project pages and downloads instead.';
-    if (/project|portfolio|latest/.test(q)) return `Suhail Labs currently publishes ${data.projects.length} projects: ${data.projects.map(p=>`${p.id} ${p.title}`).join('; ')}.`;
+    if (/project|portfolio|latest/.test(q)) return `Suhail Labs currently publishes ${publicProjects.length} projects: ${publicProjects.map(p=>`${p.id} ${p.title}`).join('; ')}.`;
     if (/who|about|suhail/.test(q)) return `${data.profile.name} — ${data.profile.title}. ${data.profile.bio}`;
     return 'Ask me about Suhail’s projects, skills, downloads, GitHub profile or client work.';
   };
