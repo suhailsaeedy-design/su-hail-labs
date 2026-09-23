@@ -46,7 +46,7 @@ html[data-theme="dark"]{
 
 <section class="metrics" aria-label="Speed test results">
   <article class="metric-card download"><span class="label">Download</span><strong id="download">—</strong><small>Mbps</small></article>
-  <article class="metric-card upload"><span class="label">Upload</span><strong id="upload">—</strong><small>Mbps</small></article>
+  <article class="metric-card upload"><span class="label">Upload</span><strong id="upload">—</strong><small id="uploadUnit">Mbps</small></article>
   <article class="metric-card ping"><span class="label">Latency</span><strong id="ping">—</strong><small>ms</small></article>
   <article class="metric-card jitter"><span class="label">Jitter</span><strong id="jitter">—</strong><small>ms</small></article>
 </section>
@@ -182,18 +182,29 @@ async function measureUpload(bytes){
 }
 
 function quality(result){
-  const {download,upload,ping,jitter}=result;
-  let score=0;
-  score+=download>=100?35:download>=50?31:download>=25?26:download>=10?20:download>=5?13:6;
-  score+=upload>=25?25:upload>=10?22:upload>=5?18:upload>=2?12:6;
-  score+=ping<=25?25:ping<=50?21:ping<=80?16:ping<=150?10:5;
-  score+=jitter<=8?15:jitter<=15?12:jitter<=30?8:4;
-  const title=score>=88?'Excellent':score>=72?'Good':score>=55?'Fair':'Limited';
-  const text=title==='Excellent'?'Fast and responsive for demanding everyday use.'
-    :title==='Good'?'Comfortable for most browsing, calls, streaming and cloud work.'
-    :title==='Fair'?'Usable for everyday tasks, but heavier uploads or real-time use may feel slower.'
+  const components=[
+    {value:result.download,max:35,points:v=>v>=100?35:v>=50?31:v>=25?26:v>=10?20:v>=5?13:6},
+    {value:result.upload,max:25,points:v=>v>=25?25:v>=10?22:v>=5?18:v>=2?12:6},
+    {value:result.ping,max:25,points:v=>v<=25?25:v<=50?21:v<=80?16:v<=150?10:5},
+    {value:result.jitter,max:15,points:v=>v<=8?15:v<=15?12:v<=30?8:4}
+  ].filter(component=>Number.isFinite(component.value));
+
+  if(!components.length){
+    return {score:null,title:'Unavailable',text:'No measured network values are available.',partial:true};
+  }
+
+  const earned=components.reduce((sum,component)=>sum+component.points(component.value),0);
+  const possible=components.reduce((sum,component)=>sum+component.max,0);
+  const score=Math.round(earned/possible*100);
+  const baseTitle=score>=88?'Excellent':score>=72?'Good':score>=55?'Fair':'Limited';
+  const partial=possible<100;
+  const title=partial?`${baseTitle} (partial)`:baseTitle;
+  let text=baseTitle==='Excellent'?'Fast and responsive for demanding everyday use.'
+    :baseTitle==='Good'?'Comfortable for most browsing, calls, streaming and cloud work.'
+    :baseTitle==='Fair'?'Usable for everyday tasks, but heavier transfers or real-time use may feel slower.'
     :'The connection may struggle with large transfers or delay-sensitive tasks.';
-  return{score,title,text};
+  if(partial) text+=' This quality score uses only the measurements that completed successfully.';
+  return {score,title,text,partial};
 }
 function makeReport(r){
   const q=quality(r),c=connection();
@@ -201,9 +212,9 @@ function makeReport(r){
     'SUHAIL LABS — NETWORK SPEED & DEVICE DIAGNOSTICS',
     `Tested: ${new Date(r.time).toLocaleString()}`,
     '',
-    `Quality: ${q.title} (${q.score}/100)`,
-    `Download: ${fmt(r.download)} Mbps`,
-    `Upload: ${fmt(r.upload)} Mbps`,
+    `Quality: ${q.title}${Number.isFinite(q.score)?` (${q.score}/100)`:''}`,
+    `Download: ${Number.isFinite(r.download)?fmt(r.download)+' Mbps':'Unavailable'}`,
+    `Upload: ${Number.isFinite(r.upload)?fmt(r.upload)+' Mbps':'Unavailable — upload measurement did not complete'}`,
     `Latency: ${fmt(r.ping,0)} ms`,
     `Jitter: ${fmt(r.jitter,0)} ms`,
     '',
@@ -220,9 +231,12 @@ function makeReport(r){
   ].join('\n');
 }
 function renderResult(r){
-  qs('#download').textContent=fmt(r.download);qs('#upload').textContent=fmt(r.upload);
-  qs('#ping').textContent=fmt(r.ping,0);qs('#jitter').textContent=fmt(r.jitter,0);
-  const q=quality(r);qs('#qualityScore').textContent=q.score;qs('#qualityTitle').textContent=q.title;qs('#qualityText').textContent=q.text;
+  qs('#download').textContent=Number.isFinite(r.download)?fmt(r.download):'Unavailable';
+  qs('#upload').textContent=Number.isFinite(r.upload)?fmt(r.upload):'Unavailable';
+  qs('#uploadUnit').textContent=Number.isFinite(r.upload)?'Mbps':'not measured';
+  qs('#ping').textContent=Number.isFinite(r.ping)?fmt(r.ping,0):'Unavailable';
+  qs('#jitter').textContent=Number.isFinite(r.jitter)?fmt(r.jitter,0):'Unavailable';
+  const q=quality(r);qs('#qualityScore').textContent=Number.isFinite(q.score)?q.score:'—';qs('#qualityTitle').textContent=q.title;qs('#qualityText').textContent=q.text;
   qs('#report').textContent=makeReport(r);qs('#copyReport').disabled=false;qs('#downloadReport').disabled=false;
 }
 function saveHistory(r){
@@ -256,9 +270,9 @@ async function runTest(quick=false){
       for(const size of upSizes){ups.push(await measureUpload(size));}
       upload=Math.max(...ups);
     }catch(error){
-      const c=connection();
-      upload=Number.isFinite(c?.downlink)?Math.max(.1,c.downlink*.22):NaN;
-      qs('#phase').textContent='Upload endpoint was blocked by the browser; showing a conservative browser-based estimate when available.';
+      console.warn('Upload measurement unavailable:',error);
+      upload=NaN;
+      qs('#phase').textContent='Upload measurement could not complete in this browser/network. No upload value was invented or estimated.';
     }
 
     const result={time:new Date().toISOString(),download,upload,ping:latency.ping,jitter:latency.jitter};
