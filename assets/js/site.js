@@ -12,8 +12,7 @@
   const esc = (v = '') => String(v).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
 
   const savedTheme = localStorage.getItem('suhailLabsTheme');
-  const preferred = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  document.documentElement.dataset.theme = savedTheme || preferred;
+  document.documentElement.dataset.theme = savedTheme || 'light';
   const themeToggle = $('#themeToggle');
   const syncThemeLabel = () => { if (themeToggle) themeToggle.textContent = document.documentElement.dataset.theme === 'dark' ? '☼' : '◐'; };
   syncThemeLabel();
@@ -137,6 +136,7 @@
       const p=data.projects.find(x=>x.id===idMatch[1].padStart(3,'0'));
       if(p) return `Project ${p.id}: ${p.title}\n${p.summary}\nFocus: ${(p.focusAreas || [p.category]).join(', ')}.`;
     }
+    if (/speed|wifi|wi-fi|download|upload|latency|jitter/.test(q)) { const x=data.projects.find(p=>p.id==='004'); return x?`${x.title}: ${x.summary}`:'The network diagnostics project is not published yet.'; }
     if (/3d|network|topology/.test(q)) { const x=data.projects.find(p=>p.category==='3D'); return x?`${x.title}: ${x.summary}`:'No 3D project is published yet.'; }
     if (/medical|dictionary|anatomy|pwa/.test(q)) { const x=data.projects.find(p=>/medical dictionary/i.test(p.title)); return x?`${x.title}: ${x.summary}`:'The medical dictionary project is not listed yet.'; }
     if (/download|source|code/.test(q)) return `Projects with downloads: ${data.projects.filter(p=>p.download).map(p=>`Project ${p.id} — ${p.title}`).join('; ')}.`;
