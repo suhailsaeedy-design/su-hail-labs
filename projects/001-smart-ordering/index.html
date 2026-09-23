@@ -27,7 +27,7 @@ button,a{ -webkit-tap-highlight-color:transparent}
 .btn,.icon-btn,.pill{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;min-height:42px;padding:0 13px;font-weight:800;cursor:pointer}
 .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#06111e;border-color:transparent}
 .btn.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 35%,var(--line))}
-.btn.ghost{background:var(--surface-2)}.icon-btn{width:44px;padding:0}
+.btn.ghost{background:var(--surface-2)}.icon-btn{width:44px;padding:0}.btn:focus-visible,.icon-btn:focus-visible,.pill:focus-visible,.search:focus-visible,input:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 38%,transparent);outline-offset:2px}
 .shell{width:min(1440px,calc(100% - 28px));margin:0 auto;padding:24px 0 44px}
 .hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:18px}
 .hero h1{font-size:clamp(28px,4vw,48px);line-height:1.04;margin:0 0 8px}.hero p{margin:0;color:var(--muted);max-width:760px}
@@ -50,7 +50,7 @@ button,a{ -webkit-tap-highlight-color:transparent}
 .cart-total{display:flex;justify-content:space-between;font-size:20px;font-weight:950;padding:14px 0 10px}
 .cart-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cart-meta input{width:100%;min-height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);color:var(--text);padding:0 11px}
 .cart-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
-.order-dock{display:none}
+.order-dock{display:none}.cart-backdrop{display:none}
 .ops-panel{margin-top:18px;padding:18px}.ops-toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
 .metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:16px 0}.stat{border:1px solid var(--line);background:var(--surface-2);border-radius:14px;padding:12px}.stat strong{display:block;font-size:24px}.stat span{font-size:10px;color:var(--muted)}
 .lanes{display:grid;grid-template-columns:repeat(5,minmax(220px,1fr));gap:10px;overflow-x:auto;padding-bottom:5px}
@@ -65,7 +65,7 @@ button,a{ -webkit-tap-highlight-color:transparent}
   body{padding-bottom:76px}.shell{width:min(100% - 20px,720px);padding-top:16px}.topbar{padding:10px}.topbar .btn.portfolio{display:none}
   .hero{align-items:start;flex-direction:column}.order-workspace{grid-template-columns:1fr}.catalog{padding:13px}.menu{grid-template-columns:1fr 1fr}
   .cart-panel{position:fixed;z-index:70;left:8px;right:8px;bottom:8px;top:auto;max-height:min(70vh,620px);transform:translateY(calc(100% + 18px));transition:transform .22s ease;border-radius:20px;padding:15px}
-  .cart-panel.open{transform:translateY(0)}.cart-scroll{max-height:34vh}.order-dock{display:flex;position:fixed;z-index:68;left:8px;right:8px;bottom:8px;min-height:58px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);border-radius:16px;align-items:center;padding:8px 10px;gap:10px}
+  .cart-panel.open{transform:translateY(0)}.cart-scroll{max-height:34vh}.cart-backdrop{display:block;position:fixed;z-index:69;inset:0;background:rgba(2,10,20,.48);backdrop-filter:blur(2px)}.cart-backdrop[hidden]{display:none}.order-dock{display:flex;position:fixed;z-index:68;left:8px;right:8px;bottom:8px;min-height:58px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);border-radius:16px;align-items:center;padding:8px 10px;gap:10px}
   .order-dock strong{display:block}.order-dock small{color:var(--muted)}.order-dock .dock-total{margin-left:auto;font-weight:950;color:var(--brand)}.order-dock .btn{min-height:40px}
   .ops-panel{padding:13px}.metrics{grid-template-columns:repeat(2,1fr)}.lanes{grid-template-columns:repeat(5,230px)}
 }
@@ -91,19 +91,19 @@ button,a{ -webkit-tap-highlight-color:transparent}
   <div class="order-workspace">
     <section class="catalog" aria-labelledby="menuTitle">
       <div class="section-head"><div><h2 id="menuTitle">Menu</h2><span class="muted">Choose items to add to the order</span></div></div>
-      <input class="search" id="search" type="search" placeholder="Search menu…" autocomplete="off">
+      <input class="search" id="search" type="search" placeholder="Search menu…" autocomplete="off" aria-label="Search menu">
       <div class="cats" id="cats" aria-label="Menu categories"></div>
       <div class="menu" id="menu"></div>
     </section>
 
     <aside class="cart-panel" id="cartPanel" aria-labelledby="cartTitle">
       <div class="section-head">
-        <div><h2 id="cartTitle">Current order</h2><span class="muted" id="cartCountLabel">0 items</span></div>
+        <div><h2 id="cartTitle">Current order</h2><span class="muted" id="cartCountLabel" aria-live="polite">0 items</span></div>
         <button class="btn danger" id="closeCart" type="button" hidden>Close</button>
       </div>
       <div class="cart-scroll" id="cart"></div>
       <div class="cart-total"><span>Total</span><span id="total">$0.00</span></div>
-      <div class="cart-meta"><input id="name" placeholder="Customer name" autocomplete="off"><input id="table" placeholder="Table / pickup" autocomplete="off"></div>
+      <div class="cart-meta"><input id="name" placeholder="Customer name" autocomplete="off" aria-label="Customer name"><input id="table" placeholder="Table / pickup" autocomplete="off" aria-label="Table or pickup reference"></div>
       <div class="cart-actions"><button class="btn primary" id="checkout" type="button">Send order →</button><button class="btn danger" id="clearCart" type="button">Clear</button></div>
     </aside>
   </div>
@@ -118,6 +118,7 @@ button,a{ -webkit-tap-highlight-color:transparent}
   </section>
 </main>
 
+<div class="cart-backdrop" id="cartBackdrop" hidden></div>
 <div class="order-dock" id="orderDock">
   <div><strong>Current order</strong><small id="dockCount">0 items</small></div>
   <span class="dock-total" id="dockTotal">$0.00</span>
@@ -209,7 +210,7 @@ function addOrder(demo=false){
     place:demo?'Table 4':qs('#table').value.trim()||'Pickup',
     stage:0,cancelled:false,lines,total:lineTotal(lines)
   });
-  if(!demo){cart={};renderCart();qs('#cartPanel').classList.remove('open')}
+  if(!demo){cart={};renderCart();qs('#name').value='';qs('#table').value='';closeMobileCart()}
   renderOperations();toast('Order sent to kitchen')
 }
 
@@ -265,13 +266,17 @@ qs('#search').addEventListener('input',renderMenu);
 qs('#checkout').onclick=()=>addOrder(false);
 qs('#demo').onclick=()=>addOrder(true);
 qs('#clearCart').onclick=clearCart;
-qs('#openCart').onclick=()=>qs('#cartPanel').classList.add('open');
-qs('#closeCart').onclick=()=>qs('#cartPanel').classList.remove('open');
+function openMobileCart(){qs('#cartPanel').classList.add('open');qs('#cartBackdrop').hidden=false;qs('#closeCart').focus()}
+function closeMobileCart(){qs('#cartPanel').classList.remove('open');qs('#cartBackdrop').hidden=true}
+qs('#openCart').onclick=openMobileCart;
+qs('#closeCart').onclick=closeMobileCart;
+qs('#cartBackdrop').onclick=closeMobileCart;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMobileCart()});
 
 const mobile=matchMedia('(max-width:760px)');
 function syncMobile(){
   qs('#closeCart').hidden=!mobile.matches;
-  if(!mobile.matches)qs('#cartPanel').classList.remove('open');
+  if(!mobile.matches)closeMobileCart();
 }
 mobile.addEventListener?.('change',syncMobile);syncMobile();
 
