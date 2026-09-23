@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Secure Owner Access — Suhail Labs</title>
+  <link rel="stylesheet" href="assets/css/admin.css?v=20260923-labsadmin2">
+  <script>
+    window.SMD21_AUTH_CONFIG_URL='/suhail-medical-dictionary/data/auth-config.json';
+    window.SMD21_ADMIN_CONFIG_URL='/suhail-medical-dictionary/data/admin-config.json';
+    window.SMD21_AUTH_CALLBACK_URL='/suhail-medical-dictionary/auth-callback.html';
+  </script>
+  <script defer src="/suhail-medical-dictionary/assets/js/auth.js?v=20260923-labsadmin2"></script>
+  <script defer src="/suhail-medical-dictionary/assets/js/cloud-auth.js?v=20260923-labsadmin2"></script>
+  <script defer src="/suhail-medical-dictionary/assets/js/admin-auth.js?v=20260923-labsadmin2"></script>
+  <script defer src="assets/js/admin-login.js?v=20260923-labsadmin2"></script>
+</head>
+<body class="secure-admin-loader">
+  <main class="secure-admin-loader-shell">
+    <section class="secure-admin-loader-card">
+      <div class="secure-kicker">SUHAIL LABS PRIVATE OWNER WORKSPACE</div>
+      <h1>Secure Admin Access</h1>
+      <p>The full Creator Studio is private. A fresh verified Google sign-in is required for each browser session.</p>
+      <div class="secure-admin-actions">
+        <button class="primary" id="verifyCloudAdmin" type="button">Sign in with Google</button>
+        <a href="index.html">Back to public site</a>
+      </div>
+      <p class="admin-status" id="adminLoginStatus">Sign in with Google to continue.</p>
+      <p class="secure-admin-note">The login page does not reveal which account is authorized.</p>
+    </section>
+  </main>
+</body>
+</html>
