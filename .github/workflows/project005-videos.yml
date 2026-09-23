@@ -1,0 +1,43 @@
+name: Build Project 005 Social Videos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/video_project005.mjs'
+      - '.github/workflows/project005-videos.yml'
+      - 'projects/005-smart-inventory/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start local project server
+        run: |
+          python3 -m http.server 8000 >/tmp/suhail-video-server.log 2>&1 &
+          sleep 2
+      - name: Render vertical videos
+        run: node tools/video_project005.mjs
+      - name: Upload social videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: project005-social-videos
+          path: video-output/*.mp4
+          if-no-files-found: error
+          retention-days: 30
