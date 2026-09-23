@@ -1,4 +1,4 @@
-(() => {
+(async () => {
   'use strict';
   const bundled = window.SUHAIL_LABS_DATA;
   let data = bundled;
@@ -6,6 +6,17 @@
   const previewDraft = params.get('preview') === 'draft';
   if (previewDraft) {
     try { data = JSON.parse(localStorage.getItem('suhailLabsDraftDataV2')) || bundled; } catch { data = bundled; }
+  } else {
+    try {
+      const response = await fetch('https://qdfylefkkkyjwtqqiuye.supabase.co/rest/v1/suhail_labs_public_config?id=eq.site&select=data,revision,updated_at', {
+        headers: { apikey: 'sb_publishable_CQwb8FIM4lLL27T8xZGqCQ_sGT4phu7' },
+        cache: 'no-store'
+      });
+      const rows = await response.json().catch(() => []);
+      if (response.ok && Array.isArray(rows) && rows[0]?.data) data = rows[0].data;
+    } catch (error) {
+      console.warn('Suhail Labs live project data unavailable; using bundled fallback.', error);
+    }
   }
   const $ = s => document.querySelector(s);
   const esc = (v='') => String(v).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));

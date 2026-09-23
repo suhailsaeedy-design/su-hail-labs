@@ -1,180 +1,20 @@
 <!doctype html>
 <html lang="en" data-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta name="theme-color" content="#f5f8fc" />
-  <title>Creator Studio — Suhail Labs</title>
-  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
-  <link rel="stylesheet" href="assets/css/site.css" />
-  <link rel="stylesheet" href="assets/css/admin.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="refresh" content="0; url=https://suhailsaeedy-design.github.io/suhail-medical-dictionary/admin-login.html?panel=suhail-labs">
+  <title>Secure Owner Access — Suhail Labs</title>
 </head>
-<body class="studio-body">
-  <div class="studio-login" id="studioLogin" hidden>
-    <div class="studio-login-card">
-      <a class="brand" href="index.html" aria-label="Suhail Labs public site"><span class="brand-mark">SL</span><span class="brand-copy"><strong>Suhail Labs</strong><small>Creator Studio</small></span></a>
-      <div class="login-badge">LOCAL CREATOR ACCESS</div>
-      <h1 id="loginTitle">Unlock Creator Studio</h1>
-      <p id="loginText">This passcode locks only this browser's local Creator Studio workspace. It does not control your GitHub account or provide server-side authentication.</p>
-      <form id="loginForm" class="stack-form">
-        <label>Passcode<input id="passcodeInput" type="password" minlength="6" autocomplete="current-password" required placeholder="Minimum 6 characters" /></label>
-        <label id="confirmPasscodeWrap" hidden>Confirm passcode<input id="confirmPasscodeInput" type="password" minlength="6" autocomplete="new-password" placeholder="Repeat passcode" /></label>
-        <button class="button button-primary" type="submit" id="loginSubmit">Unlock Studio</button>
-        <p class="form-message" id="loginMessage" role="status"></p>
-      </form>
-      <p class="small-note">Passcode recovery is local only: clearing this site's browser data resets the Studio lock and also removes browser-only drafts. It never resets or changes your GitHub account.</p>
-      <a class="text-link" href="index.html">← Back to public site</a>
-    </div>
-  </div>
-
-  <div class="studio-app" id="studioApp" hidden>
-    <aside class="studio-sidebar" id="studioSidebar">
-      <div class="studio-brand-row">
-        <a class="brand" href="index.html"><span class="brand-mark">SL</span><span class="brand-copy"><strong>Suhail Labs</strong><small>Creator Studio</small></span></a>
-        <button class="studio-close" id="studioClose" aria-label="Close menu">×</button>
-      </div>
-      <nav class="studio-nav" aria-label="Creator Studio navigation">
-        <button class="studio-nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
-        <button class="studio-nav-item" data-view="profile"><span>◎</span> Profile & About</button>
-        <button class="studio-nav-item" data-view="projects"><span>◇</span> Projects</button>
-        <button class="studio-nav-item" data-view="profiles"><span>↗</span> Social & Freelance</button>
-        <button class="studio-nav-item" data-view="assistant"><span>✦</span> Knowledge Assistant</button>
-        <button class="studio-nav-item" data-view="publish"><span>⇧</span> Publish & Backup</button>
-        <button class="studio-nav-item" data-view="settings"><span>⚙</span> Settings</button>
-      </nav>
-      <div class="studio-sidebar-foot">
-        <span class="local-pill"><i></i> Local-first • $0</span>
-        <a class="button button-secondary button-small" href="index.html" target="_blank" rel="noopener">Public site ↗</a>
-      </div>
-    </aside>
-    <button class="studio-backdrop" id="studioBackdrop" type="button" aria-label="Close navigation" hidden></button>
-
-    <div class="studio-main">
-      <header class="studio-topbar">
-        <button class="studio-menu" id="studioMenu" aria-label="Open menu">☰</button>
-        <div><span class="topbar-eyebrow">SUHAIL LABS</span><strong id="viewTitle">Dashboard</strong></div>
-        <div class="topbar-actions">
-          <span class="save-state" id="saveState">Local Draft — saved in this browser</span>
-          <button class="icon-button" id="themeToggle" type="button" aria-label="Switch theme">◐</button>
-          <button class="button button-small button-secondary" id="lockStudio" type="button">Lock</button>
-        </div>
-      </header>
-
-      <main class="studio-content">
-        <div class="draft-mode-banner" role="note"><strong>Local Draft mode</strong><span>Edits in Creator Studio are saved only in this browser. They do not change GitHub until you export <code>site-data.js</code> and publish it through authenticated GitHub access.</span></div>
-        <section class="studio-view active" data-view-panel="dashboard">
-          <div class="studio-heading"><div><span class="section-kicker">CREATOR OVERVIEW</span><h1>Manage Suhail Labs from one place.</h1><p>Edit public content, organize projects, ask questions about your portfolio and export publish-ready data without a paid backend.</p></div><button class="button button-primary" type="button" id="dashboardAddProject">+ Add project</button></div>
-          <div class="metric-grid" id="metricGrid"></div>
-          <div class="studio-grid two-col">
-            <article class="studio-card"><div class="card-head"><div><span class="section-kicker">PROJECTS</span><h2>Recent projects</h2></div><button class="text-button" data-jump="projects">Manage all →</button></div><div id="recentProjects" class="compact-list"></div></article>
-            <article class="studio-card"><div class="card-head"><div><span class="section-kicker">PUBLISH READINESS</span><h2>Quick checks</h2></div></div><div id="readinessList" class="readiness-list"></div></article>
-          </div>
-        </section>
-
-        <section class="studio-view" data-view-panel="profile">
-          <div class="studio-heading"><div><span class="section-kicker">PUBLIC IDENTITY</span><h1>Profile & About</h1><p>These fields appear on the public website. Keep the copy concise, professional and verifiable.</p></div></div>
-          <form id="profileForm" class="studio-card form-card">
-            <div class="form-section profile-photo-section">
-              <div><h3>Profile / Creator Photo</h3><p>Upload, preview, replace or remove the public creator photo. The image is resized for the web and stored in the Local Draft.</p></div>
-              <div class="photo-editor">
-                <div class="photo-preview" id="profilePhotoPreview" aria-label="Creator photo preview"><span>SS</span></div>
-                <div class="photo-controls">
-                  <label class="button button-secondary file-button">Upload / Change photo<input id="profilePhotoInput" type="file" accept="image/jpeg,image/png,image/webp" hidden /></label>
-                  <button class="button button-secondary" id="removeProfilePhoto" type="button">Remove photo</button>
-                  <p class="small-note" id="profilePhotoMessage" role="status">Local Draft only. Save the profile, then export <code>site-data.js</code> when you are ready to publish.</p>
-                </div>
-              </div>
-            </div>
-            <div class="form-grid">
-              <label>Public name<input name="name" required /></label>
-              <label>Professional title<input name="title" required /></label>
-              <label>Availability<input name="availability" /></label>
-              <label>Public email<input name="email" type="email" placeholder="Optional" /></label>
-              <label class="span-2">Professional bio<textarea name="bio" rows="6" required></textarea></label>
-            </div>
-            <div class="form-section"><div><h3>About points</h3><p>One concise statement per line.</p></div><textarea name="aboutPoints" rows="5" aria-label="About points"></textarea></div>
-            <div class="form-section"><div><h3>Professional focus areas</h3><p>Public capability areas such as Websites, Software, Databases, AI Integration and Business Systems.</p></div><textarea name="stack" rows="4" aria-label="Professional focus areas"></textarea></div>
-            <div class="form-actions"><button class="button button-primary" type="submit">Save profile</button><button class="button button-secondary" type="button" id="previewProfile">Preview public site ↗</button></div>
-          </form>
-        </section>
-
-        <section class="studio-view" data-view-panel="projects">
-          <div class="studio-heading"><div><span class="section-kicker">PROJECT LIBRARY</span><h1>Projects</h1><p>Add, edit, duplicate or remove portfolio projects. Draft changes stay in this browser until you export and publish them.</p></div><button class="button button-primary" id="addProject" type="button">+ New project</button></div>
-          <div class="studio-card table-card">
-            <div class="table-tools"><label class="search-box"><span>⌕</span><input id="adminProjectSearch" type="search" placeholder="Search project title, category or focus area…" aria-label="Search projects" /></label><span class="table-count" id="projectCountLabel"></span></div>
-            <div class="table-wrap"><table class="studio-table"><thead><tr><th>Project</th><th>Category</th><th>Status</th><th>Visibility</th><th>Featured</th><th>Access</th><th>Actions</th></tr></thead><tbody id="projectTableBody"></tbody></table></div>
-          </div>
-        </section>
-
-        <section class="studio-view" data-view-panel="profiles">
-          <div class="studio-heading"><div><span class="section-kicker">ONLINE PRESENCE</span><h1>Social & Freelance Profiles</h1><p>Add only real accounts. Empty URLs remain marked as pending on the public site.</p></div></div>
-          <div class="studio-card" id="profilesEditor"></div>
-        </section>
-
-        <section class="studio-view" data-view-panel="assistant">
-          <div class="studio-heading"><div><span class="section-kicker">ZERO-COST ASSISTANT</span><h1>Portfolio Knowledge Assistant</h1><p>This first version works locally and answers from your Suhail Labs data without sending private content to an external AI service.</p></div><span class="local-pill"><i></i> No API key</span></div>
-          <div class="assistant-layout">
-            <article class="studio-card assistant-chat">
-              <div class="assistant-messages" id="assistantMessages" aria-live="polite"></div>
-              <form class="assistant-form" id="assistantForm"><input id="assistantInput" autocomplete="off" placeholder="Ask: How many projects do I have? Which links are missing?" aria-label="Ask portfolio knowledge assistant" /><button class="button button-primary" type="submit">Ask</button></form>
-            </article>
-            <aside class="studio-card assistant-help"><span class="section-kicker">TRY THESE</span><button data-prompt="How many projects do I have?">How many projects do I have?</button><button data-prompt="What is my latest project?">What is my latest project?</button><button data-prompt="Which profile links are missing?">Which profile links are missing?</button><button data-prompt="Tell me about Project 001">Tell me about Project 001</button><button data-prompt="What focus areas do I work in?">What technologies do I use?</button><div class="assistant-note"><strong>Architecture note</strong><p>The assistant uses a local knowledge engine now. A provider adapter can be added later without changing the public website data model.</p></div></aside>
-          </div>
-        </section>
-
-        <section class="studio-view" data-view-panel="publish">
-          <div class="studio-heading"><div><span class="section-kicker">SAFE FREE WORKFLOW</span><h1>Publish & Backup</h1><p>Creator Studio is intentionally Local Draft only on GitHub Pages. Export the current data, then publish it through authenticated GitHub access; no token or secret is stored in public JavaScript.</p></div></div>
-          <div class="studio-grid three-col">
-            <article class="studio-card action-card"><span class="action-icon">JS</span><h2>Export site-data.js</h2><p>Generates the exact public data file used by Suhail Labs.</p><button class="button button-primary" id="exportJs" type="button">Download site-data.js</button></article>
-            <article class="studio-card action-card"><span class="action-icon">JSON</span><h2>Backup workspace</h2><p>Save a portable JSON backup before major edits or publishing.</p><button class="button button-secondary" id="exportJson" type="button">Download backup</button></article>
-            <article class="studio-card action-card"><span class="action-icon">↥</span><h2>Restore backup</h2><p>Import a Suhail Labs JSON backup into this browser workspace.</p><label class="button button-secondary file-button">Choose backup<input id="importJson" type="file" accept="application/json,.json" hidden /></label></article>
-          </div>
-          <article class="studio-card publish-guide"><div><span class="section-kicker">PUBLISH CHECKLIST</span><h2>Free GitHub Pages workflow</h2></div><ol><li>Download <code>site-data.js</code> from this page.</li><li>In your GitHub repository, open <code>data/site-data.js</code>.</li><li>Replace it with the exported file and commit the change.</li><li>GitHub Pages updates the public site automatically after deployment.</li></ol><div class="notice"><strong>Security:</strong> never place passwords, API keys or private client data in <code>site-data.js</code>. Everything in the public repository should be treated as public.</div></article>
-        </section>
-
-        <section class="studio-view" data-view-panel="settings">
-          <div class="studio-heading"><div><span class="section-kicker">STUDIO SETTINGS</span><h1>Settings</h1><p>Manage local workspace security and draft data.</p></div></div>
-          <div class="studio-grid two-col">
-            <article class="studio-card"><div class="card-head"><div><h2>Change local passcode</h2><p>Updates the browser-only lock for Creator Studio. If it is forgotten, recovery requires clearing this site's browser data, which also removes local-only drafts.</p></div></div><form id="passcodeForm" class="stack-form"><label>Current passcode<input name="current" type="password" required /></label><label>New passcode<input name="next" type="password" minlength="6" required /></label><label>Confirm new passcode<input name="confirm" type="password" minlength="6" required /></label><button class="button button-primary" type="submit">Update passcode</button><p class="form-message" id="passcodeMessage"></p></form></article>
-            <article class="studio-card danger-card"><div><h2>Reset local draft</h2><p>Deletes browser-only edits and restores the bundled public data on the next load. This does not delete GitHub files.</p></div><button class="button button-secondary" id="resetDraft" type="button">Reset local draft</button></article>
-          </div>
-        </section>
-      </main>
-    </div>
-  </div>
-
-  <dialog class="project-dialog" id="projectDialog" aria-labelledby="projectDialogTitle">
-    <form class="dialog-shell" id="projectForm">
-      <div class="dialog-head"><div><span class="section-kicker">PROJECT EDITOR</span><h2 id="projectDialogTitle">New project</h2></div><button class="dialog-close" type="button" data-close-project aria-label="Close project editor">×</button></div>
-      <input type="hidden" name="originalId" />
-      <div class="form-grid compact">
-        <label>Project ID<input name="id" required placeholder="006" inputmode="numeric" /></label>
-        <label>Slug<input name="slug" required placeholder="006-project-name" /></label>
-        <label class="span-2">Title<input name="title" required /></label>
-        <label>Category<input name="category" required placeholder="WEB" /></label>
-        <label>Category label<input name="categoryLabel" required placeholder="Website / Business" /></label>
-        <label>Status<input name="status" list="projectStatusOptions" required placeholder="Published" /></label>
-        <datalist id="projectStatusOptions"><option value="Published"></option><option value="Portfolio showcase"></option><option value="In development"></option><option value="Prototype"></option><option value="Archived"></option></datalist>
-        <label>Enabled<select name="enabled"><option value="true">Enabled — public</option><option value="false">Disabled — hidden</option></select></label>
-        <label>Featured<select name="featured"><option value="true">On</option><option value="false">Off</option></select></label>
-        <label class="span-2">Summary<textarea name="summary" rows="3" required></textarea></label>
-        <label class="span-2">Description<textarea name="description" rows="5" required></textarea></label>
-        <label class="span-2">Focus areas (comma separated)<input name="tech" /></label>
-        <label>Live path / URL<input name="live" placeholder="projects/006-name/index.html or https://..." /></label>
-        <label>Primary button label<input name="liveLabel" placeholder="Open live demo" /></label>
-        <label>Download path / URL<input name="download" placeholder="downloads/006-name.zip or https://..." /></label>
-        <label>Details path / URL<input name="detailsUrl" placeholder="project.html?id=006" /></label>
-        <label class="span-2">Source repository URL<input name="source" placeholder="https://github.com/..." /></label>
-        <label class="span-2">Highlights (one per line)<textarea name="highlights" rows="5"></textarea></label>
-        <label class="span-2">Learning points (one per line)<textarea name="learning" rows="5"></textarea></label>
-        <label class="span-2">Notes / professional note<textarea name="note" rows="4"></textarea></label>
-      </div>
-      <div class="form-actions dialog-actions"><button class="button button-secondary" type="button" data-close-project>Cancel</button><button class="button button-primary" id="saveProject" type="submit">Save Local Draft</button></div>
-    </form>
-  </dialog>
-
-  <script src="data/site-data.js"></script>
-  <script src="assets/js/admin.js"></script>
+<body>
+  <main>
+    <h1>Suhail Labs Owner Access</h1>
+    <p>The full Admin Panel is stored in the private owner workspace and requires a verified owner account.</p>
+    <p><a href="https://suhailsaeedy-design.github.io/suhail-medical-dictionary/admin-login.html?panel=suhail-labs">Open secure owner access</a></p>
+  </main>
+  <script>
+    location.replace('https://suhailsaeedy-design.github.io/suhail-medical-dictionary/admin-login.html?panel=suhail-labs');
+  </script>
 </body>
 </html>
