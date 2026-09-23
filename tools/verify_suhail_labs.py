@@ -16,14 +16,18 @@ def read(path):
 
 class Parser(HTMLParser):
     def __init__(self):
-        super().__init__(); self.refs=[]; self.labels=set(); self.controls=[]
+        super().__init__(); self.refs=[]; self.labels=set(); self.controls=[]; self.label_depth=0
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
-        if tag=="label" and a.get("for"): self.labels.add(a["for"])
+        if tag=="label":
+            self.label_depth+=1
+            if a.get("for"): self.labels.add(a["for"])
         if tag in ("input","select","textarea") and str(a.get("type","")).lower()!="hidden":
-            self.controls.append(a)
+            self.controls.append((a,self.label_depth>0))
         key={"a":"href","script":"src","link":"href","img":"src","source":"src"}.get(tag)
         if key and a.get(key): self.refs.append(a[key])
+    def handle_endtag(self,tag):
+        if tag=="label" and self.label_depth>0: self.label_depth-=1
 
 def local_ref(page,ref):
     if not ref or ref.startswith(("http:","https:","mailto:","tel:","javascript:","#","data:")): return None
@@ -40,9 +44,9 @@ def check_html(path,project=False):
         if 'data-theme="dark"' not in text: fail(f"{path}: Dark theme support missing")
         if 'id="themeToggle"' not in text: fail(f"{path}: theme toggle missing")
         if "../../index.html" not in text: fail(f"{path}: portfolio return link missing")
-    for a in parser.controls:
+    for a,wrapped in parser.controls:
         cid=a.get("id","")
-        named=bool(a.get("aria-label") or a.get("aria-labelledby") or a.get("title") or (cid and cid in parser.labels))
+        named=bool(wrapped or a.get("aria-label") or a.get("aria-labelledby") or a.get("title") or (cid and cid in parser.labels))
         if not named: fail(f"{path}: unlabeled control id={cid or '(none)'}")
     for ref in parser.refs:
         target=local_ref(p,ref)
