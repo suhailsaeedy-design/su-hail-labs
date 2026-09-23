@@ -294,6 +294,7 @@ window.SUHAIL_LABS_DATA = {
         "Local recent-test history",
         "Copyable and downloadable text report",
         "Light and Dark themes with Light as the default",
+        "Missing measurements are reported as unavailable rather than replaced with invented values",
         "No attempt to expose Wi-Fi passwords, SSIDs or private router settings"
       ],
       "learning": [
@@ -303,7 +304,7 @@ window.SUHAIL_LABS_DATA = {
         "Study a responsive network diagnostic workflow with local history and reporting"
       ],
       "videos": [],
-      "note": "Browser-based diagnostic only. Results describe the effective internet path to the test service and can be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
+      "note": "Browser-based diagnostic only. Reported speed, latency and jitter values come from completed browser measurements. Browser-provided connection hints are labeled as estimates; unavailable measurements stay unavailable. Results can still be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
     }
   ]
 };
