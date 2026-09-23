@@ -311,6 +311,46 @@ window.SUHAIL_LABS_DATA = {
       ],
       "videos": [],
       "note": "Browser-based diagnostic only. Speed, latency and jitter come from completed measurements; download/upload results use the median of completed samples. Device, OS, browser and connection hints are explicitly labeled as browser inferences or estimates. Unavailable measurements stay unavailable. Results can still be affected by Wi-Fi signal, router load, ISP congestion, VPNs, browser restrictions and server distance."
+    },
+    {
+      "id": "005",
+      "slug": "005-smart-inventory",
+      "title": "Smart Inventory & Barcode Stock Manager",
+      "category": "SOFTWARE",
+      "categoryLabel": "Software / Business Tools / Inventory",
+      "focusAreas": [
+        "SOFTWARE",
+        "BUSINESS",
+        "TOOLS"
+      ],
+      "summary": "A privacy-first stock manager with low-stock alerts, optional camera barcode scanning, local activity history, reports, CSV export and JSON backup.",
+      "description": "Project 005 is a practical browser-based inventory workspace for small shops, offices and personal stock tracking. It provides product and quantity management, low-stock and out-of-stock alerts, expiry attention, optional camera barcode/QR detection where the browser supports it, local activity history, category insights, CSV export, summary reports and portable JSON backup/restore. All inventory records stay in the current browser unless the user deliberately exports them.",
+      "status": "Published",
+      "featured": true,
+      "live": "projects/005-smart-inventory/index.html",
+      "liveLabel": "Open inventory demo",
+      "download": "downloads/005-smart-inventory.zip",
+      "source": "",
+      "detailsUrl": "project.html?id=005",
+      "highlights": [
+        "Product, SKU/barcode, category, quantity, minimum stock, cost and optional expiry tracking",
+        "Low-stock, out-of-stock and expiry attention indicators",
+        "Optional camera barcode/QR detection with manual-code fallback",
+        "Quick stock increase/decrease controls and editable inventory cards",
+        "Local activity history, category distribution insights and calculated summary report",
+        "CSV export plus portable JSON backup and restore",
+        "Multiple currency display options",
+        "Light and Dark themes with Light as the default",
+        "Inventory data stays in the browser unless the user exports it"
+      ],
+      "learning": [
+        "Study local-first CRUD workflows without a paid backend",
+        "See how browser feature detection can provide camera scanning with a manual fallback",
+        "Explore responsive inventory dashboards, filters, alerts and reporting",
+        "Understand how local backup/export workflows can reduce accidental data loss in browser-only apps"
+      ],
+      "videos": [],
+      "note": "Portfolio and small-workspace inventory demo. Data is stored in this browser, not a production server database. Camera scanning depends on browser support for BarcodeDetector and camera permission; manual barcode/SKU entry is always available."
     }
   ]
 };
