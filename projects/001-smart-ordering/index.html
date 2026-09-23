@@ -1,20 +1,281 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Smart Ordering Dashboard — Suhail Labs</title>
-  <link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg" /><style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#07111f;color:#f5f8ff}.app{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr}.shop,.ops{padding:28px}.shop{background:radial-gradient(circle at 0 0,#12324d 0,transparent 35%),#091522}.ops{background:#0b1728;border-left:1px solid #203248}h1,h2,h3,p{margin-top:0}.muted{color:#9cafc4}.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.brand{font-weight:900;font-size:20px;margin-right:auto}.pill,.btn,input{border:1px solid #294159;border-radius:12px;background:#0d1d30;color:#fff;padding:10px 12px}.btn{cursor:pointer;font-weight:800}.btn.primary{background:linear-gradient(135deg,#6fe7ff,#7a9cff);color:#07111f;border:0}.search{width:100%;margin:18px 0}.cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.pill{cursor:pointer;font-size:12px}.pill.active{background:#6fe7ff;color:#07111f}.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.item,.cart,.order,.stat{border:1px solid #203248;background:#0d1d30;border-radius:16px;padding:15px}.item{display:flex;justify-content:space-between;gap:12px}.item small{color:#9cafc4}.price{font-weight:900;color:#6fe7ff}.cart{margin-top:18px}.cartrow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #203248}.qty{display:flex;gap:5px;align-items:center}.qty button{width:28px;height:28px;border:1px solid #294159;background:#13253a;color:#fff;border-radius:8px}.total{display:flex;justify-content:space-between;font-size:18px;font-weight:900;margin:14px 0}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}.stat strong{display:block;font-size:24px}.stat span{font-size:10px;color:#9cafc4}.lanes{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.lane{min-height:300px}.lane h3{font-size:13px;color:#9cafc4}.order{margin-bottom:9px}.order b{display:block}.order small{color:#9cafc4}.order button{width:100%;margin-top:9px}.flash{animation:flash .6s}@keyframes flash{50%{box-shadow:0 0 0 2px #6fe7ff}}@media(max-width:1000px){.app{grid-template-columns:1fr}.ops{border-left:0;border-top:1px solid #203248}.lanes{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.menu,.metrics,.lanes{grid-template-columns:1fr}.shop,.ops{padding:18px}}</style></head><body><main class="app">
-<section class="shop"><div class="bar"><div class="brand">Suhail Labs • Smart Order</div><a class="btn" href="../../index.html">Portfolio</a></div><h1 style="margin-top:24px">Customer Ordering</h1><p class="muted">Choose items, build a cart, then send the order into the live kitchen workflow.</p><input class="search" id="search" placeholder="Search menu…"><div class="cats" id="cats"></div><div class="menu" id="menu"></div><section class="cart"><h2>Your cart</h2><div id="cart"></div><div class="total"><span>Total</span><span id="total">$0.00</span></div><div class="bar"><input id="name" placeholder="Customer name"><input id="table" placeholder="Table / pickup"><button class="btn primary" id="checkout">Send order →</button></div></section></section>
-<section class="ops"><div class="bar"><div><h2>Kitchen Operations</h2><p class="muted">Live demo workflow</p></div><button class="btn" id="demo">Add demo order</button></div><div class="metrics" id="metrics"></div><div class="lanes" id="lanes"></div></section>
-</main><script>
-const items=[['Burger','Meals',8.5],['Chicken Bowl','Meals',10],['Pasta','Meals',9.5],['Caesar Salad','Fresh',6.5],['Fries','Sides',3.5],['Soup','Sides',4],['Coffee','Drinks',2.5],['Lemonade','Drinks',3],['Cheesecake','Dessert',5],['Brownie','Dessert',4.5]].map((x,i)=>({id:i+1,name:x[0],cat:x[1],price:x[2]}));
-let cat='All',cart={},orders=[],seq=1001;
-const qs=s=>document.querySelector(s), money=n=>'$'+n.toFixed(2);
-function menu(){const q=qs('#search').value.toLowerCase();qs('#menu').innerHTML=items.filter(x=>(cat==='All'||x.cat===cat)&&x.name.toLowerCase().includes(q)).map(x=>`<article class="item"><div><b>${x.name}</b><br><small>${x.cat}</small></div><div><div class="price">${money(x.price)}</div><button class="btn" onclick="add(${x.id})">Add</button></div></article>`).join('')}
-function cats(){const cs=['All',...new Set(items.map(x=>x.cat))];qs('#cats').innerHTML=cs.map(c=>`<button class="pill ${c===cat?'active':''}" onclick="cat='${c}';cats();menu()">${c}</button>`).join('')}
-function add(id){cart[id]=(cart[id]||0)+1;renderCart()}
-function renderCart(){const es=Object.entries(cart).filter(([,q])=>q>0);qs('#cart').innerHTML=es.length?es.map(([id,q])=>{const x=items.find(i=>i.id==id);return `<div class="cartrow"><span>${x.name}</span><div class="qty"><button onclick="change(${id},-1)">−</button><b>${q}</b><button onclick="change(${id},1)">+</button></div><b>${money(x.price*q)}</b></div>`}).join(''):'<p class="muted">Cart is empty.</p>';qs('#total').textContent=money(es.reduce((s,[id,q])=>s+items.find(i=>i.id==id).price*q,0))}
-function change(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCart()}
-const stages=['Incoming','Preparing','Ready','Completed'];
-function addOrder(demo=false){const lines=demo?[{name:'Burger',q:2},{name:'Coffee',q:1}]:Object.entries(cart).map(([id,q])=>({name:items.find(i=>i.id==id).name,q}));if(!lines.length)return alert('Add at least one item.');orders.unshift({id:seq++,name:demo?'Demo Customer':qs('#name').value||'Guest',place:demo?'Table 4':qs('#table').value||'Pickup',stage:0,lines,total:demo?19.5:Object.entries(cart).reduce((s,[id,q])=>s+items.find(i=>i.id==id).price*q,0)});if(!demo){cart={};renderCart()}renderOps()}
-function move(id){const o=orders.find(x=>x.id===id);if(o&&o.stage<3)o.stage++;renderOps()}
-function renderOps(){qs('#metrics').innerHTML=stages.map((s,i)=>`<div class="stat"><strong>${orders.filter(o=>o.stage===i).length}</strong><span>${s}</span></div>`).join('');qs('#lanes').innerHTML=stages.map((s,i)=>`<section class="lane"><h3>${s.toUpperCase()}</h3>${orders.filter(o=>o.stage===i).map(o=>`<article class="order"><b>#${o.id} • ${o.name}</b><small>${o.place} • ${o.lines.map(l=>l.q+'× '+l.name).join(', ')}</small><div class="price">${money(o.total)}</div>${i<3?`<button class="btn primary" onclick="move(${o.id})">${['Start preparing','Mark ready','Complete'][i]} →</button>`:''}</article>`).join('')}</section>`).join('')}
-qs('#search').addEventListener('input',menu);qs('#checkout').onclick=()=>addOrder(false);qs('#demo').onclick=()=>addOrder(true);cats();menu();renderCart();addOrder(true);renderOps();
-</script></body></html>
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f8fc">
+<title>Smart Ordering & Kitchen Operations — Suhail Labs</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg">
+<style>
+:root{
+  --bg:#f5f8fc;--surface:#fff;--surface-2:#edf4fa;--text:#142033;--muted:#64748b;
+  --line:#d9e4ee;--brand:#18a8e6;--brand-2:#67c9ff;--ok:#169c69;--warn:#d08a16;
+  --danger:#d54855;--shadow:0 16px 44px rgba(36,62,88,.12);--radius:18px;
+}
+html[data-theme="dark"]{
+  --bg:#07111f;--surface:#0d1d30;--surface-2:#13253a;--text:#f5f8ff;--muted:#9cafc4;
+  --line:#263c52;--brand:#6fe7ff;--brand-2:#7a9cff;--ok:#5ee6a8;--warn:#ffd166;
+  --danger:#ff7b86;--shadow:0 20px 60px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,input{font:inherit}
+button,a{ -webkit-tap-highlight-color:transparent}
+.topbar{position:sticky;top:0;z-index:40;display:flex;gap:12px;align-items:center;padding:14px clamp(14px,3vw,28px);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.brand{font-weight:950;margin-right:auto}.brand small{display:block;color:var(--muted);font-size:11px;font-weight:700;margin-top:2px}
+.btn,.icon-btn,.pill{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;min-height:42px;padding:0 13px;font-weight:800;cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#06111e;border-color:transparent}
+.btn.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 35%,var(--line))}
+.btn.ghost{background:var(--surface-2)}.icon-btn{width:44px;padding:0}
+.shell{width:min(1440px,calc(100% - 28px));margin:0 auto;padding:24px 0 44px}
+.hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:18px}
+.hero h1{font-size:clamp(28px,4vw,48px);line-height:1.04;margin:0 0 8px}.hero p{margin:0;color:var(--muted);max-width:760px}
+.badge{display:inline-flex;align-items:center;gap:7px;color:var(--ok);font-weight:900;font-size:12px}.badge i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.order-workspace{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.catalog,.cart-panel,.ops-panel{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
+.catalog{padding:18px}.cart-panel{padding:18px;position:sticky;top:84px;max-height:calc(100vh - 104px);display:flex;flex-direction:column}
+.section-head{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}.section-head h2{margin:0;font-size:20px}.muted{color:var(--muted)}
+.search{width:100%;min-height:46px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--text);padding:0 14px;outline:none}
+.search:focus{border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 16%,transparent)}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}.pill{flex:0 0 auto;min-height:36px;font-size:12px}.pill.active{background:var(--brand);color:#06111e;border-color:transparent}
+.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.item{border:1px solid var(--line);background:var(--surface-2);border-radius:15px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.item b{font-size:15px}.item small{display:block;color:var(--muted);margin-top:4px}.price{font-weight:950;color:var(--brand);white-space:nowrap}.item .btn{margin-top:8px;min-height:36px}
+.cart-scroll{overflow:auto;min-height:70px;max-height:40vh;padding-right:3px}
+.cart-empty{padding:18px;border:1px dashed var(--line);border-radius:13px;text-align:center;color:var(--muted)}
+.cartrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.cartrow .name{min-width:0}.cartrow .name b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cartrow .name small{color:var(--muted)}
+.qty{display:flex;align-items:center;gap:5px}.qty button,.remove-item{width:31px;height:31px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:9px;cursor:pointer;font-weight:900}.remove-item{color:var(--danger)}
+.cart-total{display:flex;justify-content:space-between;font-size:20px;font-weight:950;padding:14px 0 10px}
+.cart-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cart-meta input{width:100%;min-height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);color:var(--text);padding:0 11px}
+.cart-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+.order-dock{display:none}
+.ops-panel{margin-top:18px;padding:18px}.ops-toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:16px 0}.stat{border:1px solid var(--line);background:var(--surface-2);border-radius:14px;padding:12px}.stat strong{display:block;font-size:24px}.stat span{font-size:10px;color:var(--muted)}
+.lanes{display:grid;grid-template-columns:repeat(5,minmax(220px,1fr));gap:10px;overflow-x:auto;padding-bottom:5px}
+.lane{min-height:250px;border:1px dashed var(--line);border-radius:15px;padding:10px;background:color-mix(in srgb,var(--surface-2) 55%,transparent)}
+.lane h3{margin:2px 3px 10px;color:var(--muted);font-size:11px;letter-spacing:.08em}
+.order{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;margin-bottom:9px}.order.cancelled{opacity:.72}.order-head{display:flex;justify-content:space-between;gap:8px}.order small{color:var(--muted)}
+.order-lines{display:grid;gap:6px;margin:9px 0}.order-line{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px}.order-line button{border:0;background:transparent;color:var(--danger);font-weight:900;cursor:pointer}
+.order-buttons{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:9px}.order-buttons .btn{min-height:36px;font-size:12px}
+.notice{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 14px;border-radius:999px;font-weight:800;z-index:80;transition:.2s}.notice.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1050px){.order-workspace{grid-template-columns:minmax(0,1fr) 330px}.metrics{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){
+  body{padding-bottom:76px}.shell{width:min(100% - 20px,720px);padding-top:16px}.topbar{padding:10px}.topbar .btn.portfolio{display:none}
+  .hero{align-items:start;flex-direction:column}.order-workspace{grid-template-columns:1fr}.catalog{padding:13px}.menu{grid-template-columns:1fr 1fr}
+  .cart-panel{position:fixed;z-index:70;left:8px;right:8px;bottom:8px;top:auto;max-height:min(70vh,620px);transform:translateY(calc(100% + 18px));transition:transform .22s ease;border-radius:20px;padding:15px}
+  .cart-panel.open{transform:translateY(0)}.cart-scroll{max-height:34vh}.order-dock{display:flex;position:fixed;z-index:68;left:8px;right:8px;bottom:8px;min-height:58px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);border-radius:16px;align-items:center;padding:8px 10px;gap:10px}
+  .order-dock strong{display:block}.order-dock small{color:var(--muted)}.order-dock .dock-total{margin-left:auto;font-weight:950;color:var(--brand)}.order-dock .btn{min-height:40px}
+  .ops-panel{padding:13px}.metrics{grid-template-columns:repeat(2,1fr)}.lanes{grid-template-columns:repeat(5,230px)}
+}
+@media(max-width:480px){.menu{grid-template-columns:1fr}.item{grid-template-columns:1fr auto}.cart-meta{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Suhail Labs • Smart Order<small>Professional ordering & kitchen workflow demo</small></div>
+  <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch theme" title="Switch theme">☾</button>
+  <a class="btn ghost portfolio" href="../../index.html">Portfolio</a>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <div>
+      <div class="badge"><i></i> LIVE FRONT-END WORKFLOW</div>
+      <h1>Ordering that stays clear from menu to kitchen.</h1>
+      <p>Products and the current order stay together. Customers can remove one item, clear the current order, and staff can correct or cancel submitted orders before completion.</p>
+    </div>
+  </section>
+
+  <div class="order-workspace">
+    <section class="catalog" aria-labelledby="menuTitle">
+      <div class="section-head"><div><h2 id="menuTitle">Menu</h2><span class="muted">Choose items to add to the order</span></div></div>
+      <input class="search" id="search" type="search" placeholder="Search menu…" autocomplete="off">
+      <div class="cats" id="cats" aria-label="Menu categories"></div>
+      <div class="menu" id="menu"></div>
+    </section>
+
+    <aside class="cart-panel" id="cartPanel" aria-labelledby="cartTitle">
+      <div class="section-head">
+        <div><h2 id="cartTitle">Current order</h2><span class="muted" id="cartCountLabel">0 items</span></div>
+        <button class="btn danger" id="closeCart" type="button" hidden>Close</button>
+      </div>
+      <div class="cart-scroll" id="cart"></div>
+      <div class="cart-total"><span>Total</span><span id="total">$0.00</span></div>
+      <div class="cart-meta"><input id="name" placeholder="Customer name" autocomplete="off"><input id="table" placeholder="Table / pickup" autocomplete="off"></div>
+      <div class="cart-actions"><button class="btn primary" id="checkout" type="button">Send order →</button><button class="btn danger" id="clearCart" type="button">Clear</button></div>
+    </aside>
+  </div>
+
+  <section class="ops-panel" aria-labelledby="opsTitle">
+    <div class="ops-toolbar">
+      <div><h2 id="opsTitle" style="margin:0">Kitchen Operations</h2><span class="muted">Incoming → Preparing → Ready → Completed • Cancel anytime before completion</span></div>
+      <button class="btn ghost" id="demo" type="button">+ Demo order</button>
+    </div>
+    <div class="metrics" id="metrics"></div>
+    <div class="lanes" id="lanes"></div>
+  </section>
+</main>
+
+<div class="order-dock" id="orderDock">
+  <div><strong>Current order</strong><small id="dockCount">0 items</small></div>
+  <span class="dock-total" id="dockTotal">$0.00</span>
+  <button class="btn primary" id="openCart" type="button">View</button>
+</div>
+<div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+<script>
+const items=[
+  ['Burger','Meals',8.5],['Chicken Bowl','Meals',10],['Pasta','Meals',9.5],
+  ['Caesar Salad','Fresh',6.5],['Fries','Sides',3.5],['Soup','Sides',4],
+  ['Coffee','Drinks',2.5],['Lemonade','Drinks',3],['Cheesecake','Dessert',5],['Brownie','Dessert',4.5]
+].map((x,i)=>({id:i+1,name:x[0],cat:x[1],price:x[2]}));
+
+const qs=s=>document.querySelector(s);
+const money=n=>'$'+Number(n||0).toFixed(2);
+const ACTIVE_STAGES=['Incoming','Preparing','Ready','Completed'];
+let category='All';
+let cart={};
+let orders=[];
+let sequence=1001;
+
+function toast(message){
+  const el=qs('#notice');el.textContent=message;el.classList.add('show');
+  clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),1700);
+}
+
+function setTheme(theme){
+  document.documentElement.dataset.theme=theme;
+  localStorage.setItem('smartOrderTheme',theme);
+  qs('#themeToggle').textContent=theme==='dark'?'☀':'☾';
+}
+setTheme(localStorage.getItem('smartOrderTheme')||'light');
+qs('#themeToggle').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+
+function renderMenu(){
+  const query=qs('#search').value.trim().toLowerCase();
+  qs('#menu').innerHTML=items
+    .filter(item=>(category==='All'||item.cat===category)&&item.name.toLowerCase().includes(query))
+    .map(item=>`<article class="item">
+      <div><b>${item.name}</b><small>${item.cat}</small></div>
+      <div style="text-align:right"><div class="price">${money(item.price)}</div><button class="btn" type="button" onclick="addItem(${item.id})">Add +</button></div>
+    </article>`).join('');
+}
+
+function renderCategories(){
+  const categories=['All',...new Set(items.map(item=>item.cat))];
+  qs('#cats').innerHTML=categories.map(c=>`<button class="pill ${c===category?'active':''}" type="button" onclick="category='${c}';renderCategories();renderMenu()">${c}</button>`).join('');
+}
+
+function cartEntries(){return Object.entries(cart).filter(([,qty])=>qty>0)}
+function cartTotal(){return cartEntries().reduce((sum,[id,qty])=>sum+items.find(i=>i.id==id).price*qty,0)}
+function cartUnits(){return cartEntries().reduce((sum,[,qty])=>sum+qty,0)}
+
+function renderCart(){
+  const entries=cartEntries();
+  qs('#cart').innerHTML=entries.length?entries.map(([id,qty])=>{
+    const item=items.find(i=>i.id==id);
+    return `<div class="cartrow">
+      <div class="name"><b>${item.name}</b><small>${money(item.price)} each</small></div>
+      <div class="qty"><button type="button" onclick="changeQty(${id},-1)" aria-label="Decrease ${item.name}">−</button><b>${qty}</b><button type="button" onclick="changeQty(${id},1)" aria-label="Increase ${item.name}">+</button></div>
+      <div style="display:flex;align-items:center;gap:7px"><b>${money(item.price*qty)}</b><button class="remove-item" type="button" onclick="removeItem(${id})" aria-label="Remove ${item.name}">×</button></div>
+    </div>`;
+  }).join(''):'<div class="cart-empty">Your order list is empty. Add an item from the menu.</div>';
+
+  const units=cartUnits(),total=cartTotal();
+  qs('#total').textContent=money(total);qs('#dockTotal').textContent=money(total);
+  qs('#cartCountLabel').textContent=`${units} item${units===1?'':'s'}`;
+  qs('#dockCount').textContent=`${units} item${units===1?'':'s'}`;
+}
+
+function addItem(id){cart[id]=(cart[id]||0)+1;renderCart();toast('Added to current order')}
+function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart()}
+function removeItem(id){delete cart[id];renderCart();toast('Item removed')}
+function clearCart(){if(!cartEntries().length)return;cart={};renderCart();toast('Current order cleared')}
+
+function buildLinesFromCart(){
+  return cartEntries().map(([id,qty])=>{const item=items.find(i=>i.id==id);return {id:item.id,name:item.name,qty,price:item.price}});
+}
+function lineTotal(lines){return lines.reduce((sum,line)=>sum+line.price*line.qty,0)}
+
+function addOrder(demo=false){
+  const lines=demo
+    ?[{id:1,name:'Burger',qty:2,price:8.5},{id:7,name:'Coffee',qty:1,price:2.5}]
+    :buildLinesFromCart();
+  if(!lines.length){toast('Add at least one item first.');return}
+  orders.unshift({
+    id:sequence++,name:demo?'Demo Customer':qs('#name').value.trim()||'Guest',
+    place:demo?'Table 4':qs('#table').value.trim()||'Pickup',
+    stage:0,cancelled:false,lines,total:lineTotal(lines)
+  });
+  if(!demo){cart={};renderCart();qs('#cartPanel').classList.remove('open')}
+  renderOperations();toast('Order sent to kitchen')
+}
+
+function moveOrder(id){
+  const order=orders.find(o=>o.id===id);
+  if(order&&!order.cancelled&&order.stage<3){order.stage++;renderOperations()}
+}
+
+function cancelOrder(id){
+  const order=orders.find(o=>o.id===id);
+  if(!order||order.cancelled||order.stage===3)return;
+  if(confirm(`Cancel order #${order.id}?`)){order.cancelled=true;renderOperations();toast(`Order #${order.id} cancelled`)}
+}
+
+function removeOrderLine(orderId,lineIndex){
+  const order=orders.find(o=>o.id===orderId);
+  if(!order||order.cancelled||order.stage===3)return;
+  order.lines.splice(lineIndex,1);
+  if(!order.lines.length){order.cancelled=true;order.total=0;toast(`Order #${order.id} cancelled because no items remain`)}
+  else{order.total=lineTotal(order.lines);toast('Item removed from submitted order')}
+  renderOperations();
+}
+
+function orderCard(order){
+  const next=['Start preparing','Mark ready','Complete'][order.stage]||'';
+  const lineHtml=order.lines.map((line,index)=>`<div class="order-line"><span>${line.qty}× ${line.name}</span>${!order.cancelled&&order.stage<3?`<button type="button" onclick="removeOrderLine(${order.id},${index})" aria-label="Remove ${line.name} from order">Remove</button>`:''}</div>`).join('');
+  return `<article class="order ${order.cancelled?'cancelled':''}">
+    <div class="order-head"><b>#${order.id} • ${order.name}</b><span class="price">${money(order.total)}</span></div>
+    <small>${order.place}</small>
+    <div class="order-lines">${lineHtml||'<span class="muted">No active items</span>'}</div>
+    ${!order.cancelled&&order.stage<3?`<div class="order-buttons"><button class="btn primary" type="button" onclick="moveOrder(${order.id})">${next} →</button><button class="btn danger" type="button" onclick="cancelOrder(${order.id})">Cancel</button></div>`:''}
+  </article>`;
+}
+
+function renderOperations(){
+  const completed=orders.filter(o=>o.stage===3&&!o.cancelled);
+  const cancelled=orders.filter(o=>o.cancelled);
+  const counts=ACTIVE_STAGES.map((_,index)=>orders.filter(o=>o.stage===index&&!o.cancelled).length);
+  const sales=completed.reduce((sum,o)=>sum+o.total,0);
+  const metrics=[
+    ['Incoming',counts[0]],['Preparing',counts[1]],['Ready',counts[2]],['Completed',counts[3]],['Cancelled',cancelled.length],['Completed sales',money(sales)]
+  ];
+  qs('#metrics').innerHTML=metrics.map(([label,value])=>`<div class="stat"><strong>${value}</strong><span>${label}</span></div>`).join('');
+
+  const lanes=[
+    ...ACTIVE_STAGES.map((label,index)=>({label,orders:orders.filter(o=>o.stage===index&&!o.cancelled)})),
+    {label:'Cancelled',orders:cancelled}
+  ];
+  qs('#lanes').innerHTML=lanes.map(lane=>`<section class="lane"><h3>${lane.label.toUpperCase()}</h3>${lane.orders.map(orderCard).join('')||'<span class="muted" style="font-size:12px">No orders</span>'}</section>`).join('');
+}
+
+qs('#search').addEventListener('input',renderMenu);
+qs('#checkout').onclick=()=>addOrder(false);
+qs('#demo').onclick=()=>addOrder(true);
+qs('#clearCart').onclick=clearCart;
+qs('#openCart').onclick=()=>qs('#cartPanel').classList.add('open');
+qs('#closeCart').onclick=()=>qs('#cartPanel').classList.remove('open');
+
+const mobile=matchMedia('(max-width:760px)');
+function syncMobile(){
+  qs('#closeCart').hidden=!mobile.matches;
+  if(!mobile.matches)qs('#cartPanel').classList.remove('open');
+}
+mobile.addEventListener?.('change',syncMobile);syncMobile();
+
+renderCategories();renderMenu();renderCart();addOrder(true);renderOperations();
+</script>
+</body>
+</html>
