@@ -14,7 +14,7 @@
   const savedTheme = localStorage.getItem('suhailLabsTheme');
   document.documentElement.dataset.theme = savedTheme || 'light';
   const themeToggle = $('#themeToggle');
-  const syncThemeLabel = () => { if (themeToggle) themeToggle.textContent = document.documentElement.dataset.theme === 'dark' ? '☼' : '◐'; };
+  const syncThemeLabel = () => { if (themeToggle) themeToggle.textContent = document.documentElement.dataset.theme === 'dark' ? '☼' : '◐'; const meta=document.querySelector('meta[name="theme-color"]'); if(meta)meta.setAttribute('content',document.documentElement.dataset.theme==='dark'?'#07111f':'#f5f8fc'); };
   syncThemeLabel();
   themeToggle?.addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -78,7 +78,7 @@
     });
     grid.innerHTML = items.map(p => `
       <article class="project-card reveal visible">
-        <div class="project-cover"><strong>${esc(p.category==='3D'?'3D':p.category==='WEB'?'WEB':'APP')}</strong></div>
+        <div class="project-cover"><strong>${esc(p.category==='3D'?'3D':p.category==='WEB'?'WEB':p.category==='TOOLS'?'TOOL':p.category==='AI'?'AI':p.category==='DATABASE'?'DB':'APP')}</strong></div>
         <div class="project-body">
           <div class="project-meta"><span>PROJECT ${esc(p.id)}</span><span>${esc(p.status)}</span></div>
           <h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p>
@@ -105,7 +105,7 @@
   if (profilesGrid) {
     const activeProfiles = data.profile.profiles.filter(p => /^https?:\/\//.test(p.url || ''));
     profilesGrid.innerHTML = activeProfiles.length
-      ? activeProfiles.map(p => `<article class="profile-card"><strong>${esc(p.name)}</strong><small>${esc(p.group)} • ${esc(p.handle)}</small><p>${esc(p.note)}</p><a href="${esc(p.url)}" target="_blank" rel="noopener">Open ↗</a></article>`).join('')
+      ? activeProfiles.map(p => `<article class="profile-card"><strong>${esc(p.name)}</strong><small>${esc(p.group)} • ${esc(p.handle)}</small><p>${esc(p.note)}</p><a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">Open ↗</a></article>`).join('')
       : '<article class="profile-card"><strong>Official profiles coming soon</strong><p>Verified public links will appear here after they are configured.</p></article>';
   }
 
