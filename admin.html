@@ -89,7 +89,7 @@
         <section class="studio-view" data-view-panel="projects">
           <div class="studio-heading"><div><span class="section-kicker">PROJECT LIBRARY</span><h1>Projects</h1><p>Add, edit, duplicate or remove portfolio projects. Draft changes stay in this browser until you export and publish them.</p></div><button class="button button-primary" id="addProject" type="button">+ New project</button></div>
           <div class="studio-card table-card">
-            <div class="table-tools"><label class="search-box"><span>⌕</span><input id="adminProjectSearch" type="search" placeholder="Search project title, category or technology…" /></label><span class="table-count" id="projectCountLabel"></span></div>
+            <div class="table-tools"><label class="search-box"><span>⌕</span><input id="adminProjectSearch" type="search" placeholder="Search project title, category or focus area…" aria-label="Search projects" /></label><span class="table-count" id="projectCountLabel"></span></div>
             <div class="table-wrap"><table class="studio-table"><thead><tr><th>Project</th><th>Category</th><th>Status</th><th>Access</th><th>Actions</th></tr></thead><tbody id="projectTableBody"></tbody></table></div>
           </div>
         </section>
@@ -104,9 +104,9 @@
           <div class="assistant-layout">
             <article class="studio-card assistant-chat">
               <div class="assistant-messages" id="assistantMessages" aria-live="polite"></div>
-              <form class="assistant-form" id="assistantForm"><input id="assistantInput" autocomplete="off" placeholder="Ask: How many projects do I have? Which links are missing?" /><button class="button button-primary" type="submit">Ask</button></form>
+              <form class="assistant-form" id="assistantForm"><input id="assistantInput" autocomplete="off" placeholder="Ask: How many projects do I have? Which links are missing?" aria-label="Ask portfolio knowledge assistant" /><button class="button button-primary" type="submit">Ask</button></form>
             </article>
-            <aside class="studio-card assistant-help"><span class="section-kicker">TRY THESE</span><button data-prompt="How many projects do I have?">How many projects do I have?</button><button data-prompt="What is my latest project?">What is my latest project?</button><button data-prompt="Which profile links are missing?">Which profile links are missing?</button><button data-prompt="Tell me about Project 001">Tell me about Project 001</button><button data-prompt="What technologies do I use?">What technologies do I use?</button><div class="assistant-note"><strong>Architecture note</strong><p>The assistant uses a local knowledge engine now. A provider adapter can be added later without changing the public website data model.</p></div></aside>
+            <aside class="studio-card assistant-help"><span class="section-kicker">TRY THESE</span><button data-prompt="How many projects do I have?">How many projects do I have?</button><button data-prompt="What is my latest project?">What is my latest project?</button><button data-prompt="Which profile links are missing?">Which profile links are missing?</button><button data-prompt="Tell me about Project 001">Tell me about Project 001</button><button data-prompt="What focus areas do I work in?">What technologies do I use?</button><div class="assistant-note"><strong>Architecture note</strong><p>The assistant uses a local knowledge engine now. A provider adapter can be added later without changing the public website data model.</p></div></aside>
           </div>
         </section>
 
@@ -145,7 +145,7 @@
         <label>Featured<select name="featured"><option value="true">Yes</option><option value="false">No</option></select></label>
         <label class="span-2">Summary<textarea name="summary" rows="3" required></textarea></label>
         <label class="span-2">Description<textarea name="description" rows="5" required></textarea></label>
-        <label class="span-2">Technologies (comma separated)<input name="tech" /></label>
+        <label class="span-2">Focus areas (comma separated)<input name="tech" /></label>
         <label>Live path / URL<input name="live" placeholder="projects/002-name/index.html or https://..." /></label>
         <label>Primary button label<input name="liveLabel" placeholder="Open live demo" /></label>
         <label>Download path / URL<input name="download" placeholder="downloads/002-name.zip or https://..." /></label>
