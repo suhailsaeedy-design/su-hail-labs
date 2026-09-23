@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f5f8fc">
+<meta name="description" content="Browser-based network diagnostics for measured download, upload, latency and jitter with a clear summary report.">
 <title>Network Speed & Device Diagnostics — Suhail Labs</title>
 <link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg">
 <style>
@@ -15,7 +16,7 @@ html[data-theme="dark"]{
   --bg:#07111f;--surface:#0d1d30;--surface2:#13253a;--text:#f5f8ff;--muted:#9cafc4;--line:#263c52;
   --brand:#6fe7ff;--brand2:#7a9cff;--ok:#5ee6a8;--warn:#ffd166;--danger:#ff7b86;--shadow:0 20px 60px rgba(0,0,0,.28)
 }
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.5}button,a{font:inherit}.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:9px;padding:13px clamp(12px,3vw,26px);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.brand{font-weight:950;margin-right:auto}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.btn{min-height:42px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;padding:0 13px;font-weight:850;cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#06111e;border-color:transparent}.btn:disabled{opacity:.55;cursor:not-allowed}.shell{width:min(1220px,calc(100% - 28px));margin:auto;padding:28px 0 50px}.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;margin-bottom:20px}.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--brand)}.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--ok)}h1{font-size:clamp(32px,5vw,56px);line-height:1.02;letter-spacing:-.03em;margin:8px 0}.hero p{margin:0;color:var(--muted);max-width:780px}.run-box{display:flex;gap:8px;align-items:center}.progress-shell{height:8px;background:var(--surface2);border-radius:999px;overflow:hidden;margin:18px 0 8px;border:1px solid var(--line)}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .25s}.phase{font-size:12px;color:var(--muted);min-height:18px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.metric-card,.panel{border:1px solid var(--line);background:var(--surface);border-radius:18px;box-shadow:var(--shadow)}.metric-card{padding:18px}.metric-card .label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.metric-card strong{display:block;font-size:clamp(30px,4vw,46px);line-height:1;margin-top:12px}.metric-card small{color:var(--muted)}.metric-card.download strong{color:var(--brand)}.metric-card.upload strong{color:var(--brand2)}.metric-card.ping strong{color:var(--ok)}.metric-card.jitter strong{color:var(--warn)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{padding:20px}.panel h2{font-size:20px;margin:0 0 13px}.info-list{display:grid;gap:0}.info-row{display:grid;grid-template-columns:minmax(130px,.8fr) 1.2fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}.info-row:last-child{border-bottom:0}.info-row span{color:var(--muted);font-size:12px}.info-row b{font-size:13px;word-break:break-word}.quality{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface2);margin-bottom:14px}.quality-score{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:6px solid var(--brand);font-weight:950;font-size:18px}.quality h3{margin:0}.quality p{margin:3px 0 0;color:var(--muted);font-size:12px}.report{white-space:pre-wrap;border:1px solid var(--line);background:var(--surface2);border-radius:14px;padding:14px;min-height:210px;color:var(--text);font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto}.report-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.notice{margin-top:14px;padding:13px 14px;border:1px solid color-mix(in srgb,var(--brand) 28%,var(--line));background:color-mix(in srgb,var(--brand) 7%,var(--surface));border-radius:14px;color:var(--muted);font-size:12px}.notice strong{color:var(--text)}.history{display:grid;gap:8px;max-height:280px;overflow:auto}.history-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}.history-row small{color:var(--muted)}.status-dot{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.status-dot i{width:8px;height:8px;border-radius:50%;background:var(--muted)}.status-dot.running i{background:var(--warn);animation:pulse 1s infinite}.status-dot.ready i{background:var(--ok)}.status-dot.error i{background:var(--danger)}@keyframes pulse{50%{opacity:.35}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.5}button,a{font:inherit}.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:9px;padding:13px clamp(12px,3vw,26px);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.brand{font-weight:950;margin-right:auto}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.btn{min-height:42px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;padding:0 13px;font-weight:850;cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#06111e;border-color:transparent}.btn:disabled{opacity:.55;cursor:not-allowed}.btn:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 38%,transparent);outline-offset:2px}.shell{width:min(1220px,calc(100% - 28px));margin:auto;padding:28px 0 50px}.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;margin-bottom:20px}.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--brand)}.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--ok)}h1{font-size:clamp(32px,5vw,56px);line-height:1.02;letter-spacing:-.03em;margin:8px 0}.hero p{margin:0;color:var(--muted);max-width:780px}.run-box{display:flex;gap:8px;align-items:center}.progress-shell{height:8px;background:var(--surface2);border-radius:999px;overflow:hidden;margin:18px 0 8px;border:1px solid var(--line)}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .25s}.phase{font-size:12px;color:var(--muted);min-height:18px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.metric-card,.panel{border:1px solid var(--line);background:var(--surface);border-radius:18px;box-shadow:var(--shadow)}.metric-card{padding:18px}.metric-card .label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.metric-card strong{display:block;font-size:clamp(30px,4vw,46px);line-height:1;margin-top:12px}.metric-card small{color:var(--muted)}.metric-card.download strong{color:var(--brand)}.metric-card.upload strong{color:var(--brand2)}.metric-card.ping strong{color:var(--ok)}.metric-card.jitter strong{color:var(--warn)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{padding:20px}.panel h2{font-size:20px;margin:0 0 13px}.info-list{display:grid;gap:0}.info-row{display:grid;grid-template-columns:minmax(130px,.8fr) 1.2fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}.info-row:last-child{border-bottom:0}.info-row span{color:var(--muted);font-size:12px}.info-row b{font-size:13px;word-break:break-word}.quality{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface2);margin-bottom:14px}.quality-score{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:6px solid var(--brand);font-weight:950;font-size:18px}.quality h3{margin:0}.quality p{margin:3px 0 0;color:var(--muted);font-size:12px}.report{white-space:pre-wrap;border:1px solid var(--line);background:var(--surface2);border-radius:14px;padding:14px;min-height:210px;color:var(--text);font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto}.report-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.notice{margin-top:14px;padding:13px 14px;border:1px solid color-mix(in srgb,var(--brand) 28%,var(--line));background:color-mix(in srgb,var(--brand) 7%,var(--surface));border-radius:14px;color:var(--muted);font-size:12px}.notice strong{color:var(--text)}.history{display:grid;gap:8px;max-height:280px;overflow:auto}.history-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}.history-row small{color:var(--muted)}.status-dot{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.status-dot i{width:8px;height:8px;border-radius:50%;background:var(--muted)}.status-dot.running i{background:var(--warn);animation:pulse 1s infinite}.status-dot.ready i{background:var(--ok)}.status-dot.error i{background:var(--danger)}@keyframes pulse{50%{opacity:.35}}
 @media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.run-box{justify-content:flex-start}}
 @media(max-width:540px){.shell{width:min(100% - 18px,540px);padding-top:18px}.topbar{padding:10px}.topbar .portfolio{display:none}.metrics{grid-template-columns:1fr 1fr;gap:8px}.metric-card{padding:14px}.metric-card strong{font-size:30px}.panel{padding:15px}.info-row{grid-template-columns:1fr;gap:2px}.run-box{display:grid;grid-template-columns:1fr 1fr}.run-box .primary{grid-column:1/-1}.report-actions .btn{flex:1}.hero h1{font-size:36px}}
 </style>
@@ -53,12 +54,12 @@ html[data-theme="dark"]{
 
 <section class="grid">
   <article class="panel">
-    <h2>Device & connection</h2>
+    <h2>Device & connection hints</h2>
     <div class="info-list">
-      <div class="info-row"><span>Device class</span><b id="deviceType">Detecting…</b></div>
-      <div class="info-row"><span>Operating system</span><b id="os">Detecting…</b></div>
-      <div class="info-row"><span>Browser</span><b id="browser">Detecting…</b></div>
-      <div class="info-row"><span>Connection type</span><b id="connectionType">Not exposed by browser</b></div>
+      <div class="info-row"><span>Device class (inferred)</span><b id="deviceType">Detecting…</b></div>
+      <div class="info-row"><span>Operating system (inferred)</span><b id="os">Detecting…</b></div>
+      <div class="info-row"><span>Browser (inferred)</span><b id="browser">Detecting…</b></div>
+      <div class="info-row"><span>Browser network hint</span><b id="connectionType">Not exposed by browser</b></div>
       <div class="info-row"><span>Browser estimate</span><b id="browserEstimate">—</b></div>
       <div class="info-row"><span>Online status</span><b id="onlineState">—</b></div>
       <div class="info-row"><span>Viewport</span><b id="viewport">—</b></div>
@@ -67,9 +68,9 @@ html[data-theme="dark"]{
   </article>
 
   <article class="panel">
-    <h2>Quality summary</h2>
+    <h2>Practical quality summary</h2>
     <div class="quality"><div class="quality-score" id="qualityScore">—</div><div><h3 id="qualityTitle">Run a test</h3><p id="qualityText">The report will summarize speed, responsiveness and likely everyday suitability.</p></div></div>
-    <div class="report" id="report">No report yet.</div>
+    <div class="report" id="report">No report yet.</div><div class="notice"><strong>Score method:</strong> the quality score is a simple heuristic built from completed measurements. It is not an ISP certification or a substitute for specialist network testing.</div>
     <div class="report-actions"><button class="btn" id="copyReport" type="button" disabled>Copy report</button><button class="btn" id="downloadReport" type="button" disabled>Download report</button><button class="btn" id="clearHistory" type="button">Clear history</button></div>
   </article>
 
@@ -86,7 +87,7 @@ html[data-theme="dark"]{
       <div class="info-row"><span>Latency</span><b>Response delay. Lower is usually better.</b></div>
       <div class="info-row"><span>Jitter</span><b>How much latency changes between samples. Lower is steadier.</b></div>
     </div>
-    <div class="notice"><strong>Measurement note:</strong> results can change with server distance, network congestion, VPNs, browser limits, background downloads and Wi‑Fi signal quality. Run more than once for a better picture.</div>
+    <div class="notice"><strong>Measurement note:</strong> results can change with server distance, network congestion, VPNs, browser limits, background downloads and Wi‑Fi signal quality. The tool uses medians to reduce one-off spikes, but several tests still give a better picture.</div>
   </article>
 </section>
 </main>
@@ -97,7 +98,7 @@ const TEST_URL='https://speed.cloudflare.com';
 const state={running:false,result:null};
 const fmt=(n,d=1)=>Number.isFinite(n)?n.toFixed(d):'—';
 
-function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('networkDiagnosticsTheme',theme);qs('#themeToggle').textContent=theme==='dark'?'☀':'☾'}
+function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('networkDiagnosticsTheme',theme);qs('#themeToggle').textContent=theme==='dark'?'☀':'☾';document.querySelector('meta[name="theme-color"]').setAttribute('content',theme==='dark'?'#07111f':'#f5f8fc')}
 setTheme(localStorage.getItem('networkDiagnosticsTheme')||'light');
 qs('#themeToggle').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
 
@@ -147,9 +148,15 @@ function setProgress(value,phase){qs('#progress').style.width=Math.max(0,Math.mi
 function median(values){const a=[...values].sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2}
 function stdev(values){if(values.length<2)return 0;const mean=values.reduce((a,b)=>a+b,0)/values.length;return Math.sqrt(values.reduce((s,v)=>s+(v-mean)**2,0)/values.length)}
 
+async function fetchWithTimeout(url,options={},timeoutMs=12000){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{return await fetch(url,{...options,signal:controller.signal})}
+  finally{clearTimeout(timer)}
+}
 async function timedFetch(url,options={}){
   const start=performance.now();
-  const response=await fetch(url,{cache:'no-store',...options});
+  const response=await fetchWithTimeout(url,{cache:'no-store',...options});
   if(!response.ok)throw new Error(`HTTP ${response.status}`);
   const buffer=await response.arrayBuffer();
   return {ms:performance.now()-start,bytes:buffer.byteLength};
@@ -158,7 +165,7 @@ async function measureLatency(samples){
   const values=[];
   for(let i=0;i<samples;i++){
     const start=performance.now();
-    const response=await fetch(`${TEST_URL}/__down?bytes=0&r=${Math.random()}`,{cache:'no-store'});
+    const response=await fetchWithTimeout(`${TEST_URL}/__down?bytes=0&r=${Math.random()}`,{cache:'no-store'},8000);
     if(!response.ok)throw new Error('Latency request failed');
     await response.arrayBuffer();
     values.push(performance.now()-start);
@@ -171,11 +178,13 @@ async function measureDownload(bytes){
 }
 async function measureUpload(bytes){
   const payload=new Uint8Array(bytes);
-  crypto.getRandomValues(payload.subarray(0,Math.min(payload.length,65536)));
+  for(let offset=0;offset<payload.length;offset+=65536){
+    crypto.getRandomValues(payload.subarray(offset,Math.min(offset+65536,payload.length)));
+  }
   const start=performance.now();
-  const response=await fetch(`${TEST_URL}/__up?r=${Math.random()}`,{
+  const response=await fetchWithTimeout(`${TEST_URL}/__up?r=${Math.random()}`,{
     method:'POST',body:payload,cache:'no-store',headers:{'Content-Type':'application/octet-stream'}
-  });
+  },15000);
   if(!response.ok)throw new Error('Upload request failed');
   await response.text();
   return bytes*8/((performance.now()-start)/1000)/1e6;
@@ -227,7 +236,9 @@ function makeReport(r){
     'Summary:',
     q.text,
     '',
-    'Important: this browser test measures the effective internet path to an external test service. It cannot directly read Wi-Fi SSID, router model, private router settings, or the raw Wi-Fi radio link rate.'
+    'Method: download/upload use the median of completed samples; latency uses the median response time; jitter is the variation across latency samples.',
+    '',
+    'Important: device/OS/browser fields are browser-based inferences. This test measures the effective internet path to an external test service and cannot directly read Wi-Fi SSID, router model, private router settings, or the raw Wi-Fi radio link rate.'
   ].join('\n');
 }
 function renderResult(r){
@@ -261,14 +272,14 @@ async function runTest(quick=false){
     const downSizes=quick?[500000,1000000]:[1000000,3000000,5000000];
     const downs=[];
     for(const size of downSizes){downs.push(await measureDownload(size));}
-    const download=Math.max(...downs);
+    const download=median(downs);
 
     setProgress(72,'Measuring upload speed…');
     let upload=NaN;
     try{
       const upSizes=quick?[250000]:[250000,750000,1250000],ups=[];
       for(const size of upSizes){ups.push(await measureUpload(size));}
-      upload=Math.max(...ups);
+      upload=median(ups);
     }catch(error){
       console.warn('Upload measurement unavailable:',error);
       upload=NaN;
