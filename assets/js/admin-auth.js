@@ -9,7 +9,7 @@
     if(!cfg?.cloudAdmin?.enabled)return {enabled:false,authorized:false,role:'',reason:'Private administration is unavailable.'};
     if(!window.SMD21CloudAuth)return {enabled:true,authorized:false,role:'',reason:'Secure sign-in is unavailable.'};
     const st=await SMD21CloudAuth.status();
-    if(!st.configured||!st.connected||st.source!=='session')return {enabled:true,authorized:false,role:'',config:cfg,authStatus:st,reason:'A fresh verified sign-in is required.'};
+    if(!st.configured||!st.connected)return {enabled:true,authorized:false,role:'',config:cfg,authStatus:st,reason:'A fresh verified sign-in is required.'};
     let user=st.session?.user||{};
     try{user=await SMD21CloudAuth.getVerifiedUser()}catch{return {enabled:true,authorized:false,role:'',config:cfg,authStatus:st,reason:'Sign-in verification failed.'}}
     const role=roleFromUser(user,cfg),ok=role==='owner';
