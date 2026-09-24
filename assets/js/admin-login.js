@@ -8,11 +8,16 @@
     try{await SMD21CloudAuth.signOutRemote()}catch{}
     status(message,'bad');
   }
+  async function redirectBlocked(){
+    sessionStorage.removeItem(VERIFIED);sessionStorage.removeItem(PENDING);
+    try{await SMD21CloudAuth.signOutRemote()}catch{}
+    location.replace('/suhail-labs/index.html');
+  }
   async function complete(){
     if(params.get('oauth')!=='return'||sessionStorage.getItem(PENDING)!==panel){status('Sign in with Google to continue.');return}
     try{
       const auth=await SMD21AdminAuth.verifiedCloudRole();
-      if(!auth.authorized){await fail();return}
+      if(!auth.authorized){if(auth.blocked){await redirectBlocked();return}await fail();return}
       sessionStorage.setItem(VERIFIED,JSON.stringify({panel,userId:auth.user?.id||'',verifiedAt:Date.now()}));
       sessionStorage.removeItem(PENDING);
       status('Sign-in verified. Opening private administration…','ok');
