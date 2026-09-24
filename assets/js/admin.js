@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const VERIFIED='smd_private_admin_verified_v2',panel='suhail-labs';
+  const VERIFIED='smd_private_admin_verified_v3:suhail-labs',panel='suhail-labs';
   const mount=document.querySelector('#secureAdminMount'),status=document.querySelector('#secureAdminStatus');
   const setStatus=(m,state='')=>{if(status){status.textContent=m;status.className='admin-status '+state}};
   async function fetchBundle(auth){
