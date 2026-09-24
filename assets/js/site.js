@@ -37,11 +37,19 @@
 
   const navToggle = $('#navToggle');
   const mainNav = $('#mainNav');
-  navToggle?.addEventListener('click', () => {
-    const open = mainNav.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', String(open));
+  const setNavOpen = open => {
+    mainNav?.classList.toggle('open', open);
+    navToggle?.setAttribute('aria-expanded', String(open));
+    navToggle?.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  };
+  navToggle?.addEventListener('click', () => setNavOpen(!mainNav?.classList.contains('open')));
+  $('#mainNav a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && mainNav?.classList.contains('open')) {
+      setNavOpen(false);
+      navToggle?.focus();
+    }
   });
-  $$('#mainNav a').forEach(a => a.addEventListener('click', () => { mainNav?.classList.remove('open'); navToggle?.setAttribute('aria-expanded','false'); }));
 
   $$('[data-name]').forEach(el => el.textContent = data.profile.name);
   const bio = $('[data-bio]'); if (bio) bio.textContent = data.profile.bio;
@@ -78,7 +86,7 @@
     {key:'TOOLS',label:'Tools'},
     {key:'3D',label:'3D'}
   ];
-  if (filters) filters.innerHTML = categories.map(c => `<button type="button" class="filter-button${c.key === 'All' ? ' active' : ''}" data-filter="${esc(c.key)}">${esc(c.label)}</button>`).join('');
+  if (filters) filters.innerHTML = categories.map(c => `<button type="button" class="filter-button${c.key === 'All' ? ' active' : ''}" data-filter="${esc(c.key)}" aria-pressed="${c.key === 'All'}">${esc(c.label)}</button>`).join('');
 
   function renderProjects(){
     if (!grid) return;
@@ -108,7 +116,11 @@
   filters?.addEventListener('click', e => {
     const btn = e.target.closest('[data-filter]'); if (!btn) return;
     activeCategory = btn.dataset.filter;
-    $$('.filter-button', filters).forEach(b => b.classList.toggle('active', b === btn));
+    $('.filter-button', filters).forEach(b => {
+      const selected = b === btn;
+      b.classList.toggle('active', selected);
+      b.setAttribute('aria-pressed', String(selected));
+    });
     renderProjects();
   });
   search?.addEventListener('input', renderProjects);
@@ -155,7 +167,12 @@
     if (/download|source|code/.test(q)) return `Projects with downloads: ${publicProjects.filter(p=>p.download).map(p=>`Project ${p.id} — ${p.title}`).join('; ')}.`;
     if (/what.*build|skills|service|special|capabil|technolog/.test(q)) return `${data.profile.name} focuses on websites, software, databases, AI integration, business systems, admin/analytics, automation tools and interactive 3D experiences.`;
     if (/freelanc|hire|work with|client/.test(q)) return 'Open “Work with me” from the navigation for the client project process and project brief.';
-    if (/github/.test(q)) return 'The developer GitHub account is intentionally not linked from the public portfolio. Use Suhail Labs project pages and downloads instead.';
+    if (/github/.test(q)) {
+      const github=(data.profile.profiles||[]).find(p=>/github/i.test(p.name||'')&&/^https?:\/\//.test(p.url||''));
+      return github
+        ? `GitHub is listed in the public Profiles section as ${github.handle||github.url}. Open the Profiles section to use the published link.`
+        : 'A public GitHub profile link is not configured yet.';
+    }
     if (/project|portfolio|latest/.test(q)) return `Suhail Labs currently publishes ${publicProjects.length} projects: ${publicProjects.map(p=>`${p.id} ${p.title}`).join('; ')}.`;
     if (/who|about|suhail/.test(q)) return `${data.profile.name} — ${data.profile.title}. ${data.profile.bio}`;
     return 'Ask me about Suhail’s projects, skills, downloads, GitHub profile or client work.';
