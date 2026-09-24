@@ -167,6 +167,10 @@ print("Project 001 mobile shrink containment: PASS")
 p4=read("projects/004-network-speed/index.html")
 for banned in ["downlink*.22","Math.max(...downs)","Math.max(...ups)"]:
     if banned in p4: fail(f"Project 004 contains disallowed measurement shortcut: {banned}")
+for css_marker in [".metric-card{padding:18px;min-width:0}",".metric-card strong{display:block;overflow-wrap:anywhere;word-break:break-word;",".metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}"]:
+    if css_marker not in p4: fail(f"Project 004 mobile result-card shrink containment missing: {css_marker}")
+print("Project 004 mobile result-card shrink containment: PASS")
+
 for marker in ["const download=downs.length?median(downs):NaN","const upload=ups.length?median(ups):NaN","fetchWithTimeout","No missing value was invented or estimated","jitter:values.length>1?stdev(values):NaN"]:
     if marker not in p4: fail(f"Project 004 missing measurement-integrity marker: {marker}")
 
