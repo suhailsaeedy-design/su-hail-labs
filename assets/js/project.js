@@ -1,20 +1,49 @@
 (async () => {
   'use strict';
   const bundled = window.SUHAIL_LABS_DATA;
+  const LIVE_CACHE = 'suhailLabsPublicCacheV1';
   let data = bundled;
+  const readLiveCache = () => {
+    try {
+      const cached = JSON.parse(localStorage.getItem(LIVE_CACHE) || 'null');
+      return cached?.data && typeof cached.data === 'object' ? cached : null;
+    } catch { return null; }
+  };
+  const writeLiveCache = payload => {
+    if (!payload?.data || typeof payload.data !== 'object') return;
+    try {
+      localStorage.setItem(LIVE_CACHE, JSON.stringify({
+        data: payload.data,
+        revision: Number(payload.revision || 0),
+        updated_at: String(payload.updated_at || ''),
+        cached_at: Date.now()
+      }));
+    } catch (error) {
+      console.warn('Suhail Labs live cache unavailable.', error);
+    }
+  };
   const params = new URLSearchParams(location.search);
   const previewDraft = params.get('preview') === 'draft';
   if (previewDraft) {
     try { data = JSON.parse(localStorage.getItem('suhailLabsDraftDataV2')) || bundled; } catch { data = bundled; }
   } else {
+    const cached = readLiveCache();
+    if (cached?.data) data = cached.data;
     try {
       const response = await fetch('https://qdfylefkkkyjwtqqiuye.supabase.co/functions/v1/suhail-labs-public', {
         cache: 'no-store'
       });
       const payload = await response.json().catch(() => null);
-      if (response.ok && payload?.data) data = payload.data;
+      if (response.ok && payload?.data) {
+        data = payload.data;
+        writeLiveCache(payload);
+      } else if (!cached) {
+        console.warn('Suhail Labs live content unavailable; using bundled fallback.');
+      }
     } catch (error) {
-      console.warn('Suhail Labs live project data unavailable; using bundled fallback.', error);
+      console.warn(cached
+        ? 'Suhail Labs live content unavailable; using last successful live snapshot.'
+        : 'Suhail Labs live content unavailable; using bundled fallback.', error);
     }
   }
   const $ = s => document.querySelector(s);
