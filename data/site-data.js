@@ -68,29 +68,29 @@ window.SUHAIL_LABS_DATA = {
       {
         "name": "YouTube",
         "group": "Social",
-        "handle": "Add channel",
-        "url": "",
+        "handle": "@suhailsaeedy",
+        "url": "https://www.youtube.com/@suhailsaeedy",
         "note": "Project walkthroughs, coding videos and demos."
       },
       {
         "name": "Instagram",
         "group": "Social",
-        "handle": "Add username",
-        "url": "",
+        "handle": "@suhailsaeedy",
+        "url": "https://www.instagram.com/suhailsaeedy/",
         "note": "Short project showcases and reels."
       },
       {
         "name": "TikTok",
         "group": "Social",
-        "handle": "Add username",
-        "url": "",
+        "handle": "@suhailsaeedy",
+        "url": "https://www.tiktok.com/@suhailsaeedy",
         "note": "Short-form coding and project demos."
       },
       {
         "name": "Facebook",
         "group": "Social",
-        "handle": "Add profile/page",
-        "url": "",
+        "handle": "Facebook profile",
+        "url": "https://www.facebook.com/share/1DVYQ3pqDK/?mibextid=wwXIfr",
         "note": "Project posts, videos and community updates."
       }
     ]
@@ -258,7 +258,7 @@ window.SUHAIL_LABS_DATA = {
         "Multilingual dictionary and clinical reference workspace",
         "Offline-first PWA architecture and downloadable offline packs",
         "Interactive anatomy and cross-linked medical terms",
-        "Local study assistant tools with zero-cost mode",
+        "Online AI study assistant with offline non-AI study tools",
         "Optional Supabase authentication and sync architecture",
         "Separate owner/admin diagnostics and release verification workflow",
         "Light and Dark themes with Light as the default"
