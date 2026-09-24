@@ -72,7 +72,7 @@
     navToggle?.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   };
   navToggle?.addEventListener('click', () => setNavOpen(!mainNav?.classList.contains('open')));
-  $('#mainNav a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+  $$('#mainNav a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && mainNav?.classList.contains('open')) {
       setNavOpen(false);
@@ -145,7 +145,7 @@
   filters?.addEventListener('click', e => {
     const btn = e.target.closest('[data-filter]'); if (!btn) return;
     activeCategory = btn.dataset.filter;
-    $('.filter-button', filters).forEach(b => {
+    $$('.filter-button', filters).forEach(b => {
       const selected = b === btn;
       b.classList.toggle('active', selected);
       b.setAttribute('aria-pressed', String(selected));
