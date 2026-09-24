@@ -19,7 +19,7 @@
     if(!gate||gate.panel!==panel){location.replace('admin-login.html');return}
     try{
       const auth=await SMD21AdminAuth.verifiedCloudRole();
-      if(!auth.authorized||auth.authStatus?.source!=='session')throw new Error('verification');
+      if(!auth.authorized||!auth.user?.id||auth.user.id!==gate.userId)throw new Error('verification');
       setStatus('Verified owner session. Loading Creator Studio…','ok');
       const bundle=await fetchBundle(auth);
       document.documentElement.lang='en';document.documentElement.dir='ltr';
