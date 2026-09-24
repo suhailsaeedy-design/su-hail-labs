@@ -113,7 +113,7 @@ dialog{border:0;padding:0;background:transparent;color:var(--text);width:min(680
 
 <dialog id="itemDialog">
   <form method="dialog" class="dialog" id="itemForm">
-    <div class="dialog-head"><h2 id="itemDialogTitle">Add inventory item</h2><button type="submit" class="btn ghost" value="cancel" aria-label="Close item editor">×</button></div>
+    <div class="dialog-head"><h2 id="itemDialogTitle">Add inventory item</h2><button type="button" class="btn ghost" data-close-item aria-label="Close item editor">×</button></div>
     <div class="dialog-body">
       <input type="hidden" name="id">
       <div class="form-grid">
@@ -126,7 +126,7 @@ dialog{border:0;padding:0;background:transparent;color:var(--text);width:min(680
         <label class="field">Expiry date <span>(optional)</span><input name="expiry" type="date"></label>
       </div>
       <p id="itemMessage" style="min-height:18px;color:var(--danger);font-size:12px;margin:10px 0 0"></p>
-      <div class="dialog-actions"><button type="submit" class="btn ghost" value="cancel">Cancel</button><button type="submit" class="btn primary" id="saveItem" value="default">Save item</button></div>
+      <div class="dialog-actions"><button type="button" class="btn ghost" data-close-item>Cancel</button><button type="submit" class="btn primary" id="saveItem" value="default">Save item</button></div>
     </div>
   </form>
 </dialog>
@@ -263,6 +263,7 @@ function openItem(item=null,prefillCode=''){
   const f=$('#itemForm');f.reset();f.elements.id.value=item?.id||'';f.elements.name.value=item?.name||'';f.elements.code.value=item?.code||prefillCode;f.elements.category.value=item?.category||'';f.elements.qty.value=item?.qty??0;f.elements.min.value=item?.min??5;f.elements.cost.value=item?.cost??0;f.elements.expiry.value=item?.expiry||'';$('#itemMessage').textContent='';$('#itemDialogTitle').textContent=item?'Edit inventory item':'Add inventory item';$('#itemDialog').showModal();setTimeout(()=>f.elements.name.focus(),50)
 }
 $('#addItem').onclick=()=>openItem();
+$('[data-close-item]').forEach(button=>button.addEventListener('click',()=>$('#itemDialog').close()));
 $('#itemForm').addEventListener('submit',e=>{
   e.preventDefault();const f=e.currentTarget,id=f.elements.id.value,code=f.elements.code.value.trim(),name=f.elements.name.value.trim(),category=f.elements.category.value.trim();
   if(!name||!code||!category)return;
@@ -310,7 +311,9 @@ function useCode(raw){
   if(item){$('#search').value=item.code;$('#statusFilter').value='all';$('#categoryFilter').value='all';renderInventory();setTimeout(()=>{const el=document.querySelector('[data-id="'+CSS.escape(item.id)+'"]');el?.scrollIntoView({behavior:'smooth',block:'center'});el?.classList.add('flash');setTimeout(()=>el?.classList.remove('flash'),1500)},80);toast('Existing item found: '+item.name)}
   else{openItem(null,code);toast('New code detected — add item details')}
 }
-$('#scanItem').onclick=startScanner;$('#closeScanner').onclick=stopScanner;$('#scannerDialog').addEventListener('cancel',e=>{e.preventDefault();stopScanner()});$('#useManualCode').onclick=()=>useCode($('#manualCode').value);$('#manualCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();useCode(e.currentTarget.value)}});
+$('#scanItem').onclick=startScanner;$('#closeScanner').onclick=stopScanner;$('#scannerDialog').addEventListener('cancel',e=>{e.preventDefault();stopScanner()});$('#useManualCode').onclick=()=>useCode($('#manualCode').value);
+addEventListener('pagehide',stopScanner);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&stream)stopScanner()});$('#manualCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();useCode(e.currentTarget.value)}});
 
 load();
 </script>
