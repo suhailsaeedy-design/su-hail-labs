@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const VERIFIED='smd_private_admin_verified_v2',PENDING='smd_private_admin_oauth_pending_v2',panel='suhail-labs';
+  const VERIFIED='smd_private_admin_verified_v3:suhail-labs',PENDING='smd_private_admin_oauth_pending_v3:suhail-labs',panel='suhail-labs';
   const $=s=>document.querySelector(s),params=new URLSearchParams(location.search);
   const status=(m,state='')=>{const e=$('#adminLoginStatus');if(e){e.textContent=m;e.className='admin-status '+state}};
   async function fail(message='Sign-in failed. This account is not authorized for private administration.'){
