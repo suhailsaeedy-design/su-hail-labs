@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 from html.parser import HTMLParser
-import json,re,subprocess,tempfile,sys
+import json,re,subprocess,tempfile,sys,zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 errors=[]
@@ -81,6 +81,31 @@ for page in [
     "projects/005-smart-inventory/index.html",
 ]:
     check_html(page,project=True)
+
+download_pairs={
+    "downloads/001-smart-ordering.zip":"projects/001-smart-ordering/index.html",
+    "downloads/002-network-lab.zip":"projects/002-network-lab/index.html",
+    "downloads/004-network-speed.zip":"projects/004-network-speed/index.html",
+    "downloads/005-smart-inventory.zip":"projects/005-smart-inventory/index.html",
+}
+for zip_rel,html_rel in download_pairs.items():
+    zip_path=ROOT/zip_rel
+    html_path=ROOT/html_rel
+    if not zip_path.is_file():
+        fail(f"{zip_rel}: download ZIP missing")
+        continue
+    try:
+        with zipfile.ZipFile(zip_path) as zf:
+            names=zf.namelist()
+            if names!=["index.html"]:
+                fail(f"{zip_rel}: ZIP must contain exactly index.html, got {names}")
+            elif zf.read("index.html")!=html_path.read_bytes():
+                fail(f"{zip_rel}: ZIP index.html is stale and does not match {html_rel}")
+            bad=zf.testzip()
+            if bad:
+                fail(f"{zip_rel}: corrupt ZIP entry {bad}")
+    except Exception as e:
+        fail(f"{zip_rel}: invalid ZIP ({e})")
 
 raw=read("data/site-data.js").strip()
 try:
