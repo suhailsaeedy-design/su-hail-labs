@@ -123,12 +123,26 @@ projects=data.get("projects",[])
 ids=[str(p.get("id","")) for p in projects]
 if ids!=["001","002","003","004","005"]: fail(f"project IDs/order must be 001–005, got {ids}")
 if len(ids)!=len(set(ids)): fail("project IDs must be unique")
+def safe_public_url(value,allow_relative=True):
+    value=str(value or "").strip()
+    if not value: return True
+    if re.match(r"(?i)^https://",value): return True
+    if re.match(r"(?i)^[a-z][a-z0-9+.-]*:",value): return False
+    return allow_relative and not value.startswith("//")
+
+for profile in data.get("profile",{}).get("profiles",[]):
+    url=str(profile.get("url","") or "")
+    if url and not safe_public_url(url,False):
+        fail(f"Profile {profile.get('name')}: public URL must use https://")
+
 for project in projects:
     for required in ("id","title","category","categoryLabel","status","summary","description","focusAreas","highlights","learning","detailsUrl","note"):
         if required not in project: fail(f"Project {project.get('id')}: missing required field {required}")
-    for key in ("live","download"):
+    for key in ("detailsUrl","live","download","source"):
         ref=str(project.get(key,"") or "")
-        if ref and not ref.startswith(("http://","https://")) and not (ROOT/ref).exists():
+        if ref and not safe_public_url(ref,True):
+            fail(f"Project {project.get('id')}: unsafe {key} URL scheme")
+        if ref and not ref.startswith("https://") and not (ROOT/ref.split("?",1)[0].split("#",1)[0]).exists():
             fail(f"Project {project.get('id')}: missing {key} target {ref}")
 
 p1=read("projects/001-smart-ordering/index.html")
@@ -162,8 +176,14 @@ for marker in ["data-close-item","addEventListener('pagehide',stopScanner)","vis
 site_css=read("assets/css/site.css")
 if "prefers-reduced-motion" not in site_css: fail("Suhail Labs main site reduced-motion fallback missing")
 site_js=read("assets/js/site.js")
-for marker in ["aria-pressed","Close navigation","GitHub is listed in the public Profiles section"]:
+for marker in ["aria-pressed","Close navigation","GitHub is listed in the public Profiles section","$('#mainNav a').forEach","suhailLabsPublicCacheV1","last successful live snapshot"]:
     if marker not in site_js: fail(f"Suhail Labs public UI accessibility/consistency marker missing: {marker}")
+if re.search(r"(?<!\$)\$\([^\n;]*\)\.forEach\(",site_js):
+    fail("Suhail Labs public UI contains forEach on a single querySelector result")
+
+project_js=read("assets/js/project.js")
+for marker in ["suhailLabsPublicCacheV1","last successful live snapshot"]:
+    if marker not in project_js: fail(f"Suhail Labs project page live-cache marker missing: {marker}")
 
 for path in ["assets/js/site.js","assets/js/project.js","assets/js/admin.js"]:
     r=subprocess.run(["node","--check",str(ROOT/path)],capture_output=True,text=True)
