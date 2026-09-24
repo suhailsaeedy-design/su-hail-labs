@@ -34,12 +34,12 @@ button,a{ -webkit-tap-highlight-color:transparent}
 .badge{display:inline-flex;align-items:center;gap:7px;color:var(--ok);font-weight:900;font-size:12px}.badge i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .order-workspace{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
 .catalog,.cart-panel,.ops-panel{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
-.catalog{padding:18px}.cart-panel{padding:18px;position:sticky;top:84px;max-height:calc(100vh - 104px);display:flex;flex-direction:column}
+.catalog{padding:18px;min-width:0}.cart-panel{padding:18px;position:sticky;top:84px;max-height:calc(100vh - 104px);display:flex;flex-direction:column}
 .section-head{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}.section-head h2{margin:0;font-size:20px}.muted{color:var(--muted)}
 .search{width:100%;min-height:46px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--text);padding:0 14px;outline:none}
 .search:focus{border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 16%,transparent)}
-.cats{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}.pill{flex:0 0 auto;min-height:36px;font-size:12px}.pill.active{background:var(--brand);color:#06111e;border-color:transparent}
-.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.cats{display:flex;min-width:0;max-width:100%;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}.pill{flex:0 0 auto;min-height:36px;font-size:12px}.pill.active{background:var(--brand);color:#06111e;border-color:transparent}
+.menu{display:grid;min-width:0;max-width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 .item{border:1px solid var(--line);background:var(--surface-2);border-radius:15px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
 .item b{font-size:15px}.item small{display:block;color:var(--muted);margin-top:4px}.price{font-weight:950;color:var(--brand);white-space:nowrap}.item .btn{margin-top:8px;min-height:36px}
 .cart-scroll{overflow:auto;min-height:70px;max-height:40vh;padding-right:3px}
