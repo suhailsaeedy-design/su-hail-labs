@@ -91,6 +91,9 @@ except Exception as e:
     data={}; fail(f"site-data.js parse failed: {e}")
 
 if data.get("profile",{}).get("name")!="Suhail Saeedy": fail("public creator name must be exactly Suhail Saeedy")
+for profile in data.get("profile",{}).get("profiles",[]):
+    if profile.get("url") and str(profile.get("handle","")).lower().startswith("add "):
+        fail(f"Profile {profile.get('name')}: public URL exists but handle is still a placeholder")
 projects=data.get("projects",[])
 ids=[str(p.get("id","")) for p in projects]
 if ids!=["001","002","003","004","005"]: fail(f"project IDs/order must be 001–005, got {ids}")
@@ -106,6 +109,10 @@ for project in projects:
 p1=read("projects/001-smart-ordering/index.html")
 for marker in ["function cancelOrder(","function removeOrderLine(","function removeItem(","Current order"]:
     if marker not in p1: fail(f"Project 001 missing required workflow: {marker}")
+
+p3data=next((p for p in projects if str(p.get("id"))=="003"),{})
+if any("local study assistant" in str(x).lower() for x in p3data.get("highlights",[])):
+    fail("Project 003: public highlights must not imply offline/local AI")
 
 p2=read("projects/002-network-lab/index.html")
 if "Simulation metrics" not in p2 or "not readings from your real network" not in p2:
