@@ -170,8 +170,10 @@ for marker in ["BarcodeDetector","getUserMedia","localStorage","reportText()","r
     if marker not in p5: fail(f"Project 005 missing inventory feature marker: {marker}")
 if "sample records" not in p5 or "stored only in this browser" not in p5:
     fail("Project 005 must clearly label sample/local inventory data")
-for marker in ["data-close-item","addEventListener('pagehide',stopScanner)","visibilitychange"]:
+for marker in ["data-close-item","$('[data-close-item]').forEach","addEventListener('pagehide',stopScanner)","visibilitychange"]:
     if marker not in p5: fail(f"Project 005 missing safe dialog/camera lifecycle marker: {marker}")
+if "$('[data-close-item]').forEach" in p5:
+    fail("Project 005 close buttons must use the multi-element selector helper")
 
 site_css=read("assets/css/site.css")
 if "prefers-reduced-motion" not in site_css: fail("Suhail Labs main site reduced-motion fallback missing")
