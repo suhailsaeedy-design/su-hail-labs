@@ -19,6 +19,7 @@ html[data-theme="dark"]{
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.5}button,a{font:inherit}.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:9px;padding:13px clamp(12px,3vw,26px);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.brand{font-weight:950;margin-right:auto}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.btn{min-height:42px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px;padding:0 13px;font-weight:850;cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#06111e;border-color:transparent}.btn:disabled{opacity:.55;cursor:not-allowed}.btn:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 38%,transparent);outline-offset:2px}.shell{width:min(1220px,calc(100% - 28px));margin:auto;padding:28px 0 50px}.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;margin-bottom:20px}.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--brand)}.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--ok)}h1{font-size:clamp(32px,5vw,56px);line-height:1.02;letter-spacing:-.03em;margin:8px 0}.hero p{margin:0;color:var(--muted);max-width:780px}.run-box{display:flex;gap:8px;align-items:center}.progress-shell{height:8px;background:var(--surface2);border-radius:999px;overflow:hidden;margin:18px 0 8px;border:1px solid var(--line)}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .25s}.phase{font-size:12px;color:var(--muted);min-height:18px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.metric-card,.panel{border:1px solid var(--line);background:var(--surface);border-radius:18px;box-shadow:var(--shadow)}.metric-card{padding:18px}.metric-card .label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.metric-card strong{display:block;font-size:clamp(30px,4vw,46px);line-height:1;margin-top:12px}.metric-card small{color:var(--muted)}.metric-card.download strong{color:var(--brand)}.metric-card.upload strong{color:var(--brand2)}.metric-card.ping strong{color:var(--ok)}.metric-card.jitter strong{color:var(--warn)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{padding:20px}.panel h2{font-size:20px;margin:0 0 13px}.info-list{display:grid;gap:0}.info-row{display:grid;grid-template-columns:minmax(130px,.8fr) 1.2fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}.info-row:last-child{border-bottom:0}.info-row span{color:var(--muted);font-size:12px}.info-row b{font-size:13px;word-break:break-word}.quality{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface2);margin-bottom:14px}.quality-score{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:6px solid var(--brand);font-weight:950;font-size:18px}.quality h3{margin:0}.quality p{margin:3px 0 0;color:var(--muted);font-size:12px}.report{white-space:pre-wrap;border:1px solid var(--line);background:var(--surface2);border-radius:14px;padding:14px;min-height:210px;color:var(--text);font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto}.report-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.notice{margin-top:14px;padding:13px 14px;border:1px solid color-mix(in srgb,var(--brand) 28%,var(--line));background:color-mix(in srgb,var(--brand) 7%,var(--surface));border-radius:14px;color:var(--muted);font-size:12px}.notice strong{color:var(--text)}.history{display:grid;gap:8px;max-height:280px;overflow:auto}.history-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}.history-row small{color:var(--muted)}.status-dot{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.status-dot i{width:8px;height:8px;border-radius:50%;background:var(--muted)}.status-dot.running i{background:var(--warn);animation:pulse 1s infinite}.status-dot.ready i{background:var(--ok)}.status-dot.error i{background:var(--danger)}@keyframes pulse{50%{opacity:.35}}
 @media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.run-box{justify-content:flex-start}}
 @media(max-width:540px){.shell{width:min(100% - 18px,540px);padding-top:18px}.topbar{padding:10px}.topbar .portfolio{display:none}.metrics{grid-template-columns:1fr 1fr;gap:8px}.metric-card{padding:14px}.metric-card strong{font-size:30px}.panel{padding:15px}.info-row{grid-template-columns:1fr;gap:2px}.run-box{display:grid;grid-template-columns:1fr 1fr}.run-box .primary{grid-column:1/-1}.report-actions .btn{flex:1}.hero h1{font-size:36px}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -146,7 +147,7 @@ connection()?.addEventListener?.('change',updateDeviceInfo);
 function setStatus(kind,text){const el=qs('#status');el.className=`status-dot ${kind}`;el.querySelector('span').textContent=text}
 function setProgress(value,phase){qs('#progress').style.width=Math.max(0,Math.min(100,value))+'%';qs('#phase').textContent=phase}
 function median(values){const a=[...values].sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2}
-function stdev(values){if(values.length<2)return 0;const mean=values.reduce((a,b)=>a+b,0)/values.length;return Math.sqrt(values.reduce((s,v)=>s+(v-mean)**2,0)/values.length)}
+function stdev(values){if(values.length<2)return NaN;const mean=values.reduce((a,b)=>a+b,0)/values.length;return Math.sqrt(values.reduce((s,v)=>s+(v-mean)**2,0)/values.length)}
 
 async function fetchWithTimeout(url,options={},timeoutMs=12000){
   const controller=new AbortController();
@@ -164,13 +165,21 @@ async function timedFetch(url,options={}){
 async function measureLatency(samples){
   const values=[];
   for(let i=0;i<samples;i++){
-    const start=performance.now();
-    const response=await fetchWithTimeout(`${TEST_URL}/__down?bytes=0&r=${Math.random()}`,{cache:'no-store'},8000);
-    if(!response.ok)throw new Error('Latency request failed');
-    await response.arrayBuffer();
-    values.push(performance.now()-start);
+    try{
+      const start=performance.now();
+      const response=await fetchWithTimeout(`${TEST_URL}/__down?bytes=0&r=${Math.random()}`,{cache:'no-store'},8000);
+      if(!response.ok)throw new Error('Latency request failed');
+      await response.arrayBuffer();
+      values.push(performance.now()-start);
+    }catch(error){
+      console.warn('Latency sample unavailable:',error);
+    }
   }
-  return {ping:median(values),jitter:stdev(values),samples:values};
+  return {
+    ping:values.length?median(values):NaN,
+    jitter:values.length>1?stdev(values):NaN,
+    samples:values
+  };
 }
 async function measureDownload(bytes){
   const {ms,bytes:received}=await timedFetch(`${TEST_URL}/__down?bytes=${bytes}&r=${Math.random()}`);
@@ -271,23 +280,30 @@ async function runTest(quick=false){
     setProgress(35,'Measuring download speed…');
     const downSizes=quick?[500000,1000000]:[1000000,3000000,5000000];
     const downs=[];
-    for(const size of downSizes){downs.push(await measureDownload(size));}
-    const download=median(downs);
+    for(const size of downSizes){
+      try{downs.push(await measureDownload(size))}
+      catch(error){console.warn('Download sample unavailable:',error)}
+    }
+    const download=downs.length?median(downs):NaN;
 
     setProgress(72,'Measuring upload speed…');
-    let upload=NaN;
-    try{
-      const upSizes=quick?[250000]:[250000,750000,1250000],ups=[];
-      for(const size of upSizes){ups.push(await measureUpload(size));}
-      upload=median(ups);
-    }catch(error){
-      console.warn('Upload measurement unavailable:',error);
-      upload=NaN;
-      qs('#phase').textContent='Upload measurement could not complete in this browser/network. No upload value was invented or estimated.';
+    const upSizes=quick?[250000]:[250000,750000,1250000],ups=[];
+    for(const size of upSizes){
+      try{ups.push(await measureUpload(size))}
+      catch(error){console.warn('Upload sample unavailable:',error)}
     }
+    const upload=ups.length?median(ups):NaN;
 
     const result={time:new Date().toISOString(),download,upload,ping:latency.ping,jitter:latency.jitter};
-    state.result=result;renderResult(result);saveHistory(result);setProgress(100,'Test complete. Review the summary report below.');setStatus('ready','Test complete');
+    state.result=result;renderResult(result);saveHistory(result);
+    const completed=[download,upload,latency.ping,latency.jitter].filter(Number.isFinite).length;
+    if(completed){
+      setProgress(100,completed===4?'Test complete. Review the summary report below.':'Test complete with unavailable measurements. No missing value was invented or estimated.');
+      setStatus('ready',completed===4?'Test complete':'Partial test complete');
+    }else{
+      setProgress(100,'No measurement could complete against the external test service. Values remain Unavailable.');
+      setStatus('error','Measurements unavailable');
+    }
   }catch(error){
     console.error(error);setStatus('error','Test could not complete');setProgress(0,'The external measurement service may be blocked, unavailable, or restricted by this browser/network.');
   }finally{
