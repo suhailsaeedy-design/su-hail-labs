@@ -159,6 +159,11 @@ if "Simulation metrics" not in p2 or "not readings from your real network" not i
 if ";draw()}" in p2.split("function setTheme(theme)",1)[-1].split("\n",1)[0]:
     fail("Project 002 theme initialization must not draw before canvas setup")
 
+p1=read("projects/001-smart-ordering/index.html")
+for css_marker in [".catalog{padding:18px;min-width:0}",".cats{display:flex;min-width:0;max-width:100%;",".menu{display:grid;min-width:0;max-width:100%;"]:
+    if css_marker not in p1: fail(f"Project 001 mobile shrink containment missing: {css_marker}")
+print("Project 001 mobile shrink containment: PASS")
+
 p4=read("projects/004-network-speed/index.html")
 for banned in ["downlink*.22","Math.max(...downs)","Math.max(...ups)"]:
     if banned in p4: fail(f"Project 004 contains disallowed measurement shortcut: {banned}")
