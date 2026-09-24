@@ -39,11 +39,14 @@ def check_html(path,project=False):
     parser=Parser(); parser.feed(text)
     if 'name="viewport"' not in text: fail(f"{path}: viewport missing")
     if "Suhail Saeedi" in text or "Suhail Saeidi" in text: fail(f"{path}: creator surname misspelled")
+    for tag in re.findall(r"<button\b[^>]*>",text,re.I):
+        if not re.search(r"\btype\s*=",tag,re.I): fail(f"{path}: button missing explicit type")
     if project:
         if 'data-theme="light"' not in text: fail(f"{path}: Light must be the initial theme")
         if 'data-theme="dark"' not in text: fail(f"{path}: Dark theme support missing")
         if 'id="themeToggle"' not in text: fail(f"{path}: theme toggle missing")
         if "../../index.html" not in text: fail(f"{path}: portfolio return link missing")
+        if "prefers-reduced-motion" not in text: fail(f"{path}: reduced-motion fallback missing")
     for a,wrapped in parser.controls:
         cid=a.get("id","")
         named=bool(wrapped or a.get("aria-label") or a.get("aria-labelledby") or a.get("title") or (cid and cid in parser.labels))
@@ -77,7 +80,14 @@ try:
 except Exception as e:
     data={}; fail(f"site-data.js parse failed: {e}")
 
-for project in data.get("projects",[]):
+if data.get("profile",{}).get("name")!="Suhail Saeedy": fail("public creator name must be exactly Suhail Saeedy")
+projects=data.get("projects",[])
+ids=[str(p.get("id","")) for p in projects]
+if ids!=["001","002","003","004","005"]: fail(f"project IDs/order must be 001–005, got {ids}")
+if len(ids)!=len(set(ids)): fail("project IDs must be unique")
+for project in projects:
+    for required in ("id","title","category","categoryLabel","status","summary","description","focusAreas","highlights","learning","detailsUrl","note"):
+        if required not in project: fail(f"Project {project.get('id')}: missing required field {required}")
     for key in ("live","download"):
         ref=str(project.get(key,"") or "")
         if ref and not ref.startswith(("http://","https://")) and not (ROOT/ref).exists():
@@ -96,7 +106,7 @@ if ";draw()}" in p2.split("function setTheme(theme)",1)[-1].split("\n",1)[0]:
 p4=read("projects/004-network-speed/index.html")
 for banned in ["downlink*.22","Math.max(...downs)","Math.max(...ups)"]:
     if banned in p4: fail(f"Project 004 contains disallowed measurement shortcut: {banned}")
-for marker in ["const download=median(downs)","upload=median(ups)","fetchWithTimeout","No upload value was invented or estimated"]:
+for marker in ["const download=downs.length?median(downs):NaN","const upload=ups.length?median(ups):NaN","fetchWithTimeout","No missing value was invented or estimated","jitter:values.length>1?stdev(values):NaN"]:
     if marker not in p4: fail(f"Project 004 missing measurement-integrity marker: {marker}")
 
 p5=read("projects/005-smart-inventory/index.html")
@@ -104,6 +114,14 @@ for marker in ["BarcodeDetector","getUserMedia","localStorage","reportText()","r
     if marker not in p5: fail(f"Project 005 missing inventory feature marker: {marker}")
 if "sample records" not in p5 or "stored only in this browser" not in p5:
     fail("Project 005 must clearly label sample/local inventory data")
+for marker in ["data-close-item","addEventListener('pagehide',stopScanner)","visibilitychange"]:
+    if marker not in p5: fail(f"Project 005 missing safe dialog/camera lifecycle marker: {marker}")
+
+site_css=read("assets/css/site.css")
+if "prefers-reduced-motion" not in site_css: fail("Suhail Labs main site reduced-motion fallback missing")
+site_js=read("assets/js/site.js")
+for marker in ["aria-pressed","Close navigation","GitHub is listed in the public Profiles section"]:
+    if marker not in site_js: fail(f"Suhail Labs public UI accessibility/consistency marker missing: {marker}")
 
 for path in ["assets/js/site.js","assets/js/project.js","assets/js/admin.js"]:
     r=subprocess.run(["node","--check",str(ROOT/path)],capture_output=True,text=True)
