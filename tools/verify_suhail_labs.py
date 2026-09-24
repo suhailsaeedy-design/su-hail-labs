@@ -16,9 +16,12 @@ def read(path):
 
 class Parser(HTMLParser):
     def __init__(self):
-        super().__init__(); self.refs=[]; self.labels=set(); self.controls=[]; self.label_depth=0
+        super().__init__(); self.refs=[]; self.labels=set(); self.controls=[]; self.label_depth=0; self.ids=[]; self.blank_links=[]; self.images=[]
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
+        if a.get("id"): self.ids.append(a["id"])
+        if tag=="a" and str(a.get("target","")).lower()=="_blank": self.blank_links.append(a)
+        if tag=="img": self.images.append(a)
         if tag=="label":
             self.label_depth+=1
             if a.get("for"): self.labels.add(a["for"])
@@ -38,6 +41,13 @@ def check_html(path,project=False):
     p=ROOT/path; text=read(path)
     parser=Parser(); parser.feed(text)
     if 'name="viewport"' not in text: fail(f"{path}: viewport missing")
+    dup=sorted({x for x in parser.ids if parser.ids.count(x)>1})
+    if dup: fail(f"{path}: duplicate HTML ids {dup}")
+    for a in parser.blank_links:
+        rel=str(a.get("rel","")).lower()
+        if "noopener" not in rel: fail(f"{path}: target=_blank link missing rel=noopener")
+    for a in parser.images:
+        if "alt" not in a: fail(f"{path}: image missing alt text")
     if "Suhail Saeedi" in text or "Suhail Saeidi" in text: fail(f"{path}: creator surname misspelled")
     for tag in re.findall(r"<button\b[^>]*>",text,re.I):
         if not re.search(r"\btype\s*=",tag,re.I): fail(f"{path}: button missing explicit type")
