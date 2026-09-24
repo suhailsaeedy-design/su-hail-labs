@@ -263,7 +263,7 @@ function openItem(item=null,prefillCode=''){
   const f=$('#itemForm');f.reset();f.elements.id.value=item?.id||'';f.elements.name.value=item?.name||'';f.elements.code.value=item?.code||prefillCode;f.elements.category.value=item?.category||'';f.elements.qty.value=item?.qty??0;f.elements.min.value=item?.min??5;f.elements.cost.value=item?.cost??0;f.elements.expiry.value=item?.expiry||'';$('#itemMessage').textContent='';$('#itemDialogTitle').textContent=item?'Edit inventory item':'Add inventory item';$('#itemDialog').showModal();setTimeout(()=>f.elements.name.focus(),50)
 }
 $('#addItem').onclick=()=>openItem();
-$('[data-close-item]').forEach(button=>button.addEventListener('click',()=>$('#itemDialog').close()));
+$$('[data-close-item]').forEach(button=>button.addEventListener('click',()=>$('#itemDialog').close()));
 $('#itemForm').addEventListener('submit',e=>{
   e.preventDefault();const f=e.currentTarget,id=f.elements.id.value,code=f.elements.code.value.trim(),name=f.elements.name.value.trim(),category=f.elements.category.value.trim();
   if(!name||!code||!category)return;
